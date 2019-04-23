@@ -1,0 +1,23 @@
+﻿N°;Titre;pondération(1-5);temps minimum (heure);temps maximum (heure);Dépendances
+1;Définir l'architecture du cube;3;3;4;
+2;Analyse pour l'application de démonstration;2;2;5;1
+3;Réaction Spécification détaillées;4;2;3;2
+4;Rédaction état de l'art;1;1;2;
+5;Ecrire protocole de test pour le réseau;5;10;15;
+6;Ecrire un Protocole de tests pour les leds;5;10;15;
+7;Tests niveau réseau;4;3;4;5
+8;Tests des leds;4;3;4;6
+9;Etudier le résultats des tests;4;5;6;7,8
+10;Conception de l'API;5;20;30;9
+11;Conception de la sécurité (système d'authentification);5;20;;10
+12;Conception du mode multi-utilisateur;4;10;15;11
+13;Conception système de séquence;2;10;15;10
+14;Conception de l'application de démonstration;3;10;12;13
+15;Mettre à jour le simulateur le simulateur ;1;2;5;
+16;Implémentation de l'adressage dans l'API;5;;;10
+17;Implémentation des primitives de base;5;;;10,16
+18;Implémentation du multi-utilisateur;2;;;12
+19;Implémentation du système d'authentification;4;;;11
+20;Ecrire Protocole de tests de l'API;5;;;
+21;Implémentation du système de séquence;1;;;13
+22;Implémentation de l'application de démonstration;2;;;14
