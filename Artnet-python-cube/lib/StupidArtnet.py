@@ -11,6 +11,7 @@ NOTES
 
 import socket
 from threading import Timer
+from lib.StupidArtSync import StupidArtSync
 
 
 class StupidArtnet():
@@ -29,6 +30,8 @@ class StupidArtnet():
         self.PACKET_SIZE = self.put_in_range(packet_size, 2, 512)
         self.HEADER = bytearray()
         self.BUFFER = bytearray(packet_size)
+        self.nb_packet = 0
+        self.async = StupidArtSync()
 
         self.bIsSimplified = True  # simplify use of universe, net and subnet
 
@@ -129,9 +132,25 @@ class StupidArtnet():
         self.__clock.start()
         # self.__clock.join()
 
+    def start_artSync(self, nb_packet):
+        if self.nb_packet == 0:
+            self.async.send()
+        elif self.nb_packet % nb_packet:
+            self.async.send()
+            self.async.send()
+        self.show()
+        self.__clock = Timer((1000.0 / self.fps) / 1000.0, self.start, nb_packet)
+        self.__clock.daemon = True
+        self.__clock.start()
+
     def stop(self):
         """Stops thread clock."""
         self.__clock.cancel()
+
+    def stop_artSync(self):
+        self.async.send()
+        self.stop()
+        self.nb_packet = 0
 
     ##
     # SETTERS - HEADER

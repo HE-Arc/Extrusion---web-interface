@@ -6,34 +6,31 @@ from lib.StupidArtSync import StupidArtSync
 import time
 import datetime
 
-filename = "tests/logs/static/test1.txt"
+filename = "tests/logs/static/test1_continuous.txt"
 file = open(filename, "a")
 
 
-def main_no_artsync(universe, ip='127.0.0.1'):
-    target_ip = ip
+def main_no_artsync(universe, ip='127.0.0.1', tmp=5):
     packet_size = 512
     port = 6454
-    a = StupidArtnet(target_ip, port, universe, packet_size)
+    a = StupidArtnet(ip, port, universe, packet_size)
     a.flash_all()  # send single packet with all channels at 255
     file.write(StupidArtnet.print_object_and_packet(a))
-    a.show()
-    # time.sleep(3)  # wait a bit, 1 sec
-    # a.stop()
+    a.start()
+    time.sleep(tmp)
+    a.stop()
 
 
-def main_artsync(universe, ip='127.0.0.1', slp=5):
-    target_ip = ip
+def main_artsync(universe, ip='127.0.0.1', nb_packet=50, tmp=5):
     packet_size = 512
     port = 6454
     sync = StupidArtSync()
-    a = StupidArtnet(target_ip, port, universe, packet_size)
+    a = StupidArtnet(ip, port, universe, packet_size)
     a.flash_all()  # send single packet with all channels at 255
     file.write(StupidArtnet.print_object_and_packet(a))
-    sync.send()
-    a.show()
-    time.sleep(slp)
-    sync.send()
+    a.start_artSync(nb_packet)
+    time.sleep(tmp)
+    a.stop_artSync()
 
 
 if __name__ == '__main__':
@@ -43,20 +40,20 @@ if __name__ == '__main__':
         universe1 = sys.argv[3]
         time = sys.argv[4]
         try:
-            sleep = sys.argv[4]
+            nb_packets = sys.argv[5]
         except:
-            sleep = 5
+            nb_packets = 50
 
         file.write(f"\n{type}")
         file.write(f" test starting: {datetime.datetime.now()}")
 
         print(f"Flashing universe: {universe1}")
         if type == "noartsync":
-            main_no_artsync(int(universe1), ip)
+            main_no_artsync(int(universe1), ip, time)
         elif type == "artsync":
-            main_artsync(int(universe1), ip, sleep)
+            main_artsync(int(universe1), ip, nb_packets, time)
         file.write(f"test ending: {datetime.datetime.now()}\n")
     else:
-        print("Wrong arguments,arguments: type ,ip, universe, time_sleep_for_artSync")
+        print("Wrong arguments,arguments: type ,ip, universe, time, nb_packet_for_artsync")
 
     file.close()
