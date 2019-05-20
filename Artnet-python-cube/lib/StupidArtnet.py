@@ -31,7 +31,7 @@ class StupidArtnet():
         self.HEADER = bytearray()
         self.BUFFER = bytearray(packet_size)
         self.nb_packet = 0
-        self.async = StupidArtSync()
+        self.async = StupidArtSync(targetIP)
 
         self.bIsSimplified = True  # simplify use of universe, net and subnet
 

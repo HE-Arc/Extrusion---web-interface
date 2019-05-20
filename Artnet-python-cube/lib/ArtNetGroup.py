@@ -1,12 +1,13 @@
 from threading import Timer
 from lib.StupidArtnet import StupidArtnet
+from lib.StupidArtSync import StupidArtSync
 from threading import Timer
 
 
 class ArtNetGroup():
     """(Very) simple implementation of ArtnetSync."""
 
-    def __init__(self, *args, ):
+    def __init__(self, *args):
         """Class Initialization."""
         # Instance variables
         self.listArtNet = []
@@ -14,6 +15,7 @@ class ArtNetGroup():
             self.listArtNet.append(a)
         self.fps = 30
         self.nb_art_net = len(self.listArtNet)
+        self.sync = StupidArtSync()
 
     def __str__(self):
         return str(self.listArtNet)
@@ -27,9 +29,14 @@ class ArtNetGroup():
     def show(self):
         [i.show() for i in self.listArtNet]
 
-    def start(self):
-        self.show()
-        self.__clock = Timer((1000.0 / self.fps) / 1000.0, self.start)
+    def start(self, artSync):
+        if artSync:
+            self.sync.send()
+            self.show()
+            self.sync.send()
+        else:
+            self.show()
+        self.__clock = Timer((1000.0 / self.fps) / 1000.0, self.start, [artSync])
         self.__clock.daemon = True
         self.__clock.start()
 

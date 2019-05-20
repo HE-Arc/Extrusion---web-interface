@@ -1,11 +1,12 @@
 from lib.StupidArtSync import StupidArtSync
+from lib.StupidArtnet import StupidArtnet
 from threading import Timer
 
 
 class SychronizerArtSync():
     """(Very) simple implementation of ArtnetSync."""
 
-    def __init__(self, nb_packet, fps, *args):
+    def __init__(self, nb_packet, fps,*args):
         """Class Initialization."""
         # Instance variables
         self.listArtNet = []
@@ -24,12 +25,14 @@ class SychronizerArtSync():
     def ___repr__(self):
         return str(self.listArtNet)
 
+    def set(self, packet):
+        [i.set(packet) for i in self.listArtNet]
+
     def start(self):
         self.show()
         self.__clock = Timer((1000.0 / self.fps) / 1000.0, self.start)
         self.__clock.daemon = True
         self.__clock.start()
-        self.current_nb_packet += 1
 
     def show(self):
         if self.current_nb_packet == 0:
@@ -37,13 +40,17 @@ class SychronizerArtSync():
         elif self.current_nb_packet % self.nb_packet == 0:
             self.async.send()
             self.async.send()
-        artnet_to_send = self.nb_packet % self.nb_art_net
+        artnet_to_send = self.current_nb_packet % self.nb_art_net
         self.listArtNet[artnet_to_send].show()
+        self.current_nb_packet += 1
 
     def stop(self):
         self.async.send()
         self.stop()
         self.nb_packet = 0
+
+    def write_file(self, file):
+        [file.write(StupidArtnet.print_object_and_packet(i)) for i in self.listArtNet]
 
 
 if __name__ == '__main__':

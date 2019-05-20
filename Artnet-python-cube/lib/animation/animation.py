@@ -11,13 +11,10 @@ import time
 class Animation():
     """(Very) simple implementation of ArtnetSync."""
 
-    def __init__(self, file, *art_net, **kwargs):
+    def __init__(self, file, *art_net):
         """Class Initialization."""
         # Instance variables
-        if kwargs["artSync"]:
-            self.art_nets = SychronizerArtSync(50, 30, *art_net)
-        else:
-            self.art_nets = ArtNetGroup(*art_net)
+        self.art_nets = ArtNetGroup(*art_net)
         self.packet_size = art_net[0].PACKET_SIZE
         self.filename = f"tests/logs/dynamic/{file}"
         self.file = open(self.filename, "a")
@@ -38,7 +35,7 @@ class Animation():
             self.art_nets.write_file(self.file)
             self.art_nets.show()
             if i == len(packet_list) / 2:
-                self.art_nets.start()
+                self.art_nets.start(False)
                 time.sleep(pause)
                 self.art_nets.stop()
             else:
@@ -65,12 +62,12 @@ class Animation():
             self.art_nets.set(packet_list[i])
             self.art_nets.write_file(self.file)
             if i == len(packet_list) / 2:
-                self.art_net.start_artSync(nb_packet)
+                self.art_nets.start(True)
                 time.sleep(pause)
-                self.art_net.stop_artSync()
+                self.art_nets.stop()
             else:
                 sync.send()
-                self.art_net.show()
+                self.art_nets.show()
                 sync.send()
                 time.sleep(tmp)
         self.file.close()
