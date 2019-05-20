@@ -64,7 +64,7 @@ if __name__ == '__main__':
         if type == "noartsync":
             main_no_artsync(int(universe1), int(universe2), ip, time)
         elif type == "artsync":
-            main_artsync(int(universe1), int(universe2), ip, time, nb_packets)
+            main_artsync(int(universe1), int(universe2), ip, time, int(nb_packets))
 
         file.write(f"test ending: {datetime.datetime.now()}\n")
     else:

@@ -16,17 +16,17 @@ def main_no_artsync(universe, ip='127.0.0.1', tmp=0.5, pause=5):
     packet_size = 512
     port = 6454
     a = StupidArtnet(target_ip, port, universe, packet_size)
-    anim = Animation(a, "test1_continuous.txt")
-    anim.one_universe_pause_noartsync(Animation.anime_1, tmp, pause)
+    anim = Animation("test1_continuous.txt",a , artSync=False)
+    anim.anime_pause_noartsync(Animation.anime_1, tmp, pause)
 
 
-def main_artsync(universe, ip='127.0.0.1', tmp=5, pause=5):
+def main_artsync(universe, ip='127.0.0.1', tmp=5, pause=5, nb_packet=50):
     target_ip = ip
     packet_size = 512
     port = 6454
     a = StupidArtnet(target_ip, port, universe, packet_size)
-    anim = Animation(a, "test1_continuous.txt")
-    anim.one_universe_pause_artsync(Animation.anime_1, tmp, pause)
+    anim = Animation("test1_continuous.txt",a , artSync=False)
+    anim.anime_pause_artsync(Animation.anime_1, tmp, pause,nb_packet)
 
 
 if __name__ == '__main__':
@@ -36,6 +36,11 @@ if __name__ == '__main__':
         universe1 = sys.argv[3]
         time = sys.argv[4]
         pause_time = sys.argv[5]
+        try:
+            nb_packets = sys.argv[5]
+        except:
+            nb_packets = 50
+
         file.write(f"\n{type}")
         file.write(f" test starting: {datetime.datetime.now()}")
 
@@ -43,7 +48,7 @@ if __name__ == '__main__':
         if type == "noartsync":
             main_no_artsync(int(universe1), ip, float(time), float(pause_time))
         elif type == "artsync":
-            main_artsync(int(universe1), ip, float(time), float(pause_time))
+            main_artsync(int(universe1), ip, float(time), float(pause_time), int(nb_packets))
         file.write(f"test ending: {datetime.datetime.now()}\n")
     else:
         print("Wrong arguments,arguments: type ,ip, universe, animation_time, pause time")

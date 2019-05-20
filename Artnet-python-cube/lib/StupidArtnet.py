@@ -140,7 +140,7 @@ class StupidArtnet():
             self.async.send()
         self.show()
         self.nb_packet += 1
-        self.__clock = Timer((1000.0 / self.fps) / 1000.0, self.start_artSync, nb_packet)
+        self.__clock = Timer((1000.0 / self.fps) / 1000.0, self.start_artSync, [nb_packet])
         self.__clock.daemon = True
         self.__clock.start()
 

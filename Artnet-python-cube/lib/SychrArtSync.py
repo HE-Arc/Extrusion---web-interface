@@ -25,13 +25,13 @@ class SychronizerArtSync():
         return str(self.listArtNet)
 
     def start(self):
-        self._send()
+        self.show()
         self.__clock = Timer((1000.0 / self.fps) / 1000.0, self.start)
         self.__clock.daemon = True
         self.__clock.start()
         self.current_nb_packet += 1
 
-    def _send(self):
+    def show(self):
         if self.current_nb_packet == 0:
             self.async.send()
         elif self.current_nb_packet % self.nb_packet == 0:

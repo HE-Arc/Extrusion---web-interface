@@ -50,7 +50,7 @@ if __name__ == '__main__':
         if type == "noartsync":
             main_no_artsync(int(universe1), ip, time)
         elif type == "artsync":
-            main_artsync(int(universe1), ip, nb_packets, time)
+            main_artsync(int(universe1), ip, int(nb_packets), time)
         file.write(f"test ending: {datetime.datetime.now()}\n")
     else:
         print("Wrong arguments,arguments: type ,ip, universe, time, nb_packet_for_artsync")
