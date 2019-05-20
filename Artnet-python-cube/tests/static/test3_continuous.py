@@ -7,7 +7,7 @@ from lib.SychrArtSync import SychronizerArtSync
 import time
 import datetime
 
-filename = "tests/logs/static/test3.txt"
+filename = "tests/logs/static/test3_continuous.txt"
 file = open(filename, "a+")
 
 
