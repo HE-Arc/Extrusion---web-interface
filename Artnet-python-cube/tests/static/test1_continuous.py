@@ -24,7 +24,6 @@ def main_no_artsync(universe, ip='127.0.0.1', tmp=5):
 def main_artsync(universe, ip='127.0.0.1', nb_packet=50, tmp=5):
     packet_size = 512
     port = 6454
-    sync = StupidArtSync()
     a = StupidArtnet(ip, port, universe, packet_size)
     a.flash_all()  # send single packet with all channels at 255
     file.write(StupidArtnet.print_object_and_packet(a))

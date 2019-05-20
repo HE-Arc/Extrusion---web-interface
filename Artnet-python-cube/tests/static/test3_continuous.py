@@ -7,31 +7,34 @@ from lib.SychrArtSync import SychronizerArtSync
 import time
 import datetime
 
-filename = "tests/logs/static/test2.txt"
+filename = "tests/logs/static/test3.txt"
 file = open(filename, "a+")
 
 
-def main_no_artsync(universe1, universe2, ip='127.0.0.1', tmp=5):
+def main_no_artsync(universe1, universe2, ip1='127.0.0.1', ip2='127.0.0.2', tmp=5):
     packet_size = 512
     port = 6454
-    a1 = StupidArtnet(ip, port, universe1, packet_size)
-    a2 = StupidArtnet(ip, port, universe2, packet_size)
+    a1 = StupidArtnet(ip1, port, universe1, packet_size)
+    a2 = StupidArtnet(ip2, port, universe2, packet_size)
     a1.flash_all()  # send single packet with all channels at 255
     a2.flash_all()
     file.write(StupidArtnet.print_object_and_packet(a1))
-    file.write(StupidArtnet.print_object_and_packet(a2))
+    file.write(StupidArtnet.print_object_and_packet(a1))
     a1.start()
     a2.start()
     time.sleep(tmp)
     a1.stop()
     a2.stop()
+    # time.sleep(3)  # wait a bit, 1 sec
+    # a.stop()
 
 
-def main_artsync(universe1, universe2, ip='127.0.0.1', tmp=5, nb_packet=50):
+def main_artsync(universe1, universe2, ip1='127.0.0.1', ip2='127.0.0.2', tmp=5, nb_packet=50):
     packet_size = 512
     port = 6454
-    a1 = StupidArtnet(ip, port, universe1, packet_size)
-    a2 = StupidArtnet(ip, port, universe2, packet_size)
+    sync = StupidArtSync()
+    a1 = StupidArtnet(ip1, port, universe1, packet_size)
+    a2 = StupidArtnet(ip2, port, universe2, packet_size)
     a1.flash_all()  # send single packet with all channels at 255
     a2.flash_all()
     file.write(StupidArtnet.print_object_and_packet(a1))
@@ -40,8 +43,6 @@ def main_artsync(universe1, universe2, ip='127.0.0.1', tmp=5, nb_packet=50):
     sychronizer.start()
     time.sleep(tmp)
     sychronizer.stop()
-
-    # TODO synchro 2 packets
 
 
 if __name__ == '__main__':
