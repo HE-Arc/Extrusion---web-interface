@@ -19,8 +19,8 @@ class Animation():
         self.filename = f"tests/logs/dynamic/{file}"
         self.file = open(self.filename, "a")
 
-    def anime_noartsync(self, anime, tmp=0.5):
-        packet_list = anime(self.packet_size)
+    def anime_noartsync(self, anime_fonction, tmp=0.5, start_channel=1, end_channel=512):
+        packet_list = anime_fonction(self.packet_size, start_channel, end_channel)
         for i in range(0, len(packet_list)):
             self.art_nets.set(packet_list[i])
             self.art_nets.write_file(self.file)
@@ -28,8 +28,8 @@ class Animation():
             time.sleep(tmp)
         self.file.close()
 
-    def anime_pause_noartsync(self, anime, tmp=0.5, pause=5):
-        packet_list = anime(self.packet_size)
+    def anime_pause_noartsync(self, anime_fonction, tmp=0.5, pause=5, start_channel=1, end_channel=512):
+        packet_list = anime_fonction(self.packet_size, start_channel, end_channel)
         for i in range(0, len(packet_list)):
             self.art_nets.set(packet_list[i])
             self.art_nets.write_file(self.file)
@@ -43,8 +43,8 @@ class Animation():
                 time.sleep(tmp)
         self.file.close()
 
-    def anime_artsync(self, anime, tmp=0.5):
-        packet_list = anime(self.packet_size)
+    def anime_artsync(self, anime_fonction, tmp=0.5, start_channel=1, end_channel=512):
+        packet_list = anime_fonction(self.packet_size, start_channel, end_channel)
         sync = StupidArtSync()
         for i in range(0, len(packet_list)):
             self.art_nets.set(packet_list[i])
@@ -55,8 +55,8 @@ class Animation():
             time.sleep(tmp)
         self.file.close()
 
-    def anime_pause_artsync(self, anime, tmp=0.5, pause=5):
-        packet_list = anime(self.packet_size)
+    def anime_pause_artsync(self, anime_fonction, tmp=0.5, pause=5, start_channel=1, end_channel=512):
+        packet_list = anime_fonction(self.packet_size, start_channel, end_channel)
         for i in range(0, len(packet_list)):
             self.art_nets.set(packet_list[i])
             self.art_nets.write_file(self.file)
@@ -72,11 +72,23 @@ class Animation():
         self.file.close()
 
     @staticmethod
-    def anime_1(packet_size):
+    def anime_1(packet_size, start_channel=1, end_channel=512):
         packet_list = []
         for i in range(0, packet_size, 3):
             packet = bytearray(packet_size)
             if i <= packet_size - 3:
+                packet[i] = 255
+                packet[i + 1] = 255
+                packet[i + 2] = 255
+                packet_list.append(packet)
+        return packet_list
+
+    @staticmethod
+    def anime_2(packet_size, start_channel=1, end_channel=512):
+        packet_list = []
+        for i in range(start_channel - 1, end_channel, 3):
+            packet = bytearray(packet_size)
+            if i >= start_channel - 1 and i < end_channel:
                 packet[i] = 255
                 packet[i + 1] = 255
                 packet[i + 2] = 255
