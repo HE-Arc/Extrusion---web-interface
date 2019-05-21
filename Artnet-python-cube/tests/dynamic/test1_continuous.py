@@ -20,13 +20,13 @@ def main_no_artsync(universe, ip='127.0.0.1', tmp=0.5, pause=5):
     anim.anime_pause_noartsync(Animation.anime_1, tmp, pause)
 
 
-def main_artsync(universe, ip='127.0.0.1', tmp=5, pause=5, nb_packet=50):
+def main_artsync(universe, ip='127.0.0.1', tmp=5, pause=5):
     target_ip = ip
     packet_size = 512
     port = 6454
     a = StupidArtnet(target_ip, port, universe, packet_size)
     anim = Animation("test1_continuous.txt", a)
-    anim.anime_pause_artsync(Animation.anime_1, tmp, pause,nb_packet)
+    anim.anime_pause_artsync(Animation.anime_1, tmp, pause)
 
 
 if __name__ == '__main__':
@@ -48,7 +48,7 @@ if __name__ == '__main__':
         if type == "noartsync":
             main_no_artsync(int(universe1), ip, float(time), float(pause_time))
         elif type == "artsync":
-            main_artsync(int(universe1), ip, float(time), float(pause_time), int(nb_packets))
+            main_artsync(int(universe1), ip, float(time), float(pause_time))
         file.write(f"test ending: {datetime.datetime.now()}\n")
     else:
         print("Wrong arguments,arguments: type ,ip, universe, animation_time, pause time")

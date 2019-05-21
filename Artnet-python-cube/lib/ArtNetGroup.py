@@ -1,6 +1,7 @@
 from threading import Timer
 from lib.StupidArtnet import StupidArtnet
 from lib.StupidArtSync import StupidArtSync
+from lib.ArtSyncGroup import ArtSyncGroup
 from threading import Timer
 
 
@@ -11,11 +12,15 @@ class ArtNetGroup():
         """Class Initialization."""
         # Instance variables
         self.listArtNet = []
+        ips = set()
+        self.sync = ArtSyncGroup()
         for a in args:
             self.listArtNet.append(a)
+            if a.TARGET_IP not in ips:
+                self.sync.add(StupidArtSync(a.TARGET_IP))
+                ips.add(a.TARGET_IP)
         self.fps = 30
         self.nb_art_net = len(self.listArtNet)
-        self.sync = StupidArtSync()
 
     def __str__(self):
         return str(self.listArtNet)

@@ -6,11 +6,11 @@ from threading import Timer
 class SychronizerArtSync():
     """(Very) simple implementation of ArtnetSync."""
 
-    def __init__(self, nb_packet, fps,*args):
+    def __init__(self, nb_packet, fps, artSync, args):
         """Class Initialization."""
         # Instance variables
         self.listArtNet = []
-        self.async = StupidArtSync()
+        self.sync = artSync
         self.nb_packet = nb_packet
         self.current_nb_packet = 0
         self.fps = fps
@@ -36,16 +36,16 @@ class SychronizerArtSync():
 
     def show(self):
         if self.current_nb_packet == 0:
-            self.async.send()
+            self.sync.send()
         elif self.current_nb_packet % self.nb_packet == 0:
-            self.async.send()
-            self.async.send()
+            self.sync.send()
+            self.sync.send()
         artnet_to_send = self.current_nb_packet % self.nb_art_net
         self.listArtNet[artnet_to_send].show()
         self.current_nb_packet += 1
 
     def stop(self):
-        self.async.send()
+        self.sync.send()
         self.stop()
         self.nb_packet = 0
 

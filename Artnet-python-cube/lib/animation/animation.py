@@ -49,13 +49,13 @@ class Animation():
         for i in range(0, len(packet_list)):
             self.art_nets.set(packet_list[i])
             self.art_nets.write_file(self.file)
-            sync.send()
+            self.art_nets.sync.send()
             self.art_nets.show()
-            sync.send()
+            self.art_nets.sync.send()
             time.sleep(tmp)
         self.file.close()
 
-    def anime_pause_artsync(self, anime, tmp=0.5, pause=5, nb_packet=50):
+    def anime_pause_artsync(self, anime, tmp=0.5, pause=5):
         packet_list = anime(self.packet_size)
         sync = StupidArtSync()
         for i in range(0, len(packet_list)):
@@ -66,9 +66,9 @@ class Animation():
                 time.sleep(pause)
                 self.art_nets.stop()
             else:
-                sync.send()
+                self.art_nets.sync.send()
                 self.art_nets.show()
-                sync.send()
+                self.art_nets.sync.send()
                 time.sleep(tmp)
         self.file.close()
 
