@@ -26522,3 +26522,23 @@ Packet Size: 512
 0x0/0x0/0x0/0x0/0x0/0x0/0x0/0x0/0x0/0x0/0x0/0xff/0xff/0xff/0x0/0x0 
 
 artsync test starting: 2019-05-21 09:40:58.706951test ending: 2019-05-21 09:41:15.950225
+
+artsync test starting: 2019-05-21 09:51:08.129417test ending: 2019-05-21 09:51:35.183946
+
+noartsync test starting: 2019-05-21 09:52:19.793459test ending: 2019-05-21 09:52:46.934783
+
+artsync test starting: 2019-05-21 09:52:53.096398test ending: 2019-05-21 09:53:20.229981
+
+noartsync test starting: 2019-05-21 09:53:39.601268
+artsync test starting: 2019-05-21 09:53:48.279005
+noartsync test starting: 2019-05-21 09:55:07.897780test ending: 2019-05-21 09:55:35.025074
+
+noartsync test starting: 2019-05-21 10:05:16.323106
+artsync test starting: 2019-05-21 10:05:22.821917
+artsync test starting: 2019-05-21 10:06:55.584569test ending: 2019-05-21 10:07:22.705708
+
+artsync test starting: 2019-05-21 10:07:32.374739test ending: 2019-05-21 10:07:59.519062
+
+artsync test starting: 2019-05-21 10:18:40.626652
+artsync test starting: 2019-05-21 10:30:16.469119
+artsync test starting: 2019-05-21 10:33:48.829968test ending: 2019-05-21 10:34:16.002562

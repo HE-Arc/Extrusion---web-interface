@@ -57,7 +57,6 @@ class Animation():
 
     def anime_pause_artsync(self, anime, tmp=0.5, pause=5):
         packet_list = anime(self.packet_size)
-        sync = StupidArtSync()
         for i in range(0, len(packet_list)):
             self.art_nets.set(packet_list[i])
             self.art_nets.write_file(self.file)

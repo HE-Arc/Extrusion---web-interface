@@ -42,7 +42,7 @@ if __name__ == '__main__':
         file.write(f"\n{type}")
         file.write(f" test starting: {datetime.datetime.now()}")
 
-        print(f"Animate universe: {universe1}")
+        print(f"Animate universe: {universe1}, {universe2}")
         if type == "noartsync":
             main_no_artsync(int(universe1), int(universe2), ip, float(time))
         elif type == "artsync":

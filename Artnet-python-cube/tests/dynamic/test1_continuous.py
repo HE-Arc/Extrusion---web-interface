@@ -36,10 +36,6 @@ if __name__ == '__main__':
         universe1 = sys.argv[3]
         time = sys.argv[4]
         pause_time = sys.argv[5]
-        try:
-            nb_packets = sys.argv[5]
-        except:
-            nb_packets = 50
 
         file.write(f"\n{type}")
         file.write(f" test starting: {datetime.datetime.now()}")
