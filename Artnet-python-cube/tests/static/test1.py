@@ -3,6 +3,7 @@ import sys
 sys.path.append(".")
 from lib.StupidArtnet import StupidArtnet
 from lib.StupidArtSync import StupidArtSync
+from lib.ArtNetGroup import ArtNetGroup
 import time
 import datetime
 
@@ -26,7 +27,7 @@ def main_artsync(universe, ip='127.0.0.1', slp=5):
     target_ip = ip
     packet_size = 512
     port = 6454
-    sync = StupidArtSync(ip)
+    sync = StupidArtSync(ArtNetGroup.get_broadcast_address(ip))
     a = StupidArtnet(target_ip, port, universe, packet_size)
     a.flash_all()  # send single packet with all channels at 255
     file.write(StupidArtnet.print_object_and_packet(a))

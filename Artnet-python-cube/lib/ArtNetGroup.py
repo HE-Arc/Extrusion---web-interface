@@ -17,7 +17,7 @@ class ArtNetGroup():
         self.sync = ArtSyncGroup()
         for a in args:
             self.listArtNet.append(a)
-            ip = self._get_broadcast_adress(a.TARGET_IP)
+            ip = self.get_broadcast_address(a.TARGET_IP)
             if ip not in ips:
                 self.sync.add(StupidArtSync(ip))
                 ips.add(ip)
@@ -58,6 +58,7 @@ class ArtNetGroup():
     def write_file(self, file):
         [file.write(StupidArtnet.print_object_and_packet(i)) for i in self.listArtNet]
 
-    def _get_broadcast_adress(self, ip):
+    @staticmethod
+    def get_broadcast_address(ip):
         broadcast_ip = ".".join(ip.split('.')[0:-1]) + '.'
         return broadcast_ip + '255'

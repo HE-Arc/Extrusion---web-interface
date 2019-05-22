@@ -2,7 +2,7 @@ import sys
 
 sys.path.append(".")
 from lib.StupidArtnet import StupidArtnet
-from lib.StupidArtSync import StupidArtSync
+from lib.ArtNetGroup import ArtNetGroup
 import time
 import datetime
 
