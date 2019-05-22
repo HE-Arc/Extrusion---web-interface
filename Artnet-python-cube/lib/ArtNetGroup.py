@@ -3,6 +3,7 @@ from lib.StupidArtnet import StupidArtnet
 from lib.StupidArtSync import StupidArtSync
 from lib.ArtSyncGroup import ArtSyncGroup
 from threading import Timer
+from ipaddress import IPv4Network
 
 
 class ArtNetGroup():
@@ -16,9 +17,10 @@ class ArtNetGroup():
         self.sync = ArtSyncGroup()
         for a in args:
             self.listArtNet.append(a)
-            if a.TARGET_IP not in ips:
-                self.sync.add(StupidArtSync(a.TARGET_IP))
-                ips.add(a.TARGET_IP)
+            ip = self._get_broadcast_adress(a.TARGET_IP)
+            if ip not in ips:
+                self.sync.add(StupidArtSync(ip))
+                ips.add(ip)
         self.fps = 30
         self.nb_art_net = len(self.listArtNet)
 
@@ -31,16 +33,21 @@ class ArtNetGroup():
     def set(self, packet):
         [i.set(packet) for i in self.listArtNet]
 
-    def show(self):
-        [i.show() for i in self.listArtNet]
+    def show(self, artSync):
+        if artSync:
+            self.sync.send()
+            [i.show() for i in self.listArtNet]
+            self.sync.send()
+        else:
+            [i.show() for i in self.listArtNet]
 
     def start(self, artSync):
         if artSync:
             self.sync.send()
-            self.show()
+            self.show(False)
             self.sync.send()
         else:
-            self.show()
+            self.show(False)
         self.__clock = Timer((1000.0 / self.fps) / 1000.0, self.start, [artSync])
         self.__clock.daemon = True
         self.__clock.start()
@@ -50,3 +57,7 @@ class ArtNetGroup():
 
     def write_file(self, file):
         [file.write(StupidArtnet.print_object_and_packet(i)) for i in self.listArtNet]
+
+    def _get_broadcast_adress(self, ip):
+        broadcast_ip = ".".join(ip.split('.')[0:-1]) + '.'
+        return broadcast_ip + '255'

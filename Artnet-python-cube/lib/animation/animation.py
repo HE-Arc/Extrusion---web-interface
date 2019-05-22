@@ -23,7 +23,7 @@ class Animation():
         for i in range(0, len(packet_list)):
             self.art_nets.set(packet_list[i])
             self.art_nets.write_file(self.file)
-            self.art_nets.show()
+            self.art_nets.show(False)
             time.sleep(tmp)
         self.file.close()
 
@@ -38,7 +38,7 @@ class Animation():
                 time.sleep(pause)
                 self.art_nets.stop()
             else:
-                self.art_nets.show()
+                self.art_nets.show(False)
                 time.sleep(tmp)
         self.file.close()
 
@@ -48,9 +48,7 @@ class Animation():
         for i in range(0, len(packet_list)):
             self.art_nets.set(packet_list[i])
             self.art_nets.write_file(self.file)
-            self.art_nets.sync.send()
-            self.art_nets.show()
-            self.art_nets.sync.send()
+            self.art_nets.show(True)
             time.sleep(tmp)
         self.file.close()
 
@@ -64,9 +62,7 @@ class Animation():
                 time.sleep(pause)
                 self.art_nets.stop()
             else:
-                self.art_nets.sync.send()
-                self.art_nets.show()
-                self.art_nets.sync.send()
+                self.art_nets.show(True)
                 time.sleep(tmp)
         self.file.close()
 

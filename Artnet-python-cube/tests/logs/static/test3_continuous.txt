@@ -1,4 +1,0 @@
-
-artsync test starting: 2019-05-21 10:37:02.296726
-artsync test starting: 2019-05-22 11:40:04.144585
-artsync test starting: 2019-05-22 11:41:35.502310

@@ -6,7 +6,7 @@ from threading import Timer
 class SychronizerArtSync():
     """(Very) simple implementation of ArtnetSync."""
 
-    def __init__(self, nb_packet, fps, artSync, args):
+    def __init__(self, nb_packet, fps, artSync, *args):
         """Class Initialization."""
         # Instance variables
         self.listArtNet = []

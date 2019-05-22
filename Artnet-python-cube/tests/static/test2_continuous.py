@@ -4,6 +4,7 @@ sys.path.append(".")
 from lib.StupidArtnet import StupidArtnet
 from lib.StupidArtSync import StupidArtSync
 from lib.SychrArtSync import SychronizerArtSync
+from lib.ArtNetGroup import ArtNetGroup
 import time
 import datetime
 
@@ -36,10 +37,10 @@ def main_artsync(universe1, universe2, ip='127.0.0.1', tmp=5, nb_packet=50):
     a2.flash_all()
     file.write(StupidArtnet.print_object_and_packet(a1))
     file.write(StupidArtnet.print_object_and_packet(a2))
-    sychronizer = SychronizerArtSync(nb_packet, 30, a1, a2)
-    sychronizer.start()
+    group = ArtNetGroup(a1, a2)
+    group.start(True)
     time.sleep(tmp)
-    sychronizer.stop()
+    group.stop()
 
     # TODO synchro 2 packets
 
@@ -50,7 +51,7 @@ if __name__ == '__main__':
         ip = sys.argv[2]
         universe1 = sys.argv[3]
         universe2 = sys.argv[4]
-        time = sys.argv[5]
+        pause_time = sys.argv[5]
         try:
             nb_packets = sys.argv[6]
         except:
@@ -61,9 +62,9 @@ if __name__ == '__main__':
 
         print(f"Flashing universe: {universe1}, {universe2}")
         if type == "noartsync":
-            main_no_artsync(int(universe1), int(universe2), ip, time)
+            main_no_artsync(int(universe1), int(universe2), ip, float(pause_time))
         elif type == "artsync":
-            main_artsync(int(universe1), int(universe2), ip, time, int(nb_packets))
+            main_artsync(int(universe1), int(universe2), ip, float(pause_time), int(nb_packets))
 
         file.write(f"test ending: {datetime.datetime.now()}\n")
     else:
