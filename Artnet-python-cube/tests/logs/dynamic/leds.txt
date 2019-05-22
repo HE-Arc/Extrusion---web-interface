@@ -1,0 +1,8 @@
+
+noartsync test starting: 2019-05-22 17:13:59.283444test ending: 2019-05-22 17:14:04.299214
+
+noartsync test starting: 2019-05-22 17:14:21.158008test ending: 2019-05-22 17:14:26.178369
+
+artsync test starting: 2019-05-22 17:14:34.637951test ending: 2019-05-22 17:14:39.654318
+
+artsync test starting: 2019-05-22 17:14:47.056434test ending: 2019-05-22 17:14:52.075308

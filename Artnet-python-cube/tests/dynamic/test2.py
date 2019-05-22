@@ -3,7 +3,7 @@ import sys
 sys.path.append(".")
 from lib.StupidArtnet import StupidArtnet
 from lib.StupidArtSync import StupidArtSync
-from lib.animation.animation import Animation
+from lib.animation.Animation import Animation
 import time
 import datetime
 

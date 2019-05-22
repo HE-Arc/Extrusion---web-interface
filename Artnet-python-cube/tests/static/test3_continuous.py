@@ -2,14 +2,12 @@ import sys
 
 sys.path.append(".")
 from lib.StupidArtnet import StupidArtnet
-from lib.StupidArtSync import StupidArtSync
-from lib.SychrArtSync import SychronizerArtSync
 from lib.ArtNetGroup import ArtNetGroup
 import time
 import datetime
 
 filename = "tests/logs/static/test3_continuous.txt"
-file = open(filename, "a+")
+file = open(filename, "a")
 
 
 def main_no_artsync(universe1, universe2, ip1='127.0.0.1', ip2='127.0.0.2', tmp=5):

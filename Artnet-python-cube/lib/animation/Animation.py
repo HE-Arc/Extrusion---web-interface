@@ -1,9 +1,6 @@
 import sys
-
 sys.path.append(".")
-from lib.StupidArtnet import StupidArtnet
 from lib.StupidArtSync import StupidArtSync
-from lib.SychrArtSync import SychronizerArtSync
 from lib.ArtNetGroup import ArtNetGroup
 import time
 
@@ -44,7 +41,6 @@ class Animation():
 
     def anime_artsync(self, anime_fonction, tmp=0.5, start_channel=1, end_channel=512):
         packet_list = anime_fonction(self.packet_size, start_channel, end_channel)
-        sync = StupidArtSync()
         for i in range(0, len(packet_list)):
             self.art_nets.set(packet_list[i])
             self.art_nets.write_file(self.file)

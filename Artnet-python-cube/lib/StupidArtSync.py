@@ -19,7 +19,7 @@ class StupidArtSync():
     def __init__(self, targetIP='127.0.0.1', port=6454):
         """Class Initialization."""
         # Instance variables
-        self.TARGET_IP = targetIP
+        self.TARGET_IP = self.get_broadcast_address(targetIP)
         self.UDP_PORT = port
         self.HEADER = bytearray()
         # UDP SOCKET
@@ -61,6 +61,11 @@ class StupidArtSync():
             self.s.sendto(packet, (self.TARGET_IP, self.UDP_PORT))
         except Exception as e:
             print("ERROR: Socket error with exception: %s" % e)
+
+    @staticmethod
+    def get_broadcast_address(ip):
+        broadcast_ip = ".".join(ip.split('.')[0:-1]) + '.'
+        return broadcast_ip + '255'
 
 
 if __name__ == '__main__':

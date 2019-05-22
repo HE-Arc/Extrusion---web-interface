@@ -2,9 +2,7 @@ import sys
 
 sys.path.append(".")
 from lib.StupidArtnet import StupidArtnet
-from lib.StupidArtSync import StupidArtSync
-from lib.animation.animation import Animation
-import time
+from lib.animation.Animation import Animation
 import datetime
 
 filename = "tests/logs/dynamic/test1.txt"

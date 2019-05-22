@@ -12,7 +12,7 @@ NOTES
 import socket
 from threading import Timer
 from lib.StupidArtSync import StupidArtSync
-from lib.ArtNetGroup import ArtNetGroup
+
 
 class StupidArtnet():
     """(Very) simple implementation of Artnet."""
@@ -31,7 +31,7 @@ class StupidArtnet():
         self.HEADER = bytearray()
         self.BUFFER = bytearray(packet_size)
         self.nb_packet = 0
-        self.async = StupidArtSync(ArtNetGroup.get_broadcast_address(targetIP))
+        self.async = StupidArtSync(targetIP)
 
         self.bIsSimplified = True  # simplify use of universe, net and subnet
 

@@ -1,8 +1,3 @@
-from lib.StupidArtnet import StupidArtnet
-from lib.StupidArtSync import StupidArtSync
-from threading import Timer
-
-
 class ArtSyncGroup():
     """(Very) simple implementation of ArtnetSync."""
 

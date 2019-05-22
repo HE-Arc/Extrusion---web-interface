@@ -8,7 +8,7 @@ import time
 import datetime
 
 filename = "tests/logs/static/test3.txt"
-file = open(filename, "a+")
+file = open(filename, "a")
 
 
 def main_no_artsync(universe1, universe2, ip1='127.0.0.1', ip2='127.0.0.2'):

@@ -2,9 +2,7 @@ import sys
 
 sys.path.append(".")
 from lib.StupidArtnet import StupidArtnet
-from lib.StupidArtSync import StupidArtSync
-from lib.animation.animation import Animation
-import time
+from lib.animation.Animation import Animation
 import datetime
 
 filename = "tests/logs/dynamic/leds.txt"
@@ -51,6 +49,6 @@ if __name__ == '__main__':
             main_artsync(int(universe1), int(start_channel), int(end_channel), ip, float(time))
         file.write(f"test ending: {datetime.datetime.now()}\n")
     else:
-        print("Wrong arguments,arguments: type ,ip, universe, start channel, stop channel,time_sleep_for_artSync")
+        print("Wrong arguments,arguments: type ,ip, universe, start channel, stop channel,time_animation")
 
     file.close()
