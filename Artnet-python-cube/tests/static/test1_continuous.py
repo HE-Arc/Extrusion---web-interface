@@ -37,7 +37,7 @@ if __name__ == '__main__':
         type = sys.argv[1]
         ip = sys.argv[2]
         universe1 = sys.argv[3]
-        time = sys.argv[4]
+        pause = sys.argv[4]
         try:
             nb_packets = sys.argv[5]
         except:
@@ -48,9 +48,9 @@ if __name__ == '__main__':
 
         print(f"Flashing universe: {universe1}")
         if type == "noartsync":
-            main_no_artsync(int(universe1), ip, time)
+            main_no_artsync(int(universe1), ip, float(pause))
         elif type == "artsync":
-            main_artsync(int(universe1), ip, int(nb_packets), time)
+            main_artsync(int(universe1), ip, int(nb_packets), float(pause))
         file.write(f"test ending: {datetime.datetime.now()}\n")
     else:
         print("Wrong arguments,arguments: type ,ip, universe, time, nb_packet_for_artsync")

@@ -53,7 +53,7 @@ if __name__ == '__main__':
         if type == "noartsync":
             main_no_artsync(int(universe1), ip)
         elif type == "artsync":
-            main_artsync(int(universe1), ip, sleep)
+            main_artsync(int(universe1), ip, float(sleep))
         file.write(f"test ending: {datetime.datetime.now()}\n")
     else:
         print("Wrong arguments,arguments: type ,ip, universe, time_sleep_for_artSync")

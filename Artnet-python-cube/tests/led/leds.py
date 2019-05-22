@@ -17,7 +17,7 @@ def main_no_artsync(universe, start_channel, end_channel, ip='127.0.0.1', tmp=0.
     port = 6454
     a = StupidArtnet(target_ip, port, universe, packet_size)
     anim = Animation("leds.txt", a)
-    anim.anime_noartsync(Animation.anime_1, tmp)
+    anim.anime_noartsync(Animation.anime_2, tmp, start_channel, end_channel)
 
 
 def main_artsync(universe, start_channel, end_channel, ip='127.0.0.1', tmp=0.5):
@@ -26,7 +26,7 @@ def main_artsync(universe, start_channel, end_channel, ip='127.0.0.1', tmp=0.5):
     port = 6454
     a = StupidArtnet(target_ip, port, universe, packet_size)
     anim = Animation("leds.txt", a)
-    anim.anime_artsync(Animation.anime_1, tmp)
+    anim.anime_artsync(Animation.anime_2, tmp, start_channel, end_channel)
 
 
 if __name__ == '__main__':
@@ -46,9 +46,9 @@ if __name__ == '__main__':
 
         print(f"Flashing universe: {universe1}")
         if type == "noartsync":
-            main_no_artsync(int(universe1), int(start_channel), int(end_channel), ip, time)
+            main_no_artsync(int(universe1), int(start_channel), int(end_channel), ip, float(time))
         elif type == "artsync":
-            main_artsync(int(universe1), ip, int(start_channel), int(end_channel), time)
+            main_artsync(int(universe1), int(start_channel), int(end_channel), ip, float(time))
         file.write(f"test ending: {datetime.datetime.now()}\n")
     else:
         print("Wrong arguments,arguments: type ,ip, universe, start channel, stop channel,time_sleep_for_artSync")

@@ -16,8 +16,7 @@ class Animation():
         # Instance variables
         self.art_nets = ArtNetGroup(*art_net)
         self.packet_size = art_net[0].PACKET_SIZE
-        self.filename = f"tests/logs/dynamic/{file}"
-        self.file = open(self.filename, "a")
+        self.file = open(file, "a")
 
     def anime_noartsync(self, anime_fonction, tmp=0.5, start_channel=1, end_channel=512):
         packet_list = anime_fonction(self.packet_size, start_channel, end_channel)
@@ -86,13 +85,11 @@ class Animation():
     @staticmethod
     def anime_2(packet_size, start_channel=1, end_channel=512):
         packet_list = []
-        for i in range(start_channel - 1, end_channel, 3):
-            packet = bytearray(packet_size)
-            if i >= start_channel - 1 and i < end_channel:
+        packet = bytearray(packet_size)
+        for i in range(0, packet_size, 1):
+            if start_channel - 1 <= i < end_channel:
                 packet[i] = 255
-                packet[i + 1] = 255
-                packet[i + 2] = 255
-                packet_list.append(packet)
+        packet_list.append(packet)
         return packet_list
 
 

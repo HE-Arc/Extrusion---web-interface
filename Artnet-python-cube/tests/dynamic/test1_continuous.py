@@ -7,7 +7,7 @@ from lib.animation.animation import Animation
 import time
 import datetime
 
-filename = "tests/logs/dynamic/test1.txt"
+filename = "tests/logs/dynamic/test1_continuous.txt"
 file = open(filename, "a")
 
 
@@ -16,7 +16,7 @@ def main_no_artsync(universe, ip='127.0.0.1', tmp=0.5, pause=5):
     packet_size = 512
     port = 6454
     a = StupidArtnet(target_ip, port, universe, packet_size)
-    anim = Animation("test1_continuous.txt", a)
+    anim = Animation(filename, a)
     anim.anime_pause_noartsync(Animation.anime_1, tmp, pause)
 
 
@@ -25,7 +25,7 @@ def main_artsync(universe, ip='127.0.0.1', tmp=5, pause=5):
     packet_size = 512
     port = 6454
     a = StupidArtnet(target_ip, port, universe, packet_size)
-    anim = Animation("test1_continuous.txt", a)
+    anim = Animation(filename, a)
     anim.anime_pause_artsync(Animation.anime_1, tmp, pause)
 
 

@@ -1,4 +1,6 @@
-from lib import StupidArtnet
+import sys
+sys.path.append(".")
+from lib.StupidArtnet import StupidArtnet
 import sys
 
 
@@ -21,7 +23,7 @@ def main(universe, ip='127.0.0.1'):
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        universe = sys.argv[2]
+        universe = int(sys.argv[2])
         ip = sys.argv[1]
         print(f"Blackout universe: {universe}")
         main(universe, ip)

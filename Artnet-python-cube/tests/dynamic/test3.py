@@ -16,7 +16,7 @@ def main_no_artsync(universe1, universe2, ip1='127.0.0.1', ip2='127.0.0.1', tmp=
     port = 6454
     a1 = StupidArtnet(ip1, port, universe1, packet_size)
     a2 = StupidArtnet(ip2, port, universe2, packet_size)
-    anim = Animation("test3.txt", a1, a2)
+    anim = Animation(filename, a1, a2)
     anim.anime_noartsync(Animation.anime_1, tmp)
 
 
@@ -25,7 +25,7 @@ def main_artsync(universe1, universe2, ip1='127.0.0.1', ip2='127.0.0.1', tmp=0.5
     port = 6454
     a1 = StupidArtnet(ip1, port, universe1, packet_size)
     a2 = StupidArtnet(ip2, port, universe2, packet_size)
-    anim = Animation("test3.txt", a1, a2)
+    anim = Animation(filename, a1, a2)
     anim.anime_artsync(Animation.anime_1, tmp)
 
 
