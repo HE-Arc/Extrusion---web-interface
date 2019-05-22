@@ -135,12 +135,11 @@ class StupidArtnet():
     def start_artSync(self, nb_packet):
         if self.nb_packet == 0:
             self.async.send()
-            self.nb_packet += 1
         elif self.nb_packet % nb_packet == 0:
             self.async.send()
             self.async.send()
-            self.nb_packet += 1
 
+        self.nb_packet += 1
         self.show()
         self.__clock = Timer((1000.0 / self.fps) / 1000.0, self.start_artSync, [nb_packet])
         self.__clock.daemon = True
