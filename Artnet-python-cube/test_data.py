@@ -8,6 +8,9 @@ print(ledstrip_data[0][0][1][1] + 12)
 port = 6454
 ip = '192.168.1.142'
 group = ArtNetGroup()
+tab_parabole = []
+for x in range(256):
+    tab_parabole.append(int(-x * (x - 255) / 63.75))
 
 for i in range(91):
     a = StupidArtnet(ip, port, i)
@@ -25,6 +28,30 @@ for d in range(5):
         else:
             i.flash_all()
     flash = not flash
-
     time.sleep(2)
+
+for d in range(255):
+
+    for i in group.listArtNet:
+        i.fade_in()
+
+    time.sleep(0.05)
+
+for d in range(255):
+
+    for i in group.listArtNet:
+        i.fade_out()
+
+    # flash = not flash
+
+    time.sleep(0.05)
+
+for d in tab_parabole:
+
+    for i in group.listArtNet:
+        i.parabole(d)
+
+    # flash = not flash
+
+    time.sleep(0.1)
 group.stop()

@@ -13,6 +13,7 @@ import socket
 from threading import Timer
 from lib.StupidArtSync import StupidArtSync
 import random
+import numpy
 
 
 class StupidArtnet():
@@ -291,6 +292,15 @@ class StupidArtnet():
         packet[r + 1] = 255
         packet[r + 2] = 255
         self.set(packet)
+
+    def fade_in(self):
+        self.BUFFER[0] += 1
+
+    def fade_out(self):
+        self.BUFFER[0] -= 1
+
+    def parabole(self, i):
+        self.BUFFER[0] = i
 
     def flash_all(self):
         """Sends 255's all across."""
