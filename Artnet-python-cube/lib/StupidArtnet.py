@@ -12,6 +12,7 @@ NOTES
 import socket
 from threading import Timer
 from lib.StupidArtSync import StupidArtSync
+import random
 
 
 class StupidArtnet():
@@ -37,7 +38,6 @@ class StupidArtnet():
 
         # UDP SOCKET
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.s.bind(('', 6454))
 
         # Timer
         self.fps = fps
@@ -282,7 +282,15 @@ class StupidArtnet():
     def blackout(self):
         """Sends 0's all across."""
         self.clear()
-        self.show()
+        # self.show()
+
+    def random(self):
+        packet = bytearray(self.PACKET_SIZE)
+        r = random.randint(0, 510)
+        packet[r] = 255
+        packet[r + 1] = 255
+        packet[r + 2] = 255
+        self.set(packet)
 
     def flash_all(self):
         """Sends 255's all across."""

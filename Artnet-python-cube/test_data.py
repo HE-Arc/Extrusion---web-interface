@@ -1,6 +1,7 @@
 from lib.StupidArtnet import StupidArtnet
 from lib.ArtNetGroup import ArtNetGroup
 import time
+
 ledstrip_data = [[[(0, 0), (0, 81), (0, 162)]], [], [], [], [], []]
 
 print(ledstrip_data[0][0][1][1] + 12)
@@ -14,6 +15,16 @@ for i in range(91):
     group.add(a)
 
 group.start(True)
-time.sleep(3)
-group.stop()
+time.sleep(2)
+flash = True
+for d in range(5):
 
+    for i in group.listArtNet:
+        if flash:
+            i.blackout()
+        else:
+            i.flash_all()
+    flash = not flash
+
+    time.sleep(2)
+group.stop()
