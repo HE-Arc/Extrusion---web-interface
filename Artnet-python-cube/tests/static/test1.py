@@ -32,7 +32,6 @@ def main_artsync(universe, ip='127.0.0.1', slp=5):
     file.write(StupidArtnet.print_object_and_packet(a))
     sync.send()
     a.show()
-    time.sleep(slp)
     sync.send()
 
 

@@ -14,7 +14,7 @@ def main_no_artsync(universe, start_channel, end_channel, ip='127.0.0.1', tmp=0.
     packet_size = 512
     port = 6454
     a = StupidArtnet(target_ip, port, universe, packet_size)
-    anim = Animation("leds.txt", a)
+    anim = Animation(filename, a)
     anim.anime_noartsync(Animation.anime_2, tmp, start_channel, end_channel)
 
 
@@ -23,7 +23,7 @@ def main_artsync(universe, start_channel, end_channel, ip='127.0.0.1', tmp=0.5):
     packet_size = 512
     port = 6454
     a = StupidArtnet(target_ip, port, universe, packet_size)
-    anim = Animation("leds.txt", a)
+    anim = Animation(filename, a)
     anim.anime_artsync(Animation.anime_2, tmp, start_channel, end_channel)
 
 

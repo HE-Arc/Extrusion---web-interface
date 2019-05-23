@@ -39,7 +39,6 @@ def main_artsync(universe1, universe2, ip='127.0.0.1', slp= 5):
     sync.send()
     a1.show()
     a2.show()
-    time.sleep(slp)
     sync.send()
 
 
