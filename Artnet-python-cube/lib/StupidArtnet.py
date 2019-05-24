@@ -294,13 +294,13 @@ class StupidArtnet():
         self.set(packet)
 
     def fade_in(self):
-        self.BUFFER[0] += 1
+        self.BUFFER = [i + 1 for i in self.BUFFER]
 
     def fade_out(self):
-        self.BUFFER[0] -= 1
+        self.BUFFER = [i - 1 for i in self.BUFFER]
 
     def parabole(self, i):
-        self.BUFFER[0] = i
+        self.BUFFER = [i for x in self.BUFFER]
 
     def flash_all(self):
         """Sends 255's all across."""

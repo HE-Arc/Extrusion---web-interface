@@ -35,7 +35,7 @@ for d in range(255):
     for i in group.listArtNet:
         i.fade_in()
 
-    time.sleep(0.05)
+    time.sleep(0.01)
 
 for d in range(255):
 
@@ -44,7 +44,7 @@ for d in range(255):
 
     # flash = not flash
 
-    time.sleep(0.05)
+    time.sleep(0.01)
 
 for d in tab_parabole:
 
@@ -53,5 +53,7 @@ for d in tab_parabole:
 
     # flash = not flash
 
-    time.sleep(0.1)
+    time.sleep(0.01)
+
+time.sleep(3)
 group.stop()
