@@ -29,7 +29,7 @@ class Animation():
         for i in range(0, len(packet_list)):
             self.art_nets.set(packet_list[i])
             self.art_nets.write_file(self.file)
-            self.art_nets.show()
+            self.art_nets.show(False)
             if i == len(packet_list) / 2:
                 self.art_nets.start(False)
                 time.sleep(pause)

@@ -64,6 +64,8 @@ class StupidArtSync():
 
     @staticmethod
     def get_broadcast_address(ip):
+        if ip == '127.0.0.1':
+            return '127.0.0.1'
         broadcast_ip = ".".join(ip.split('.')[0:-1]) + '.'
         return broadcast_ip + '255'
 
