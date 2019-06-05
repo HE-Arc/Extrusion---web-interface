@@ -8,7 +8,6 @@ Module to create a syntactic tree and his graphviz representation
 Contain the class to create node's tree
 """
 
-
 import pydot
 
 
@@ -108,6 +107,7 @@ class OpNode(Node):
     """
     extends Node and represent a arithmetic operation in the tree
     """
+
     def __init__(self, op, children):
         """
         redefinition of __init__ with an operator
@@ -129,6 +129,7 @@ class LineNode(Node):
     """
     extends Node and represent a Line in the tree
     """
+
     def __init__(self, children):
         """
         redefinition of __init__
@@ -303,6 +304,10 @@ class TokenNode(Node):
         :return: the token of the node
         """
         return repr(self.tok)
+
+
+class OrderNode(TokenNode):
+    type = 'Order'
 
 
 class AssignNode(Node):

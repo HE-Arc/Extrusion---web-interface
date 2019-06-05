@@ -10,13 +10,16 @@ def p_programme_statement(p):
         | statement '''
     p[0] = AST.ProgramNode(p[1])
 
+
 def p_programme_recusif_1(p):
     '''  programme: statement ';' programme '''
     p[0] = AST.ProgramNode(p[1] + p[3].children)
 
+
 def p_programme_recursif_2(p):
     ''' statement programme '''
     p[0] = AST.ProgramNode(p[1] + p[2].children)
+
 
 def p_statement(p):
     ''' statement : for
@@ -26,17 +29,17 @@ def p_statement(p):
 
 def p_var_assign(p):
     ''' assign : VAR '=' NUMBER '''
-    p[0] = vars[p[1]] = p[3]
+    p[0] = AST.AssignNode([AST.TokenNode(p[1]), AST.TokenNode(p[3])])
 
 
 def p_var_use(p):
     """ use_var : VAR """
-    p[0] = vars[p[1]]
+    p[0] = AST.TokenNode(p[1])
 
 
 def p_eval(p):
     """ eval : VAR EVAL_OP NUMBER"""
-    p[0] =
+    p[0] = AST.EvalNode(AST.TokenNode(p[1]), p[2], p[3])
 
 
 def p_for(p):
@@ -46,18 +49,19 @@ def p_for(p):
 
 def p_number(p):
     ''' number : NUMBER | use_var '''
-    p[0] = 
+    p[0] = AST.TokenNode(p[1])
 
 
 def p_number_follow(p):
     ''' number : NUMBER number
         | use_var number'''
+    p[0] = AST.TokenNode(p[1], p[2])
 
 
 def p_expression(p):
     ''' expression : section
         | pause '''
-    p[0] =
+    p[0] = AST.OrderNode(p[1], p[2])
 
 
 def p_section(p):
@@ -67,7 +71,7 @@ def p_section(p):
         | SQUARE number
         | LEDSTRIP number
         | LED number '''
-    p[0] =
+    p[0] = AST.OrderNode(p[1], p[2])
 
 
 def p_pause(p):
