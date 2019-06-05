@@ -22,6 +22,8 @@ def main_no_artsync(universe, start_channel, end_channel, ip='127.0.0.1', tmp=5)
     group.start(False)
     time.sleep(tmp)
     group.stop()
+    group.set(bytearray(512))
+    group.show(False)
 
 
 def main_artsync(universe, start_channel, end_channel, ip='127.0.0.1', tmp=5):
@@ -36,6 +38,8 @@ def main_artsync(universe, start_channel, end_channel, ip='127.0.0.1', tmp=5):
     group.start(True)
     time.sleep(tmp)
     group.stop()
+    group.set(bytearray(512))
+    group.show(True)
 
 
 if __name__ == '__main__':

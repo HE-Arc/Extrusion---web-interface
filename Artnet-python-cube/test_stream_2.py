@@ -6,14 +6,14 @@ ledstrip_data = [[[(0, 0), (0, 81), (0, 162)]], [], [], [], [], []]
 
 print(ledstrip_data[0][0][1][1] + 12)
 port = 6454
-ip = '157.26.105.127'
+ip = '192.168.0.51'
 group = ArtNetGroup()
-r = 2
+r = 3
 tab_parabole = []
 for x in range(256):
     tab_parabole.append(int(-x * (x - 255) / 63.75))
 
-for i in range(91):
+for i in range(90):
     a = StupidArtnet(ip, port, i)
     group.add(a)
 

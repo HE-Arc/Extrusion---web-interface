@@ -37,7 +37,7 @@ if __name__ == '__main__':
         try:
             time = sys.argv[6]
         except:
-            time = 5
+            time = 1
 
         file.write(f"\n{type}")
         file.write(f" test starting: {datetime.datetime.now()}")

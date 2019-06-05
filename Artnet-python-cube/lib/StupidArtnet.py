@@ -311,6 +311,15 @@ class StupidArtnet():
         self.set(packet)
         # self.show()
 
+    def flash(self, b):
+        """Sends 255's all across."""
+        packet = bytearray(self.PACKET_SIZE)
+        # [255 for i in packet]
+        for i in range(self.PACKET_SIZE):
+            packet[i] = b
+        self.set(packet)
+        # self.show()
+
     ##
     # UTILS
     ##

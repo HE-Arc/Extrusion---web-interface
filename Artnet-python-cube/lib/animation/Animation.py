@@ -79,7 +79,7 @@ class Animation():
         packet_list = []
         packet = bytearray(packet_size)
         for i in range(0, packet_size, 1):
-            if start_channel - 1 <= i < end_channel:
+            if start_channel <= i <= end_channel:
                 packet[i] = 255
         packet_list.append(packet)
         return packet_list
