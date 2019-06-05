@@ -1,0 +1,8 @@
+for(i=0 ; i < 9 ; i = i + 1){ 
+ledstrip 1 10 0 0 16;
+ledstrip 1 10 0 1 16;
+ledstrip 1 10 0 2 16;
+delay 100;
+}
+
+  
