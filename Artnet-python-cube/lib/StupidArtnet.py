@@ -33,7 +33,7 @@ class StupidArtnet():
         self.HEADER = bytearray()
         self.BUFFER = bytearray(packet_size)
         self.nb_packet = 0
-        self.async = StupidArtSync(targetIP)
+        self.artsync = StupidArtSync(targetIP)
 
         self.bIsSimplified = True  # simplify use of universe, net and subnet
 
@@ -136,10 +136,10 @@ class StupidArtnet():
 
     def start_artSync(self, nb_packet):
         if self.nb_packet == 0:
-            self.async.send()
+            self.artsync.send()
         elif self.nb_packet % nb_packet == 0:
-            self.async.send()
-            self.async.send()
+            self.artsync.send()
+            self.artsync.send()
 
         self.nb_packet += 1
         self.show()
@@ -152,7 +152,7 @@ class StupidArtnet():
         self.__clock.cancel()
 
     def stop_artSync(self):
-        self.async.send()
+        self.artsync.send()
         self.stop()
         self.nb_packet = 0
 
