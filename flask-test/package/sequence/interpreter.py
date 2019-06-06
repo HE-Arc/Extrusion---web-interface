@@ -1,7 +1,7 @@
-import AST
-from AST import addToClass
+from package.sequence import AST
+from package.sequence.AST import addToClass
 from functools import reduce
-from parser_data import parse
+from package.sequence.parser_data import parse
 
 operations = {
     '+': lambda x, y: x + y,
@@ -94,6 +94,12 @@ def execute(self):
         exit(3)
 
 
+def perform(prog):
+    ast = parse(prog)
+    ast.execute()
+    return orders
+
+
 if __name__ == '__main__':
     import sys
 
@@ -101,6 +107,9 @@ if __name__ == '__main__':
     ast = parse(prog)
     ast.execute()
     print(len(orders))
-
+    i = 0
     for p in orders:
-        print(f'{p}')
+        if not 1 % 6:
+            print("\n")
+        else:
+            print(p)

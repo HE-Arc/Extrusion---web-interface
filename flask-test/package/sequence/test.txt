@@ -1,0 +1,10 @@
+for(i = 0 ; i < 3; i = i + 1){
+cube 10;
+face 1 i;
+    for(j = 0 ; j <2 ; j = j+ 1){
+        ledstrip 1 10 1 j;
+    }
+}
+
+square 1 10 15;
+delay 0.1;
