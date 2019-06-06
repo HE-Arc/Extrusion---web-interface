@@ -1,0 +1,640 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> programme
+Rule 1     programme -> statement
+Rule 2     programme -> statement programme
+Rule 3     statement -> for
+Rule 4     statement -> expression ;
+Rule 5     for -> FOR ( assign ; eval ; assign ) { programme }
+Rule 6     expression -> section
+Rule 7     expression -> pause
+Rule 8     assign -> VAR = calc
+Rule 9     assign -> VAR = number
+Rule 10    calc -> number OPP number
+Rule 11    eval -> number EVAL_OP number
+Rule 12    number -> NUMBER
+Rule 13    number -> VAR
+Rule 14    section -> CUBE number
+Rule 15    section -> FACE number number
+Rule 16    section -> SQUARE number number number
+Rule 17    section -> LEDSTRIP number number number number
+Rule 18    section -> LED number number number number number
+Rule 19    pause -> DELAY number
+
+Terminals, with rules where they appear
+
+(                    : 5
+)                    : 5
+;                    : 4 5 5
+=                    : 8 9
+CUBE                 : 14
+DELAY                : 19
+EVAL_OP              : 11
+FACE                 : 15
+FOR                  : 5
+LED                  : 18
+LEDSTRIP             : 17
+NUMBER               : 12
+OPP                  : 10
+SQUARE               : 16
+VAR                  : 8 9 13
+error                : 
+{                    : 5
+}                    : 5
+
+Nonterminals, with rules where they appear
+
+assign               : 5 5
+calc                 : 8
+eval                 : 5
+expression           : 4
+for                  : 3
+number               : 9 10 10 11 11 14 15 15 16 16 16 17 17 17 17 18 18 18 18 18 19
+pause                : 7
+programme            : 2 5 0
+section              : 6
+statement            : 1 2
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . programme
+    (1) programme -> . statement
+    (2) programme -> . statement programme
+    (3) statement -> . for
+    (4) statement -> . expression ;
+    (5) for -> . FOR ( assign ; eval ; assign ) { programme }
+    (6) expression -> . section
+    (7) expression -> . pause
+    (14) section -> . CUBE number
+    (15) section -> . FACE number number
+    (16) section -> . SQUARE number number number
+    (17) section -> . LEDSTRIP number number number number
+    (18) section -> . LED number number number number number
+    (19) pause -> . DELAY number
+
+    FOR             shift and go to state 5
+    CUBE            shift and go to state 8
+    FACE            shift and go to state 9
+    SQUARE          shift and go to state 10
+    LEDSTRIP        shift and go to state 11
+    LED             shift and go to state 12
+    DELAY           shift and go to state 13
+
+    programme                      shift and go to state 1
+    statement                      shift and go to state 2
+    for                            shift and go to state 3
+    expression                     shift and go to state 4
+    section                        shift and go to state 6
+    pause                          shift and go to state 7
+
+state 1
+
+    (0) S' -> programme .
+
+
+
+state 2
+
+    (1) programme -> statement .
+    (2) programme -> statement . programme
+    (1) programme -> . statement
+    (2) programme -> . statement programme
+    (3) statement -> . for
+    (4) statement -> . expression ;
+    (5) for -> . FOR ( assign ; eval ; assign ) { programme }
+    (6) expression -> . section
+    (7) expression -> . pause
+    (14) section -> . CUBE number
+    (15) section -> . FACE number number
+    (16) section -> . SQUARE number number number
+    (17) section -> . LEDSTRIP number number number number
+    (18) section -> . LED number number number number number
+    (19) pause -> . DELAY number
+
+    $end            reduce using rule 1 (programme -> statement .)
+    }               reduce using rule 1 (programme -> statement .)
+    FOR             shift and go to state 5
+    CUBE            shift and go to state 8
+    FACE            shift and go to state 9
+    SQUARE          shift and go to state 10
+    LEDSTRIP        shift and go to state 11
+    LED             shift and go to state 12
+    DELAY           shift and go to state 13
+
+    statement                      shift and go to state 2
+    programme                      shift and go to state 14
+    for                            shift and go to state 3
+    expression                     shift and go to state 4
+    section                        shift and go to state 6
+    pause                          shift and go to state 7
+
+state 3
+
+    (3) statement -> for .
+
+    FOR             reduce using rule 3 (statement -> for .)
+    CUBE            reduce using rule 3 (statement -> for .)
+    FACE            reduce using rule 3 (statement -> for .)
+    SQUARE          reduce using rule 3 (statement -> for .)
+    LEDSTRIP        reduce using rule 3 (statement -> for .)
+    LED             reduce using rule 3 (statement -> for .)
+    DELAY           reduce using rule 3 (statement -> for .)
+    $end            reduce using rule 3 (statement -> for .)
+    }               reduce using rule 3 (statement -> for .)
+
+
+state 4
+
+    (4) statement -> expression . ;
+
+    ;               shift and go to state 15
+
+
+state 5
+
+    (5) for -> FOR . ( assign ; eval ; assign ) { programme }
+
+    (               shift and go to state 16
+
+
+state 6
+
+    (6) expression -> section .
+
+    ;               reduce using rule 6 (expression -> section .)
+
+
+state 7
+
+    (7) expression -> pause .
+
+    ;               reduce using rule 7 (expression -> pause .)
+
+
+state 8
+
+    (14) section -> CUBE . number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 17
+
+state 9
+
+    (15) section -> FACE . number number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 20
+
+state 10
+
+    (16) section -> SQUARE . number number number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 21
+
+state 11
+
+    (17) section -> LEDSTRIP . number number number number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 22
+
+state 12
+
+    (18) section -> LED . number number number number number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 23
+
+state 13
+
+    (19) pause -> DELAY . number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 24
+
+state 14
+
+    (2) programme -> statement programme .
+
+    $end            reduce using rule 2 (programme -> statement programme .)
+    }               reduce using rule 2 (programme -> statement programme .)
+
+
+state 15
+
+    (4) statement -> expression ; .
+
+    FOR             reduce using rule 4 (statement -> expression ; .)
+    CUBE            reduce using rule 4 (statement -> expression ; .)
+    FACE            reduce using rule 4 (statement -> expression ; .)
+    SQUARE          reduce using rule 4 (statement -> expression ; .)
+    LEDSTRIP        reduce using rule 4 (statement -> expression ; .)
+    LED             reduce using rule 4 (statement -> expression ; .)
+    DELAY           reduce using rule 4 (statement -> expression ; .)
+    $end            reduce using rule 4 (statement -> expression ; .)
+    }               reduce using rule 4 (statement -> expression ; .)
+
+
+state 16
+
+    (5) for -> FOR ( . assign ; eval ; assign ) { programme }
+    (8) assign -> . VAR = calc
+    (9) assign -> . VAR = number
+
+    VAR             shift and go to state 26
+
+    assign                         shift and go to state 25
+
+state 17
+
+    (14) section -> CUBE number .
+
+    ;               reduce using rule 14 (section -> CUBE number .)
+
+
+state 18
+
+    (12) number -> NUMBER .
+
+    ;               reduce using rule 12 (number -> NUMBER .)
+    NUMBER          reduce using rule 12 (number -> NUMBER .)
+    VAR             reduce using rule 12 (number -> NUMBER .)
+    EVAL_OP         reduce using rule 12 (number -> NUMBER .)
+    OPP             reduce using rule 12 (number -> NUMBER .)
+    )               reduce using rule 12 (number -> NUMBER .)
+
+
+state 19
+
+    (13) number -> VAR .
+
+    ;               reduce using rule 13 (number -> VAR .)
+    NUMBER          reduce using rule 13 (number -> VAR .)
+    VAR             reduce using rule 13 (number -> VAR .)
+    EVAL_OP         reduce using rule 13 (number -> VAR .)
+    OPP             reduce using rule 13 (number -> VAR .)
+    )               reduce using rule 13 (number -> VAR .)
+
+
+state 20
+
+    (15) section -> FACE number . number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 27
+
+state 21
+
+    (16) section -> SQUARE number . number number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 28
+
+state 22
+
+    (17) section -> LEDSTRIP number . number number number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 29
+
+state 23
+
+    (18) section -> LED number . number number number number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 30
+
+state 24
+
+    (19) pause -> DELAY number .
+
+    ;               reduce using rule 19 (pause -> DELAY number .)
+
+
+state 25
+
+    (5) for -> FOR ( assign . ; eval ; assign ) { programme }
+
+    ;               shift and go to state 31
+
+
+state 26
+
+    (8) assign -> VAR . = calc
+    (9) assign -> VAR . = number
+
+    =               shift and go to state 32
+
+
+state 27
+
+    (15) section -> FACE number number .
+
+    ;               reduce using rule 15 (section -> FACE number number .)
+
+
+state 28
+
+    (16) section -> SQUARE number number . number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 33
+
+state 29
+
+    (17) section -> LEDSTRIP number number . number number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 34
+
+state 30
+
+    (18) section -> LED number number . number number number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 35
+
+state 31
+
+    (5) for -> FOR ( assign ; . eval ; assign ) { programme }
+    (11) eval -> . number EVAL_OP number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    eval                           shift and go to state 36
+    number                         shift and go to state 37
+
+state 32
+
+    (8) assign -> VAR = . calc
+    (9) assign -> VAR = . number
+    (10) calc -> . number OPP number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    calc                           shift and go to state 38
+    number                         shift and go to state 39
+
+state 33
+
+    (16) section -> SQUARE number number number .
+
+    ;               reduce using rule 16 (section -> SQUARE number number number .)
+
+
+state 34
+
+    (17) section -> LEDSTRIP number number number . number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 40
+
+state 35
+
+    (18) section -> LED number number number . number number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 41
+
+state 36
+
+    (5) for -> FOR ( assign ; eval . ; assign ) { programme }
+
+    ;               shift and go to state 42
+
+
+state 37
+
+    (11) eval -> number . EVAL_OP number
+
+    EVAL_OP         shift and go to state 43
+
+
+state 38
+
+    (8) assign -> VAR = calc .
+
+    ;               reduce using rule 8 (assign -> VAR = calc .)
+    )               reduce using rule 8 (assign -> VAR = calc .)
+
+
+state 39
+
+    (9) assign -> VAR = number .
+    (10) calc -> number . OPP number
+
+    ;               reduce using rule 9 (assign -> VAR = number .)
+    )               reduce using rule 9 (assign -> VAR = number .)
+    OPP             shift and go to state 44
+
+
+state 40
+
+    (17) section -> LEDSTRIP number number number number .
+
+    ;               reduce using rule 17 (section -> LEDSTRIP number number number number .)
+
+
+state 41
+
+    (18) section -> LED number number number number . number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 45
+
+state 42
+
+    (5) for -> FOR ( assign ; eval ; . assign ) { programme }
+    (8) assign -> . VAR = calc
+    (9) assign -> . VAR = number
+
+    VAR             shift and go to state 26
+
+    assign                         shift and go to state 46
+
+state 43
+
+    (11) eval -> number EVAL_OP . number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 47
+
+state 44
+
+    (10) calc -> number OPP . number
+    (12) number -> . NUMBER
+    (13) number -> . VAR
+
+    NUMBER          shift and go to state 18
+    VAR             shift and go to state 19
+
+    number                         shift and go to state 48
+
+state 45
+
+    (18) section -> LED number number number number number .
+
+    ;               reduce using rule 18 (section -> LED number number number number number .)
+
+
+state 46
+
+    (5) for -> FOR ( assign ; eval ; assign . ) { programme }
+
+    )               shift and go to state 49
+
+
+state 47
+
+    (11) eval -> number EVAL_OP number .
+
+    ;               reduce using rule 11 (eval -> number EVAL_OP number .)
+
+
+state 48
+
+    (10) calc -> number OPP number .
+
+    ;               reduce using rule 10 (calc -> number OPP number .)
+    )               reduce using rule 10 (calc -> number OPP number .)
+
+
+state 49
+
+    (5) for -> FOR ( assign ; eval ; assign ) . { programme }
+
+    {               shift and go to state 50
+
+
+state 50
+
+    (5) for -> FOR ( assign ; eval ; assign ) { . programme }
+    (1) programme -> . statement
+    (2) programme -> . statement programme
+    (3) statement -> . for
+    (4) statement -> . expression ;
+    (5) for -> . FOR ( assign ; eval ; assign ) { programme }
+    (6) expression -> . section
+    (7) expression -> . pause
+    (14) section -> . CUBE number
+    (15) section -> . FACE number number
+    (16) section -> . SQUARE number number number
+    (17) section -> . LEDSTRIP number number number number
+    (18) section -> . LED number number number number number
+    (19) pause -> . DELAY number
+
+    FOR             shift and go to state 5
+    CUBE            shift and go to state 8
+    FACE            shift and go to state 9
+    SQUARE          shift and go to state 10
+    LEDSTRIP        shift and go to state 11
+    LED             shift and go to state 12
+    DELAY           shift and go to state 13
+
+    programme                      shift and go to state 51
+    statement                      shift and go to state 2
+    for                            shift and go to state 3
+    expression                     shift and go to state 4
+    section                        shift and go to state 6
+    pause                          shift and go to state 7
+
+state 51
+
+    (5) for -> FOR ( assign ; eval ; assign ) { programme . }
+
+    }               shift and go to state 52
+
+
+state 52
+
+    (5) for -> FOR ( assign ; eval ; assign ) { programme } .
+
+    FOR             reduce using rule 5 (for -> FOR ( assign ; eval ; assign ) { programme } .)
+    CUBE            reduce using rule 5 (for -> FOR ( assign ; eval ; assign ) { programme } .)
+    FACE            reduce using rule 5 (for -> FOR ( assign ; eval ; assign ) { programme } .)
+    SQUARE          reduce using rule 5 (for -> FOR ( assign ; eval ; assign ) { programme } .)
+    LEDSTRIP        reduce using rule 5 (for -> FOR ( assign ; eval ; assign ) { programme } .)
+    LED             reduce using rule 5 (for -> FOR ( assign ; eval ; assign ) { programme } .)
+    DELAY           reduce using rule 5 (for -> FOR ( assign ; eval ; assign ) { programme } .)
+    $end            reduce using rule 5 (for -> FOR ( assign ; eval ; assign ) { programme } .)
+    }               reduce using rule 5 (for -> FOR ( assign ; eval ; assign ) { programme } .)
+

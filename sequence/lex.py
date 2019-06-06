@@ -2,7 +2,6 @@ import ply.lex as lex
 
 reserved_words = (
     'for',
-    'endfor',
     'delay',
     'cube',
     'face',
@@ -14,11 +13,13 @@ reserved_words = (
 tokens = (
              'NUMBER',
              'EVAL_OP',
+             'OPP',
              'VAR',
          ) + tuple(map(lambda s: s.upper(), reserved_words))
 
 literals = ';(){}='
 t_EVAL_OP = r'<|>|=='
+t_OPP = r'\+|-|/|\*'
 
 
 def t_NUMBER(t):

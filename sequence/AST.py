@@ -103,6 +103,13 @@ class ProgramNode(Node):
     type = 'Program'
 
 
+class CalcNode(Node):
+    """
+    extends Node and represent a program in the tree
+    """
+    type = 'Calculate'
+
+
 class OpNode(Node):
     """
     extends Node and represent a arithmetic operation in the tree
@@ -123,75 +130,6 @@ class OpNode(Node):
         :return: the string of the operation
         """
         return f"{self.op}"
-
-
-class LineNode(Node):
-    """
-    extends Node and represent a Line in the tree
-    """
-
-    def __init__(self, children):
-        """
-        redefinition of __init__
-        store line in a variable
-        :param children: children of the node
-        """
-        Node.__init__(self, children)
-        self.tok = "line"
-
-    def __repr__(self):
-        """
-        representation of the node
-        :return: the token of the node
-        """
-        return self.tok
-
-
-class StyleNode(Node):
-    """
-    extends Node and represent a Style structure in the tree
-    """
-    type = 'style'
-
-    def __init__(self, tok, children=None):
-        """
-        redefinition of __init__
-        store style structure in a variable
-        :param children: children of the node
-        """
-        Node.__init__(self, children)
-        self.tok = tok
-
-    def __repr__(self):
-        """
-        representation of the node
-        :return: the token of the node
-        """
-        return self.tok
-
-
-class WhileNode(Node):
-    """
-    extends Node and represent a while loop in the tree
-    """
-    type = 'while'
-
-    def __init__(self, op, children=None):
-        """
-        redefinition of __init__
-        store style operation in a variable
-        :param op: operation of while condition
-        :param children: children of the node
-        """
-        Node.__init__(self, children)
-        self.op = op
-
-    def __repr__(self):
-        """
-        representation of the node
-        :return: the condition operation of the while
-        """
-        return f"while {self.op}"
 
 
 class ForNode(Node):
@@ -222,30 +160,6 @@ class ForNode(Node):
         :return: the condition of the for
         """
         return f"for {self.cond}"
-
-
-class IfNode(Node):
-    """
-    extends Node and represent a if condition in the tree
-    """
-    type = 'if'
-
-    def __init__(self, cond, children):
-        """
-        edefinition of __init__
-        store the stop condition for the if
-        :param cond: stop condition of the if
-        :param children: children of the node
-        """
-        Node.__init__(self, children)
-        self.cond = cond
-
-    def __repr__(self):
-        """
-        representation of the node
-        :return: the condition of the if
-        """
-        return f"if {self.cond}"
 
 
 class EvalNode(Node):
@@ -282,7 +196,14 @@ class StatementNode(Node):
     type = "Statement"
 
 
-class TokenNode(Node):
+class CommandeNode(Node):
+    """
+    extends Node and represent a statement in the tree
+    """
+    type = "Commande"
+
+
+class DataNode(Node):
     """
     extends Node and represent a token in the tree
     """
@@ -306,7 +227,7 @@ class TokenNode(Node):
         return repr(self.tok)
 
 
-class OrderNode(TokenNode):
+class OrderNode(DataNode):
     type = 'Order'
 
 
