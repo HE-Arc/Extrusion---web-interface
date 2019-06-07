@@ -101,20 +101,3 @@ def parse(program):
 
 
 yacc.yacc(outputdir='generated')
-
-if __name__ == "__main__":
-    import sys
-
-    prog = open(sys.argv[1]).read()
-    result = yacc.parse(prog)
-    if result:
-        import os
-
-        os.environ["PATH"] += os.pathsep + PATH_TO_GRAPHVIZ
-        graph = result.makegraphicaltree()
-        name = os.path.splitext(sys.argv[1])[0] + '-ast.pdf'
-        graph.write_pdf(name)
-        print("wrote ast to", name)
-
-    else:
-        print("Parsing returned no result!")
