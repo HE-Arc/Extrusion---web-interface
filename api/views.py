@@ -4,9 +4,20 @@ from flask import jsonify
 
 from package.global_variable.variables import *
 
-parser = reqparse.RequestParser()
-parser.add_argument('idx_face', type=int, help='This field cannot be blank', required=True)
-parser.add_argument('brightness', type=int, help='This field cannot be blank', required=True)
+parser_face = reqparse.RequestParser()
+parser_face.add_argument('idx_face', type=int, help='This field cannot be blank', required=True)
+parser_face.add_argument('brightness', type=int, help='This field cannot be blank', required=True)
+
+parser_square = reqparse.RequestParser()
+parser_square.add_argument('idx_face', type=int, help='This field cannot be blank', required=True)
+parser_square.add_argument('idx_square', type=int, help='This field cannot be blank', required=True)
+parser_square.add_argument('brightness', type=int, help='This field cannot be blank', required=True)
+
+parser_ledstrip = reqparse.RequestParser()
+parser_ledstrip.add_argument('idx_face', type=int, help='This field cannot be blank', required=True)
+parser_ledstrip.add_argument('idx_square', type=int, help='This field cannot be blank', required=True)
+parser_ledstrip.add_argument('idx_ledstrip', type=int, help='This field cannot be blank', required=True)
+parser_ledstrip.add_argument('brightness', type=int, help='This field cannot be blank', required=True)
 
 
 @app.route('/')
@@ -16,8 +27,22 @@ def index():
 
 @app.route('/face', methods=['POST'])
 def face():
-    data = parser.parse_args()
-    cube.face[data['idx_face']].show(data['brightness'])
+    data = parser_face.parse_args()
+    cube.faces[data['idx_face']].show(data['brightness'])
+    return jsonify({'message': 'OK'})
+
+
+@app.route('/square', methods=['POST'])
+def square():
+    data = parser_square.parse_args()
+    cube.faces[data['idx_face']].squares[data['idx_square']].show(data['brightness'])
+    return jsonify({'message': 'OK'})
+
+
+@app.route('/ledstrip', methods=['POST'])
+def ledstrip():
+    data = parser_ledstrip.parse_args()
+    cube.faces[data['idx_face']].squares[data['idx_square']].ledstrips[data['idx_ledstrip']].show(data['brightness'])
     return jsonify({'message': 'OK'})
 
 

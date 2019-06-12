@@ -7,15 +7,14 @@ from threading import Timer
 class ArtNetGroup():
     """(Very) simple implementation of ArtnetSync."""
 
-
     def __init__(self, *args):
         """Class Initialization."""
         # Instance variables
-        self.listArtNet = []
+        self.listArtNet = {}
         self.ips = set()
         self.sync = ArtSyncGroup()
         for a in args:
-            self.listArtNet.append(a)
+            self.listArtNet[a.UNIVERSE] = a
             self.add_sync(a.TARGET_IP)
         self.fps = 30
         self.nb_art_net = len(self.listArtNet)
@@ -26,16 +25,16 @@ class ArtNetGroup():
     def ___repr__(self):
         return str(self.listArtNet)
 
-    def set(self, packet):
-        [i.set(packet) for i in self.listArtNet]
+    def set_all_universe(self, packet):
+        [v.set(packet) for v in self.listArtNet.values()]
 
     def show(self, artSync):
         if artSync:
             self.sync.send()
-            [i.show() for i in self.listArtNet]
+            [v.show() for v in self.listArtNet.values()]
             self.sync.send()
         else:
-            [i.show() for i in self.listArtNet]
+            [v.show() for v in self.listArtNet.values()]
 
     def start(self, artSync):
         self.show(artSync)
@@ -51,7 +50,7 @@ class ArtNetGroup():
 
     def add(self, *args):
         for i in args:
-            self.listArtNet.append(i)
+            self.listArtNet[i.UNIVERSE] = i
             self.add_sync(i.TARGET_IP)
 
     def add_sync(self, ip):
@@ -59,6 +58,12 @@ class ArtNetGroup():
         if ip not in self.ips:
             self.sync.add(StupidArtSync(ip))
             self.ips.add(ip)
+
+    def set(self, universe_address, brightness):
+        self.apply(brightness, universe_address)
+
+    def apply(self, brightness, address):
+        self.listArtNet[address[0]].set_buffer(address[1], address[2], brightness)
 
     @staticmethod
     def get_artnet():

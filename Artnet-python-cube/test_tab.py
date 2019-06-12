@@ -2,6 +2,10 @@ from lib.StupidArtnet import StupidArtnet
 from lib.ArtNetGroup import ArtNetGroup
 import time
 
+dict = {3: 4}
+
+print(dict[3])
+print(type(dict.keys()))
 test = bytearray(512)
 
 # print(test)

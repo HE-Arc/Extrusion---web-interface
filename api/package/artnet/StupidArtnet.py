@@ -202,6 +202,10 @@ class StupidArtnet():
         """Clear DMX buffer."""
         self.BUFFER = bytearray(self.PACKET_SIZE)
 
+    def set_buffer(self, start, stop, brightness):
+        for i in range(start, stop):
+            self.BUFFER[i] = brightness
+
     def set(self, p):
         """Set buffer."""
         if len(self.BUFFER) != self.PACKET_SIZE:
