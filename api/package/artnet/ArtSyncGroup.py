@@ -15,7 +15,8 @@ class ArtSyncGroup():
         return str(self.listArtNet)
 
     def send(self):
-        [i.send() for i in self.listArtNet]
+        for i in self.listArtNet:
+            i.send()
 
     def add(self, *args):
         for i in args:

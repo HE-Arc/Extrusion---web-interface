@@ -7,9 +7,12 @@ class Face:
 
     def __init__(self, idx_face):
         self.idx = idx_face
-        self.squares = []
+        self.squares = [Square(idx_face, i) for i in range(24)]
         self.face_universe_address = data_cube.face[idx_face]
-        [self.squares.append(Square(idx_face, i)) for i in range(24)]
 
     def show(self, brightness):
-        variables.artnet_group.set(self.face_universe_address, brightness)
+        try:
+            for t in self.face_universe_address:
+                variables.artnet_group.set(t, brightness)
+        except KeyError:
+            pass

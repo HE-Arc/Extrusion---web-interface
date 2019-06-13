@@ -37,5 +37,8 @@ class SingletonMeta(type):
 
 class Cube(metaclass=SingletonMeta):
     def __init__(self) -> None:
-        self.faces = []
-        [self.faces.append(Face(i)) for i in range(1)]
+        self.faces = [Face(i) for i in range(1)]
+
+    def show(self, brightness):
+        for f in self.faces:
+            f.show(brightness)

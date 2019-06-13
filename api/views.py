@@ -4,6 +4,9 @@ from flask import jsonify
 
 from package.global_variable.variables import *
 
+parser_cube = reqparse.RequestParser()
+parser_cube.add_argument('brightness', type=int, help='This field cannot be blank', required=True)
+
 parser_face = reqparse.RequestParser()
 parser_face.add_argument('idx_face', type=int, help='This field cannot be blank', required=True)
 parser_face.add_argument('brightness', type=int, help='This field cannot be blank', required=True)
@@ -23,6 +26,13 @@ parser_ledstrip.add_argument('brightness', type=int, help='This field cannot be 
 @app.route('/')
 def index():
     return jsonify({'message': 'Hello, World!'})
+
+
+@app.route('/cube', methods=['POST'])
+def cube_page():
+    data = parser_cube.parse_args()
+    cube.show(data['brightness'])
+    return jsonify({'message': 'OK'})
 
 
 @app.route('/face', methods=['POST'])

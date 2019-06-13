@@ -12,7 +12,6 @@ class Ledstrip:
     def show(self, brightness):
         try:
             if len(self.address) == 6:
-                print(self.address)
                 variables.artnet_group.set((self.address[0], self.address[1], self.address[2]), brightness)
                 variables.artnet_group.set((self.address[3], self.address[4], self.address[5]), brightness)
             else:

@@ -26,15 +26,18 @@ class ArtNetGroup():
         return str(self.listArtNet)
 
     def set_all_universe(self, packet):
-        [v.set(packet) for v in self.listArtNet.values()]
+        for v in self.listArtNet.values():
+            v.set(packet)
 
     def show(self, artSync):
         if artSync:
             self.sync.send()
-            [v.show() for v in self.listArtNet.values()]
+            for v in self.listArtNet.values():
+                v.show()
             self.sync.send()
         else:
-            [v.show() for v in self.listArtNet.values()]
+            for v in self.listArtNet.values():
+                v.show()
 
     def start(self, artSync):
         self.show(artSync)
@@ -60,10 +63,7 @@ class ArtNetGroup():
             self.ips.add(ip)
 
     def set(self, universe_address, brightness):
-        self.apply(brightness, universe_address)
-
-    def apply(self, brightness, address):
-        self.listArtNet[address[0]].set_buffer(address[1], address[2], brightness)
+        self.listArtNet[universe_address[0]].set_buffer(universe_address[1], universe_address[2], brightness)
 
     @staticmethod
     def get_artnet():
