@@ -1,7 +1,7 @@
-from package.sequence import AST
-from package.sequence.AST import addToClass
+from . import AST
+from .AST import addToClass
 from functools import reduce
-from package.sequence.parser_data import parse
+from .parser_data import parse
 
 operations = {
     '+': lambda x, y: x + y,

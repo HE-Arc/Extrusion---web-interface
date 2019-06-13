@@ -18,3 +18,6 @@ class Ledstrip:
                 variables.artnet_group.set(self.address, brightness)
         except KeyError:
             pass
+
+    def show_led(self, idx_led, brightness):
+        pass

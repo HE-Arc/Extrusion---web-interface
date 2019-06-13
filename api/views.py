@@ -1,7 +1,8 @@
 from run import app
 from flask_restful import reqparse
-from flask import jsonify
-
+from flask import jsonify, request
+from package.sequence.interpreter import perform
+from package.sequence.sequence_launcher import Launcher
 from package.global_variable.variables import *
 
 parser_cube = reqparse.RequestParser()
@@ -58,11 +59,37 @@ def ledstrip():
 
 @app.route('/start')
 def start():
+    global access
     artnet_group.start(True)
+    access = True
     return jsonify({'message': 'start'})
 
 
 @app.route('/stop')
 def stop():
+    global access
     artnet_group.stop()
+    cube.blackout_cube()
+    access = False
     return jsonify({'message': 'stop'})
+
+
+@app.route('/reset')
+def reset():
+    global access
+    artnet_group.stop()
+    access = False
+    launcher_pool.clear()
+    return jsonify({'message': 'stop'})
+
+
+@app.route('/seq', methods=['POST'])
+def seq():
+    prog = request.data.decode('utf-8')
+    orders = perform(prog)
+    Launcher(orders).start()
+    out = ""
+    for p in orders:
+        out += str(p) + "<br>"
+
+    return out

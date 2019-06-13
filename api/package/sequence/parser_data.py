@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 
-from package.sequence import AST
-from package.sequence.lex import tokens
+from . import AST
+from .lex import tokens
 
 PATH_TO_GRAPHVIZ = 'C:/Program Files (x86)/Graphviz2.38/bin/'
 vars = {}
