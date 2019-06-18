@@ -14,6 +14,9 @@ evaluate = {
     '<': lambda x, y: x < y,
     '>': lambda x, y: x > y,
     '==': lambda x, y: x == y,
+    '!=': lambda x, y: x != y,
+    '>=': lambda x, y: x >= y,
+    '<=': lambda x, y: x <= y,
 }
 
 orders = []
@@ -126,6 +129,7 @@ def execute(self):
         c.execute(self.name, 0)
     scope = self.name
     function_def[self.name].execute()
+    scope = "main"
 
 
 @addToClass(AST.FunctionParamNode)

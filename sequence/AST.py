@@ -180,6 +180,13 @@ class FunctionDefinition(Node):
         self.params = params
         self.children = children
 
+    def __repr__(self):
+        """
+        representation of the node
+        :return: the string of the operation
+        """
+        return f"def {self.name}"
+
 
 class FunctionCallNode(Node):
     type = "fun call"
@@ -187,6 +194,13 @@ class FunctionCallNode(Node):
     def __init__(self, name, children=None):
         Node.__init__(self, children)
         self.name = name
+
+    def __repr__(self):
+        """
+        representation of the node
+        :return: the string of the operation
+        """
+        return f"call {self.name}"
 
 
 class EvalNode(Node):

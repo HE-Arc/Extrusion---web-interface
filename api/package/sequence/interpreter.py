@@ -14,10 +14,16 @@ evaluate = {
     '<': lambda x, y: x < y,
     '>': lambda x, y: x > y,
     '==': lambda x, y: x == y,
+    '!=': lambda x, y: x != y,
+    '>=': lambda x, y: x >= y,
+    '<=': lambda x, y: x <= y,
 }
 
-vars = {}
 orders = []
+function_def = {}
+function_args = {}
+scope = "main"
+vars = {scope: {}}
 
 
 @addToClass(AST.ProgramNode)
@@ -46,8 +52,10 @@ def execute(self):
 
 @addToClass(AST.DataNode)
 def execute(self):
-    if self.tok in vars:
-        return vars[self.tok]
+    if self.tok in vars[scope]:
+        return vars[scope][self.tok]
+    elif self.tok in vars["main"]:
+        return vars["main"][self.tok]
     else:
         return float(self.tok)
 
@@ -65,7 +73,7 @@ def execute(self):
 
 @addToClass(AST.AssignNode)
 def execute(self):
-    vars[self.children[0].tok] = self.children[1].execute()
+    vars[scope][self.children[0].tok] = self.children[1].execute()
 
 
 @addToClass(AST.OpNode)
@@ -92,6 +100,45 @@ def execute(self):
     except ValueError:
         print(f"an error occured in op {self.op} : {self.children[0].tok} or {self.children[1].tok} are not number")
         exit(3)
+
+
+@addToClass(AST.FunctionArgumentsNode)
+def execute(self):
+    if self.arg is not None:
+        vars[scope][self.arg] = None
+        function_args[scope].append(self.arg)
+    for c in self.children:
+        c.execute()
+
+
+@addToClass(AST.FunctionDefinition)
+def execute(self):
+    global scope
+    function_def[self.name] = self.children[0]
+    scope = self.name
+    vars[scope] = {}
+    function_args[self.name] = []
+    self.params.execute()
+    scope = "main"
+
+
+@addToClass(AST.FunctionCallNode)
+def execute(self):
+    global scope
+    for c in self.children:
+        c.execute(self.name, 0)
+    scope = self.name
+    function_def[self.name].execute()
+    scope = "main"
+
+
+@addToClass(AST.FunctionParamNode)
+def execute(self, fun_scope, i):
+    if self.value is not None:
+        vars[fun_scope][function_args[fun_scope][i]] = self.value.execute()
+
+    if self.children:
+        self.children[0].execute(fun_scope, i + 1)
 
 
 def perform(prog):

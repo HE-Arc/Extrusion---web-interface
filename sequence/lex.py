@@ -19,7 +19,7 @@ tokens = (
          ) + tuple(map(lambda s: s.upper(), reserved_words))
 
 literals = ';(){}=,'
-t_EVAL_OP = r'<|>|=='
+t_EVAL_OP = r'<|>|==|!=|<=|>='
 t_OPP = r'\+|-|/|\*'
 
 

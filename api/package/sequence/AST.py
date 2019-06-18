@@ -154,12 +154,53 @@ class ForNode(Node):
         self.cond = cond
         self.inc = inc
 
+
+class FunctionArgumentsNode(Node):
+    type = 'fun arg'
+
+    def __init__(self, arg=None, children=None):
+        Node.__init__(self, children)
+        self.arg = arg
+
+
+class FunctionParamNode(Node):
+    type = "fun param"
+
+    def __init__(self, value=None, children=None):
+        Node.__init__(self, children)
+        self.value = value
+
+
+class FunctionDefinition(Node):
+    type = "fun def"
+
+    def __init__(self, name, params, children):
+        Node.__init__(self)
+        self.name = name
+        self.params = params
+        self.children = children
+
     def __repr__(self):
         """
         representation of the node
-        :return: the condition of the for
+        :return: the string of the operation
         """
-        return f"for {self.cond}"
+        return f"def {self.name}"
+
+
+class FunctionCallNode(Node):
+    type = "fun call"
+
+    def __init__(self, name, children=None):
+        Node.__init__(self, children)
+        self.name = name
+
+    def __repr__(self):
+        """
+        representation of the node
+        :return: the string of the operation
+        """
+        return f"call {self.name}"
 
 
 class EvalNode(Node):

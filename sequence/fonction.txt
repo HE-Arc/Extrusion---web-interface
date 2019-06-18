@@ -1,6 +1,19 @@
-c = 12;
-a = 4;
-function salut(a,b,c){
-square a b c;
+cube 0;
+function chenillard(s,speed){
+	for(i = 0; i < 4 ; i = i + 1){
+		for(j = 0; j < 26; j = j + 3){
+			led 0 s i j 15;
+			led 0 s i j+1 15;
+			led 0 s i j+2 15;
+			delay speed;
+			led 0 s i j 0;
+			led 0 s i j+1 0;
+			led 0 s i j+2 0;
+		}
+	}
+
 }
-salut(1,3,c+1);
+for(i = 0; i < 2; i = i + 1){
+chenillard(10,0.1);
+}
+cube 0;

@@ -1,0 +1,13 @@
+cube 0;
+function face_0(f,speed){
+	for(i = 0; i < 4 ; i = i + 1){
+		face f 15;
+		delay speed;
+		face f 0;
+		delay speed;
+	}
+
+}
+for(i = 0; i < 2; i = i + 1){
+face_0(0,2);
+}

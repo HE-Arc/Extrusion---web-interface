@@ -7,7 +7,8 @@ reserved_words = (
     'face',
     'square',
     'ledstrip',
-    'led'
+    'led',
+    'function'
 )
 
 tokens = (
@@ -17,8 +18,8 @@ tokens = (
              'VAR',
          ) + tuple(map(lambda s: s.upper(), reserved_words))
 
-literals = ';(){}='
-t_EVAL_OP = r'<|>|=='
+literals = ';(){}=,'
+t_EVAL_OP = r'<|>|==|!=|<=|>='
 t_OPP = r'\+|-|/|\*'
 
 
@@ -54,3 +55,14 @@ def t_error(t):
 
 lex.lex()
 
+if __name__ == "__main__":
+    import sys
+
+    prog = open(sys.argv[1]).read()
+
+    lex.input(prog)
+
+    while 1:
+        tok = lex.token()
+        if not tok: break
+        print("line %d: %s(%s)" % (tok.lineno, tok.type, tok.value))
