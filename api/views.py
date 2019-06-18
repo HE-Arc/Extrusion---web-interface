@@ -1,8 +1,9 @@
 from run import app
 from flask_restful import reqparse
 from flask import jsonify, request
+from package.sequence.laucher_with_prog import Launcher as L1
+from package.sequence.sequence_launcher import Launcher as L2
 from package.sequence.interpreter import perform
-from package.sequence.sequence_launcher import Launcher
 from package.global_variable.variables import *
 
 parser_cube = reqparse.RequestParser()
@@ -59,36 +60,63 @@ def ledstrip():
 
 @app.route('/start')
 def start():
-    global access
+    global access, state
     artnet_group.start(True)
-    access = True
+    state = "free"
     return jsonify({'message': 'start'})
 
 
 @app.route('/stop')
 def stop():
-    global access
-    artnet_group.stop()
+    global access, state
+    msg = "stop"
+    try:
+        artnet_group.stop()
+    except AttributeError:
+        msg = "artnet didnt start"
+    for k in launcher_access.keys():
+        launcher_access[k] = False
     cube.blackout_cube()
-    access = False
-    return jsonify({'message': 'stop'})
+    return jsonify({'message': msg})
 
 
 @app.route('/reset')
 def reset():
-    global access
-    artnet_group.stop()
-    access = False
+    global state
+    state = "free"
+    for k in launcher_access.keys():
+        launcher_access[k] = False
     launcher_pool.clear()
-    return jsonify({'message': 'stop'})
+    launcher_access.clear()
+    cube.blackout_cube()
+    return jsonify({'message': 'reset'})
 
 
 @app.route('/seq', methods=['POST'])
 def seq():
+    global state
+    out = "nothing"
     prog = request.data.decode('utf-8')
-    orders = perform(prog)
-    Launcher(orders).start()
-    out = ""
+    if state == "free" and mode == "user":
+        launcher_pool.append(L1(prog))
+        state = "busy"
+        launcher_pool.pop(0).start()
+        out = "Launch"
+
+    return out
+
+
+@app.route('/seq2', methods=['POST'])
+def seq2():
+    global state
+    orders = []
+    prog = request.data.decode('utf-8')
+    if state == "free" and mode == "user":
+        orders = perform(prog)
+        launcher_pool.append(L2(orders))
+        state = "busy"
+        launcher_pool.pop(0).start()
+    out = "busy"
     for p in orders:
         out += str(p) + "<br>"
 

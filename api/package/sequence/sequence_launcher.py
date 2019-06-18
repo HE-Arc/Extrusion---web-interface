@@ -7,16 +7,17 @@ class Launcher(Thread):
 
     def __init__(self, list_instructions):
         Thread.__init__(self)
-        launcher_pool[get_ident()] = self
         self.list_instructions = list_instructions
         self.dict_function = {'delay': self.delay, 'cube': self.cube, 'face': self.face, 'square': self.square,
                               'ledstrip': self.ledstrip, 'led': self.led}
 
     def run(self):
+        global state
+        launcher_access[get_ident()] = True
         for i in self.list_instructions:
-            if access:
+            if launcher_access[get_ident()]:
                 self.dict_function[i[0]](*i[1:])
-        del launcher_pool[get_ident()]
+        state = "free"
 
     def delay(self, pause_time):
         time.sleep(pause_time)

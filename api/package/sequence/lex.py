@@ -45,7 +45,7 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 
-t_ignore = ' \t'
+t_ignore = ' \t\r'
 
 
 def t_error(t):
