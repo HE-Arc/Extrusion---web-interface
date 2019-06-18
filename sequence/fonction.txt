@@ -1,0 +1,6 @@
+c = 12;
+a = 4;
+function salut(a,b,c){
+square a b c;
+}
+salut(1,3,c+1);

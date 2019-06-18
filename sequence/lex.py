@@ -7,7 +7,8 @@ reserved_words = (
     'face',
     'square',
     'ledstrip',
-    'led'
+    'led',
+    'function'
 )
 
 tokens = (
@@ -17,7 +18,7 @@ tokens = (
              'VAR',
          ) + tuple(map(lambda s: s.upper(), reserved_words))
 
-literals = ';(){}='
+literals = ';(){}=,'
 t_EVAL_OP = r'<|>|=='
 t_OPP = r'\+|-|/|\*'
 
