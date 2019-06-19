@@ -11,5 +11,10 @@ face_0_ledstrip = transform("package/import_data/data/cheminee.txt")
 face_1_ledstrip = transform("package/import_data/data/case.txt")
 face_2_ledstrip = transform("package/import_data/data/toit.txt")
 face_3_ledstrip = transform("package/import_data/data/vitre.txt")
+face_4_ledstrip = transform("package/import_data/data/haut.txt")
+face_5_ledstrip = transform("package/import_data/data/bas.txt")
 
-address_ledstrip = [face_0_ledstrip, face_1_ledstrip, face_2_ledstrip, face_3_ledstrip]
+address_ledstrip = [face_0_ledstrip, face_1_ledstrip, face_2_ledstrip, face_3_ledstrip, face_4_ledstrip,
+                    face_5_ledstrip]
+
+address_xyz = [[[() for z in range(12)] for y in range(11)] for x in range(11)]

@@ -63,7 +63,8 @@ class ArtNetGroup():
             self.ips.add(ip)
 
     def set(self, universe_address, brightness):
-        self.listArtNet[universe_address[0]].set_buffer(universe_address[1], universe_address[2], brightness)
+        if universe_address[0] is not None:
+            self.listArtNet[universe_address[0]].set_buffer(universe_address[1], universe_address[2], brightness)
 
     @staticmethod
     def get_artnet(ip1, ip2):
@@ -71,7 +72,7 @@ class ArtNetGroup():
         port = 6454
         for i in range(24):
             group.add(StupidArtnet(ip1, port, i))
-        for i in range(24, 40):
+        for i in range(24, 41):
             group.add(StupidArtnet(ip2, port, i))
 
         return group

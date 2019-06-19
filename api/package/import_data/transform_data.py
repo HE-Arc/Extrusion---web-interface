@@ -41,7 +41,7 @@ def transform(file_path):
                         address4 = int(a[1]) + 1
                     square_array.append((universe1, address1, address2, universe2, address3, address4))
                 else:
-                    square_array.append((-1, -1, -1))
+                    square_array.append((None, None, None))
             square += 1
             if square % 4 == 0:
                 data_face.append(copy.deepcopy(square_array))
