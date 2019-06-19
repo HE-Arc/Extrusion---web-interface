@@ -11,6 +11,6 @@ cube = Cube(artnet_group)
 launcher_pool = []
 launcher_access = {}
 size_packet = 512
-
+started = False
 state = "free"
 mode = "user"

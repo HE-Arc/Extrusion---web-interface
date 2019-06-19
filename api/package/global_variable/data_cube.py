@@ -8,7 +8,8 @@ face_3 = [28, 29, 30, 31, 36, 37, 38, 39]  # vitre
 
 face = [face_0, face_1, face_2, face_3]
 face_0_ledstrip = transform("package/import_data/data/cheminee.txt")
+face_1_ledstrip = transform("package/import_data/data/case.txt")
+face_2_ledstrip = transform("package/import_data/data/toit.txt")
+face_3_ledstrip = transform("package/import_data/data/vitre.txt")
 
-address_ledstrip = [face_0_ledstrip]
-
-
+address_ledstrip = [face_0_ledstrip, face_1_ledstrip, face_2_ledstrip, face_3_ledstrip]

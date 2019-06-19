@@ -60,22 +60,29 @@ def ledstrip():
 
 @app.route('/start')
 def start():
-    global access, state
-    artnet_group.start(True)
-    state = "free"
-    return jsonify({'message': 'start'})
+    global access, state, started
+    msg = "already started"
+    if started is not True:
+        artnet_group.start(True)
+        msg = "start"
+        state = "free"
+        started = True
+    return jsonify({'message': msg})
 
 
 @app.route('/stop')
 def stop():
-    global access, state
-    msg = "stop"
-    try:
-        artnet_group.stop()
-    except AttributeError:
-        msg = "artnet didnt start"
-    for k in launcher_access.keys():
-        launcher_access[k] = False
+    global access, state, started
+    msg = "artnet didnt start"
+    if started:
+        try:
+            artnet_group.stop()
+            msg = "stop"
+            started = False
+        except AttributeError:
+            msg = "artnet didnt start"
+        for k in launcher_access.keys():
+            launcher_access[k] = False
     cube.blackout_cube()
     return jsonify({'message': msg})
 
