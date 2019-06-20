@@ -52,10 +52,12 @@ class Cube(metaclass=SingletonMeta):
     def show_xyz(self, x, y, z, brightness):
         try:
             address = self.address_xyz[x][y][z]
-            if len(address) == 6:
-                self.artnet.set((address[0], address[1], address[2]), brightness)
-                self.artnet.set((address[3], address[4], address[5]), brightness)
-            else:
-                self.artnet.set(address, brightness)
+            if address is not None:
+                if len(address) == 6:
+                    self.artnet.set((address[1], address[2], address[3]), brightness)
+                    self.artnet.set((address[4], address[5], address[6]), brightness)
+                else:
+                    self.artnet.set((address[1], address[2], address[3]), brightness)
         except KeyError:
             pass
+

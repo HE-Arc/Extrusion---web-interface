@@ -203,7 +203,7 @@ class StupidArtnet():
         self.BUFFER = bytearray(self.PACKET_SIZE)
 
     def set_buffer(self, start, stop, brightness):
-        for i in range(start, stop):
+        for i in range(start, stop+1):
             self.BUFFER[i] = brightness
 
     def set(self, p):

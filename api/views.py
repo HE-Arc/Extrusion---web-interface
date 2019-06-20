@@ -8,6 +8,7 @@ api.add_resource(resources.CubeResource, '/cube')
 api.add_resource(resources.FaceResource, '/face')
 api.add_resource(resources.SquareResource, '/square')
 api.add_resource(resources.LedstripResource, '/ledstrip')
+api.add_resource(resources.LedResource, '/led')
 api.add_resource(resources.SeqResource, '/seq')
 api.add_resource(resources.Seq2Resource, '/seq2')
 

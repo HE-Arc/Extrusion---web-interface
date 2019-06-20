@@ -63,8 +63,7 @@ class ArtNetGroup():
             self.ips.add(ip)
 
     def set(self, universe_address, brightness):
-        if universe_address[0] is not None:
-            self.listArtNet[universe_address[0]].set_buffer(universe_address[1], universe_address[2], brightness)
+        self.listArtNet[universe_address[0]].set_buffer(universe_address[1], universe_address[2], brightness)
 
     @staticmethod
     def get_artnet(ip1, ip2, cube1_start, cube1_end, cube2_start, cube2_end):

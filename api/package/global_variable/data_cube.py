@@ -17,5 +17,4 @@ face_5_ledstrip = transform("package/import_data/data/bas.csv", 12)
 
 address_ledstrip = [face_0_ledstrip, face_1_ledstrip, face_2_ledstrip, face_3_ledstrip, face_4_ledstrip,
                     face_5_ledstrip]
-
 address_xyz = to_xyz("package/import_data/data/xyz.csv")

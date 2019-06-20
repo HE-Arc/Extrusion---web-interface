@@ -25,6 +25,13 @@ parser_ledstrip.add_argument('idx_square', type=int, help='This field cannot be 
 parser_ledstrip.add_argument('idx_ledstrip', type=int, help='This field cannot be blank', required=True)
 parser_ledstrip.add_argument('brightness', type=int, help='This field cannot be blank', required=True)
 
+parser_led = reqparse.RequestParser()
+parser_led.add_argument('idx_face', type=int, help='This field cannot be blank', required=True)
+parser_led.add_argument('idx_square', type=int, help='This field cannot be blank', required=True)
+parser_led.add_argument('idx_ledstrip', type=int, help='This field cannot be blank', required=True)
+parser_led.add_argument('idx_led', type=int, help='This field cannot be blank', required=True)
+parser_led.add_argument('brightness', type=int, help='This field cannot be blank', required=True)
+
 parser_xyz = reqparse.RequestParser()
 parser_xyz.add_argument('idx_x', type=int, help='This field cannot be blank', required=True)
 parser_xyz.add_argument('idx_y', type=int, help='This field cannot be blank', required=True)
@@ -83,6 +90,21 @@ class LedstripResource(Resource):
             cube.faces[data['idx_face']].squares[data['idx_square']].ledstrips[data['idx_ledstrip']].show(
                 data['brightness'])
             msg = "request sent"
+        return {'message': msg}
+
+
+class LedResource(Resource):
+    def post(self):
+        data = parser_led.parse_args()
+        msg = "cube not started"
+        if global_var["started"]:
+            address = cube.faces[data['idx_face']].squares[data['idx_square']].ledstrips[data['idx_ledstrip']].led[
+                data['idx_led']]
+            if address is not None:
+                address.show(data['brightness'])
+                msg = "request sent"
+            else:
+                msg = "error led address"
         return {'message': msg}
 
 

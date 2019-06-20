@@ -6,7 +6,6 @@ from package.global_variable import data_cube
 class Face:
 
     def __init__(self, idx_face):
-        self.idx = idx_face
         if idx_face < 4:
             self.squares = [Square(idx_face, i) for i in range(24)]
         else:
