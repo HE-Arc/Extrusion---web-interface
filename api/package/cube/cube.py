@@ -36,8 +36,9 @@ class SingletonMeta(type):
 
 
 class Cube(metaclass=SingletonMeta):
-    def __init__(self, artnet) -> None:
+    def __init__(self, artnet, address_xyz) -> None:
         self.artnet = artnet
+        self.address_xyz = address_xyz
         self.faces = [Face(i) for i in range(6)]
 
     def show(self, brightness):
@@ -47,3 +48,14 @@ class Cube(metaclass=SingletonMeta):
     def blackout_cube(self):
         self.show(0)
         self.artnet.show(True)
+
+    def show_xyz(self, x, y, z, brightness):
+        try:
+            address = self.address_xyz[x][y][z]
+            if len(address) == 6:
+                self.artnet.set((address[0], address[1], address[2]), brightness)
+                self.artnet.set((address[3], address[4], address[5]), brightness)
+            else:
+                self.artnet.set(address, brightness)
+        except KeyError:
+            pass

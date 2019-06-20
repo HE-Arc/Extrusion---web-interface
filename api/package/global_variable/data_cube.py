@@ -1,4 +1,5 @@
 from package.import_data.transform_data import transform
+from package.import_data.transfom_xyz import transform as to_xyz
 
 face_0 = [(2, 0, 512), (4, 0, 512), (5, 0, 512), (6, 0, 512), (7, 0, 512), (16, 0, 512), (17, 0, 512),
           (18, 0, 486)]  # cheminee
@@ -17,4 +18,6 @@ face_5_ledstrip = transform("package/import_data/data/bas.txt")
 address_ledstrip = [face_0_ledstrip, face_1_ledstrip, face_2_ledstrip, face_3_ledstrip, face_4_ledstrip,
                     face_5_ledstrip]
 
-address_xyz = [[[() for z in range(12)] for y in range(11)] for x in range(11)]
+address_xyz = to_xyz("package/import_data/data/xyz.csv")
+
+

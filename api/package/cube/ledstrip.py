@@ -1,9 +1,8 @@
-from package.global_variable.data_cube import *
 from package.global_variable import variables
 
 
 class Ledstrip:
-    def __init__(self, idx_face, idx_square, idx_ledstrip):
+    def __init__(self, idx_face, idx_square, idx_ledstrip, address_ledstrip):
         self.idx_face = idx_face
         self.idx_square = idx_square
         self.idx_ledstrip = idx_ledstrip

@@ -25,10 +25,21 @@ parser_ledstrip.add_argument('idx_square', type=int, help='This field cannot be 
 parser_ledstrip.add_argument('idx_ledstrip', type=int, help='This field cannot be blank', required=True)
 parser_ledstrip.add_argument('brightness', type=int, help='This field cannot be blank', required=True)
 
+parser_xyz = reqparse.RequestParser()
+parser_xyz.add_argument('idx_x', type=int, help='This field cannot be blank', required=True)
+parser_xyz.add_argument('idx_y', type=int, help='This field cannot be blank', required=True)
+parser_xyz.add_argument('idx_z', type=int, help='This field cannot be blank', required=True)
+parser_xyz.add_argument('brightness', type=int, help='This field cannot be blank', required=True)
 
-@app.route('/')
-def index():
-    return jsonify({'message': 'Hello, World!'})
+
+@app.route('/xyz', methods=['POST'])
+def xyz():
+    data = parser_xyz.parse_args()
+    msg = "cube not started"
+    if started is True:
+        cube.show_xyz(data['idx_x'], data['idx_y'], data['idx_z'], data['brightness'])
+        msg = "request sent"
+    return jsonify({'message': msg})
 
 
 @app.route('/cube', methods=['POST'])
