@@ -14,16 +14,16 @@ def transform(file_path):
                 try:
                     if row[3] != '-':
                         addresses = row[4].split('-')
-                        data_xyz[x][y][z] = (int(row[3]), int(addresses[0]), int(addresses[1]))
+                        data_xyz[x][y][z] = (int(row[3]), int(addresses[0]), int(addresses[1]) + 1)
                 except ValueError:
                     universes = row[3].split('/')
                     addresses = row[4].split('/')
                     addresses_1 = addresses[0].split('-')
                     addresses_2 = addresses[1].split('-')
                     data_xyz[x][y][z] = (
-                        int(universes[0]), int(addresses_1[0]), int(addresses_1[1]), int(universes[1]),
+                        int(universes[0]), int(addresses_1[0]), int(addresses_1[1]) + 1, int(universes[1]),
                         int(addresses_2[0]),
-                        int(addresses_2[1]))
+                        int(addresses_2[1]) + 1)
             except:
                 print("Error when parsing xyz.csv in package/import_data/data. Check file pls")
 
