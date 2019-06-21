@@ -2,9 +2,9 @@ from package.global_variable import variables
 from package.cube.led import Led
 
 
-class Ledstrip:
-    def __init__(self, address_ledstrip):
-        self.address = address_ledstrip
+class Xyz:
+    def __init__(self, address):
+        self.address = address
         self.led = None
         if self.address is not None:
             self.led = [Led(self.address, i) for i in range(27)]

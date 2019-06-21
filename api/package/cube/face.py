@@ -1,6 +1,4 @@
 from .square import Square
-from package.global_variable import variables
-from package.global_variable import data_cube
 
 
 class Face:

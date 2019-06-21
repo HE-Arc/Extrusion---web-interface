@@ -2,6 +2,7 @@ from __future__ import annotations
 from threading import Lock
 from typing import Optional
 from .face import Face
+from .xyz import Xyz
 
 
 # Source: https://refactoring.guru/design-patterns/singleton/python/example#example-1
@@ -38,8 +39,8 @@ class SingletonMeta(type):
 class Cube(metaclass=SingletonMeta):
     def __init__(self, artnet, address_xyz) -> None:
         self.artnet = artnet
-        self.address_xyz = address_xyz
         self.faces = [Face(i) for i in range(6)]
+        self.xyz = [[[Xyz(address_xyz[x][y][z]) for z in range(13)] for y in range(11)] for x in range(11)]
 
     def show(self, brightness):
         for f in self.faces:
@@ -48,16 +49,3 @@ class Cube(metaclass=SingletonMeta):
     def blackout_cube(self):
         self.show(0)
         self.artnet.show(True)
-
-    def show_xyz(self, x, y, z, brightness):
-        try:
-            address = self.address_xyz[x][y][z]
-            if address is not None:
-                if len(address) == 6:
-                    self.artnet.set((address[1], address[2], address[3]), brightness)
-                    self.artnet.set((address[4], address[5], address[6]), brightness)
-                else:
-                    self.artnet.set((address[1], address[2], address[3]), brightness)
-        except KeyError:
-            pass
-

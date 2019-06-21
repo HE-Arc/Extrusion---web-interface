@@ -38,14 +38,32 @@ parser_xyz.add_argument('idx_y', type=int, help='This field cannot be blank', re
 parser_xyz.add_argument('idx_z', type=int, help='This field cannot be blank', required=True)
 parser_xyz.add_argument('brightness', type=int, help='This field cannot be blank', required=True)
 
+parser_xyz_led = reqparse.RequestParser()
+parser_xyz_led.add_argument('idx_x', type=int, help='This field cannot be blank', required=True)
+parser_xyz_led.add_argument('idx_y', type=int, help='This field cannot be blank', required=True)
+parser_xyz_led.add_argument('idx_z', type=int, help='This field cannot be blank', required=True)
+parser_xyz_led.add_argument('idx_led', type=int, help='This field cannot be blank', required=True)
+parser_xyz_led.add_argument('brightness', type=int, help='This field cannot be blank', required=True)
 
-class Xyz(Resource):  # xyz
+
+class XyzResource(Resource):  # xyz
 
     def post(self):
         data = parser_xyz.parse_args()
         msg = "cube not started"
         if global_var["started"]:
-            cube.show_xyz(data['idx_x'], data['idx_y'], data['idx_z'], data['brightness'])
+            cube.xyz[data['idx_x']][data['idx_y']][data['idx_z']].show(data['brightness'])
+            msg = "request sent"
+        return {'message': msg}
+
+
+class XyzLedResource(Resource):  # xyz
+
+    def post(self):
+        data = parser_xyz_led.parse_args()
+        msg = "cube not started"
+        if global_var["started"]:
+            cube.xyz[data['idx_x']][data['idx_y']][data['idx_z']].led[data['idx_led']].show(data['brightness'])
             msg = "request sent"
         return {'message': msg}
 

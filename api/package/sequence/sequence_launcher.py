@@ -35,4 +35,4 @@ class Launcher(Thread):
         cube.faces[idx_face].squares[idx_square].ledstrips[idx_ledstrip].show(brightness)
 
     def led(self, idx_face, idx_square, idx_ledstrip, idx_led, brightness):
-        cube.faces[idx_face].squares[idx_square].ledstrips[idx_ledstrip].show_led(idx_led, brightness)
+        cube.faces[idx_face].squares[idx_square].ledstrips[idx_ledstrip].led[idx_led].show(brightness)

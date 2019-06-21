@@ -3,7 +3,8 @@ import resources
 from flask import jsonify
 from package.global_variable.variables import *
 
-api.add_resource(resources.Xyz, '/xyz')
+api.add_resource(resources.XyzResource, '/xyz')
+api.add_resource(resources.XyzLedResource, '/xyzled')
 api.add_resource(resources.CubeResource, '/cube')
 api.add_resource(resources.FaceResource, '/face')
 api.add_resource(resources.SquareResource, '/square')

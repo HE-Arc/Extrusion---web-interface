@@ -50,7 +50,7 @@ def ledstrip(idx_face, idx_square, idx_ledstrip, brightness):
 
 
 def led(idx_face, idx_square, idx_ledstrip, idx_led, brightness):
-    cube.faces[idx_face].squares[idx_square].ledstrips[idx_ledstrip].show_led(idx_led, brightness)
+    cube.faces[idx_face].squares[idx_square].ledstrips[idx_ledstrip].led[idx_led].show(brightness)
 
 
 dict_function = {'delay': delay, 'cube': fun_cube, 'face': face, 'square': square,

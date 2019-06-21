@@ -26,6 +26,6 @@ def transform(file_path):
                                              int(addresses_2[0]),
                                              int(addresses_2[1]))
             except:
-                print("Error when parsing xyz.csv in package/import_data/data. Check file pls")
+                print(f"Error when parsing {file_path}, Check file pls")
 
         return data_xyz
