@@ -12,3 +12,4 @@ cube = Cube(artnet_group, address_xyz)
 launcher_pool = []
 launcher_access = {}
 size_packet = 512
+process_pool = []
