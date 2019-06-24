@@ -3,6 +3,7 @@ from threading import Lock
 from typing import Optional
 from .face import Face
 from .xyz import Xyz
+import numpy as np
 
 
 # Source: https://refactoring.guru/design-patterns/singleton/python/example#example-1
@@ -40,7 +41,11 @@ class Cube(metaclass=SingletonMeta):
     def __init__(self, artnet, address_xyz) -> None:
         self.artnet = artnet
         self.faces = [Face(i) for i in range(6)]
-        self.xyz = [[[Xyz(address_xyz[x][y][z]) for z in range(13)] for y in range(11)] for x in range(11)]
+        self.xyz = np.empty((11, 11, 13), dtype=object)
+        for x in range(11):
+            for y in range(11):
+                for z in range(13):
+                    self.xyz[x, y, z] = Xyz(address_xyz, x, y, z)
 
     def show(self, brightness):
         for f in self.faces:

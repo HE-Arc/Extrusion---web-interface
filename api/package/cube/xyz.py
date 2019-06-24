@@ -3,8 +3,8 @@ from package.cube.led import Led
 
 
 class Xyz:
-    def __init__(self, address):
-        self.address = address
+    def __init__(self, address, x, y, z):
+        self.address = address[x, y, z]
         self.led = None
         if self.address is not None:
             self.led = [Led(self.address, i) for i in range(27)]

@@ -27,5 +27,5 @@ def transform(file_path, nb_square):
                                                                int(addresses_2[1]))
             except:
                 print(f"Error when parsing {file_path}. Check file pls")
-
+                raise
         return data_face
