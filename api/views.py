@@ -101,9 +101,9 @@ def seq_python():
         msg = "request saved"
         prog = request.data.decode('utf-8')
         try:
-            process_pool.put(ThreadWithTrace(target=perf, args=(prog,)))
-        except:
-            msg = "something went wrong"
+            process_pool.put(ThreadWithTrace(target=perf, args=(prog,)), block=False)
+        except queue.Full:
+            msg = "Queue is full"
     return jsonify({'message': msg})
 
 
