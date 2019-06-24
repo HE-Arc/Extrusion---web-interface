@@ -48,7 +48,7 @@ class XyzResource(Resource):  # xyz
         data = parser_xyz.parse_args()
         msg = "cube not started"
         if global_var["started"]:
-            cube.xyz[data['idx_x']][data['idx_y']][data['idx_z']].show(data['brightness'])
+            cube.xyz[data['idx_x'], data['idx_y'], data['idx_z']].show(data['brightness'])
             msg = "request sent"
         return {'message': msg}
 

@@ -41,11 +41,7 @@ class Cube(metaclass=SingletonMeta):
     def __init__(self, artnet, address_xyz) -> None:
         self.artnet = artnet
         self.faces = [Face(i) for i in range(6)]
-        self.xyz = np.empty((11, 11, 13), dtype=object)
-        for x in range(11):
-            for y in range(11):
-                for z in range(13):
-                    self.xyz[x, y, z] = Xyz(address_xyz, x, y, z)
+        self.xyz = np.array([[[Xyz(address_xyz, x, y, z) for z in range(13)] for y in range(11)] for x in range(11)])
 
     def show(self, brightness):
         for f in self.faces:
