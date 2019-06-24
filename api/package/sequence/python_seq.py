@@ -33,6 +33,10 @@ def xyz(x, y, z, brightness):
     cube.xyz[x, y, z].show(brightness)
 
 
+def xyz_led(x, y, z, idx_led, brigthness):
+    cube.xyz[x, y, z].led[idx_led].show(brigthness)
+
+
 class NoImportsVisitor(ast.NodeVisitor):
 
     def visit_import(self, node):
@@ -88,5 +92,6 @@ def perform(prog):
           'square': square,
           'ledstrip': ledstrip,
           'led': led,
-          'xyz': xyz},
+          'xyz': xyz,
+          'xyz_led': xyz_led},
          {})

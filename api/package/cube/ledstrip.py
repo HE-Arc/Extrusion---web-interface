@@ -5,9 +5,7 @@ from package.cube.led import Led
 class Ledstrip:
     def __init__(self, address_ledstrip):
         self.address = address_ledstrip
-        self.led = None
-        if self.address is not None:
-            self.led = [Led(self.address, i) for i in range(27)]
+        self.led = [Led(self.address, i) for i in range(27)]
 
     def show(self, brightness):
         try:
@@ -16,4 +14,4 @@ class Ledstrip:
                 if len(self.address) == 7:
                     variables.artnet_group.set((self.address[4], self.address[5], self.address[6]), brightness)
         except KeyError:
-            pass
+            raise

@@ -16,8 +16,7 @@ api.add_resource(resources.FaceResource, '/face')
 api.add_resource(resources.SquareResource, '/square')
 api.add_resource(resources.LedstripResource, '/ledstrip')
 api.add_resource(resources.LedResource, '/led')
-
-current_thread = None
+api.add_resource(resources.ChangeMode, '/changemode')
 
 
 @app.route('/start')
@@ -25,7 +24,7 @@ def start():
     msg = "already started"
     if global_var["started"] is not True:
         artnet_group.start(True)
-        msg = "start"
+        msg = "started"
         global_var["state"] = "free"
         global_var["started"] = True
     return jsonify({'message': msg})
@@ -33,29 +32,37 @@ def start():
 
 @app.route('/stop')
 def stop():
+    global current_thread
     msg = "artnet didnt start"
     if global_var["started"]:
         try:
             artnet_group.stop()
-            msg = "stop"
+            msg = "stopped"
             global_var["started"] = False
         except AttributeError:
             msg = "artnet didnt start"
-        for k in launcher_access.keys():
-            launcher_access[k] = False
+        with process_pool.mutex:
+            process_pool.queue.clear()
+        if current_thread[0] is not None:
+            current_thread[0].kill()
+            current_thread[0] = None
     cube.blackout_cube()
     return jsonify({'message': msg})
 
 
 @app.route('/reset')
 def reset():
-    global_var["state"] = "free"
-    for k in launcher_access.keys():
-        launcher_access[k] = False
-    launcher_pool.clear()
-    launcher_access.clear()
-    cube.blackout_cube()
+    global current_thread
+    with process_pool.mutex:
+        process_pool.queue.clear()
+    current_thread[0].kill()
+    current_thread[0] = None
     return jsonify({'message': 'reset'})
+
+
+@app.route('/state')
+def state():
+    return jsonify(global_var)
 
 
 @app.route('/seq', methods=['POST'])
@@ -65,7 +72,7 @@ def seq():
     if global_var["state"] == "free" and global_var["mode"] == "user":
         launcher_pool.append(L1(prog))
         global_var["state"] = "busy"
-        current_thread = launcher_pool.pop(0).start()
+        # current_thread = launcher_pool.pop(0).start()
         out = "Launch"
 
     return out
@@ -89,20 +96,18 @@ def seq2():
 
 @app.route('/seqpython', methods=['POST'])
 def seq_python():
-    global current_thread
-    out = "nothing"
-    prog = request.data.decode('utf-8')
-    if global_var["state"] == "free" and global_var["mode"] == "user":
-        out = "Launch"
-        process_pool.append(ThreadWithTrace(target=perf, args=(prog,)))
-        current_thread = process_pool.pop(0)
-        current_thread.start()
-    return out
+    msg = "error, data should be text/plain with utf8 encoding"
+    if request.content_type == 'text/plain':
+        msg = "request saved"
+        prog = request.data.decode('utf-8')
+        try:
+            process_pool.put(ThreadWithTrace(target=perf, args=(prog,)))
+        except:
+            msg = "something went wrong"
+    return jsonify({'message': msg})
 
 
-@app.route('/stopprocess')
+@app.route('/stopseq')
 def stop_process():
-    global current_thread
-    current_thread.kill()
-    cube.blackout_cube()
-    return "ok"
+    current_thread[0].kill()
+    return jsonify({'message': 'current sequence stop'})

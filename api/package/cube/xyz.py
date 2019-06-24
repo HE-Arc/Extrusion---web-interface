@@ -8,9 +8,7 @@ class Xyz:
         self.x = x
         self.y = y
         self.z = z
-        self.led = None
-        if self.address is not None:
-            self.led = [Led(self.address, i) for i in range(27)]
+        self.led = [Led(self.address, i) for i in range(27)]
 
     def show(self, brightness):
         try:
@@ -18,5 +16,5 @@ class Xyz:
                 variables.artnet_group.set((self.address[1], self.address[2], self.address[3]), brightness)
                 if len(self.address) == 7:
                     variables.artnet_group.set((self.address[4], self.address[5], self.address[6]), brightness)
-        except KeyError:
-            pass
+        except:
+            raise
