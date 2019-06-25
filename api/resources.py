@@ -1,90 +1,63 @@
-from flask_restful import reqparse, Resource
+from flask_restful import Resource
+from reqparser import *
 from package.global_variable.variables import *
 from run import global_var
-
-limit_brightness = 16
-limit_x = 11
-limit_y = 11
-limit_z = 13
-limit_face = 6
-limit_square = 24
-limit_ledstrip = 4
-limit_led = 27
-
-parser_mode = reqparse.RequestParser()
-parser_mode.add_argument('mode', choices=('user', 'master'),
-                         help="{error_msg}. mode can be user or master", required=True)
-
-parser_cube = reqparse.RequestParser()
-parser_cube.add_argument('brightness', type=int, choices=range(limit_brightness),
-                         default=15, help="{error_msg}. brightness is between 0 and 15, 15 by default")
-
-parser_face = reqparse.RequestParser(bundle_errors=True)
-parser_face.add_argument('idx_face', type=int, choices=range(limit_face),
-                         help='{error_msg}. idx_face is between 0 and 5', required=True)
-parser_face.add_argument('brightness', type=int, choices=range(limit_brightness),
-                         default=15, help="{error_msg}. brightness is between 0 and 15, 15 by default")
-
-parser_square = reqparse.RequestParser(bundle_errors=True)
-parser_square.add_argument('idx_face', type=int, choices=range(limit_face),
-                           help='{error_msg}. idx_face is between 0 and 5', required=True)
-parser_square.add_argument('idx_square', type=int, choices=range(limit_square),
-                           help='{error_msg}. idx_square is between 0 and 23', required=True)
-parser_square.add_argument('brightness', type=int, choices=range(limit_brightness),
-                           default=15, help="{error_msg}. brightness is between 0 and 15, 15 by default")
-
-parser_ledstrip = reqparse.RequestParser(bundle_errors=True)
-parser_ledstrip.add_argument('idx_face', type=int, choices=range(limit_face),
-                             help='{error_msg}. idx_face is between 0 and 5', required=True)
-parser_ledstrip.add_argument('idx_square', type=int, choices=range(limit_square),
-                             help='{error_msg}. idx_square is between 0 and 23', required=True)
-parser_ledstrip.add_argument('idx_ledstrip', type=int, choices=range(limit_ledstrip),
-                             help='{error_msg}. idx_ledstrip is between 0 and 4',
-                             required=True)
-parser_ledstrip.add_argument('brightness', type=int, choices=range(limit_brightness),
-                             default=15, help="{error_msg}. brightness is between 0 and 15, 15 by default")
-
-parser_led = reqparse.RequestParser(bundle_errors=True)
-parser_led.add_argument('idx_face', type=int, choices=range(limit_face),
-                        help='{error_msg}. idx_face is between 0 and 5', required=True)
-parser_led.add_argument('idx_square', type=int, choices=range(limit_square),
-                        help='{error_msg}. idx_square is between 0 and 23', required=True)
-parser_led.add_argument('idx_ledstrip', type=int, choices=range(limit_ledstrip),
-                        help='{error_msg}. idx_ledstrip is between 0 and 4',
-                        required=True)
-parser_led.add_argument('idx_led', type=int, choices=range(limit_led), help='{error_msg}. idx_led is between 0 and 26',
-                        required=True)
-parser_led.add_argument('brightness', type=int, choices=range(limit_brightness),
-                        default=15, help="{error_msg}. brightness is between 0 and 15, 15 by default")
-
-parser_xyz = reqparse.RequestParser(bundle_errors=True)
-parser_xyz.add_argument('idx_x', type=int, choices=range(limit_x), help='{error_msg}. idx_x is between 0 and 10',
-                        required=True)
-parser_xyz.add_argument('idx_y', type=int, choices=range(limit_y), help='{error_msg}. idx_y is between 0 and 10',
-                        required=True)
-parser_xyz.add_argument('idx_z', type=int, choices=range(limit_z), help='{error_msg}. idx_z is between 0 and 12',
-                        required=True)
-parser_xyz.add_argument('brightness', type=int, choices=range(limit_brightness),
-                        default=15, help="{error_msg}. brightness is between 0 and 15, 15 by default")
-
-parser_xyz_led = reqparse.RequestParser(bundle_errors=True)
-parser_xyz_led.add_argument('idx_x', type=int, choices=range(limit_x), help='{error_msg}. idx_x is between 0 and 10',
-                            required=True)
-parser_xyz_led.add_argument('idx_y', type=int, choices=range(limit_y), help='{error_msg}. idx_y is between 0 and 10',
-                            required=True)
-parser_xyz_led.add_argument('idx_z', type=int, choices=range(limit_z), help='{error_msg}. idx_z is between 0 and 12',
-                            required=True)
-parser_xyz_led.add_argument('idx_led', type=int, choices=range(limit_led),
-                            help='{error_msg}. idx_led is between 0 and 26',
-                            required=True)
-parser_xyz_led.add_argument('brightness', type=int, choices=range(limit_brightness),
-                            default=15, help="{error_msg}. brightness is between 0 and 15, 15 by default")
+from models import TokenModel
+import datetime
+from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required,
+                                get_jwt_identity, get_raw_jwt, decode_token)
 
 message_not_started = "cube is not started"
 message_not_master_free = "Api is not in master mode or not free"
 message_sent = "request sent"
 message_wrong = "something went wrong"
 current_message = message_not_started
+
+
+class Token(Resource):
+
+    def get(self):
+        return TokenModel.return_all()
+
+    def delete(self):
+        data = parser_token_delete.parse_args()
+        identity = data['identity']
+
+        if TokenModel.delete_by_id(data['identity']):
+            return {'message': 'Token {} delete'.format(identity)}
+
+        return {'message': 'Token {} doesnt exist'.format(identity)}
+
+    def post(self):
+        data = parser_token_create.parse_args()
+        identity = data['identity']
+        date = int(data['date'])
+        mode = data['mode']
+
+        if TokenModel.find_by_identity(identity):
+            return {'message': 'Token {} already exists'.format(identity)}
+
+        new_token = TokenModel(
+            identity=identity,
+            mode=mode,
+            revoked=False,
+            date=date
+        )
+        try:
+            access_token = create_access_token(identity=new_token.identity,
+                                               expires_delta=datetime.timedelta(days=get_days(date)),
+                                               user_claims={'mode': new_token.mode})
+            new_token.token = access_token
+            decode = decode_token(access_token)
+            new_token.jti = decode['jti']
+            new_token.save_to_db()
+            return {
+                'message': 'Token {} was created'.format(identity),
+                'access_token': access_token,
+            }
+        except Exception as e:
+            print(e)
+            return {'message': 'Something went wrong'}, 500
 
 
 class ChangeMode(Resource):
@@ -211,3 +184,8 @@ def can_direct_send():
 
 def is_started():
     return global_var["started"]
+
+
+def get_days(timestamp):
+    d1 = datetime.datetime.now()
+    return (datetime.datetime.fromtimestamp(timestamp) - d1).days
