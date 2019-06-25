@@ -3,11 +3,8 @@ import resources
 from flask import jsonify
 from package.global_variable.variables import *
 from flask import request
-from package.sequence.laucher_with_prog import Launcher as L1
-from package.sequence.sequence_launcher import Launcher as L2
 from package.sequence.python_seq import ThreadWithTrace
 from package.sequence.python_seq import perform as perf
-from package.sequence.interpreter import perform
 
 api.add_resource(resources.XyzResource, '/xyz')
 api.add_resource(resources.XyzLedResource, '/xyzled')
@@ -66,35 +63,6 @@ def state():
 
 
 @app.route('/seq', methods=['POST'])
-def seq():
-    out = "nothing"
-    prog = request.data.decode('utf-8')
-    if global_var["state"] == "free" and global_var["mode"] == "user":
-        launcher_pool.append(L1(prog))
-        global_var["state"] = "busy"
-        # current_thread = launcher_pool.pop(0).start()
-        out = "Launch"
-
-    return out
-
-
-@app.route('/seq2', methods=['POST'])
-def seq2():
-    orders = []
-    prog = request.data.decode('utf-8')
-    if global_var["state"] == "free" and global_var["mode"] == "user":
-        orders = perform(prog)
-        launcher_pool.append(L2(orders))
-        global_var["state"] = "busy"
-        launcher_pool.pop(0).start()
-    out = "busy"
-    for p in orders:
-        out += str(p) + "<br>"
-
-    return out
-
-
-@app.route('/seqpython', methods=['POST'])
 def seq_python():
     msg = "error, data should be text/plain with utf8 encoding"
     if request.content_type == 'text/plain':
