@@ -17,14 +17,20 @@ def string30(str, type):
     raise ValidationError(type + " String must be < 30 len")
 
 
-parser_token_delete = reqparse.RequestParser()
-parser_token_delete.add_argument('identity', type=string30, required=True)
+def string60(str, type):
+    if len(str) < 60:
+        return str
+    raise ValidationError(type + " String must be < 60 len")
+
+
+parser_token_find = reqparse.RequestParser()
+parser_token_find.add_argument('jti', type=string60, required=True)
 
 parser_token_create = reqparse.RequestParser()
 parser_token_create.add_argument('identity', type=string30, required=True)
-parser_token_create.add_argument('mode', choices=('user', 'master'),
+parser_token_create.add_argument('mode', choices=('user', 'master', 'superuser'),
                                  help="{error_msg}. mode can be user or master", required=True)
-parser_token_create.add_argument('date', type=string30,
+parser_token_create.add_argument('date', type=int,
                                  help="{error_msg}. Timestamp error", required=True)
 
 parser_mode = reqparse.RequestParser()

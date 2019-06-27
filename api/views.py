@@ -16,6 +16,7 @@ api.add_resource(resources.LedResource, '/led')
 api.add_resource(resources.ChangeMode, '/changemode')
 api.add_resource(resources.Token, '/token')
 
+
 @app.route('/start')
 def start():
     msg = "already started"
@@ -52,8 +53,9 @@ def reset():
     global current_thread
     with process_pool.mutex:
         process_pool.queue.clear()
-    current_thread[0].kill()
-    current_thread[0] = None
+    if current_thread[0] is not None:
+        current_thread[0].kill()
+        current_thread[0] = None
     return jsonify({'message': 'reset'})
 
 
@@ -66,7 +68,7 @@ def state():
 def seq_python():
     msg = "error, data should be text/plain with utf8 encoding"
     if request.content_type == 'text/plain':
-        msg = "request saved"
+        msg = "sequence saved"
         prog = request.data.decode('utf-8')
         try:
             process_pool.put(ThreadWithTrace(target=perf, args=(prog,)), block=False)
@@ -77,5 +79,9 @@ def seq_python():
 
 @app.route('/stopseq')
 def stop_process():
-    current_thread[0].kill()
-    return jsonify({'message': 'current sequence stop'})
+    msg = "no seq running"
+    if current_thread[0] is not None:
+        current_thread[0].kill()
+        current_thread[0] = None
+        msg = "current sequence stop"
+    return jsonify({'message': msg})

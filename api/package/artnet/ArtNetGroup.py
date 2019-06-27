@@ -7,7 +7,7 @@ from threading import Timer
 class ArtNetGroup():
     """(Very) simple implementation of ArtnetSync."""
 
-    def __init__(self, *args):
+    def __init__(self, fps, *args):
         """Class Initialization."""
         # Instance variables
         self.listArtNet = {}
@@ -16,7 +16,7 @@ class ArtNetGroup():
         for a in args:
             self.listArtNet[a.UNIVERSE] = a
             self.add_sync(a.TARGET_IP)
-        self.fps = 30
+        self.fps = fps
         self.nb_art_net = len(self.listArtNet)
 
     def __str__(self):
@@ -66,8 +66,8 @@ class ArtNetGroup():
         self.listArtNet[universe_address[0]].set_buffer(universe_address[1], universe_address[2], brightness)
 
     @staticmethod
-    def get_artnet(ip1, ip2, cube1_start, cube1_end, cube2_start, cube2_end):
-        group = ArtNetGroup()
+    def get_artnet(ip1, ip2, cube1_start, cube1_end, cube2_start, cube2_end, fps):
+        group = ArtNetGroup(fps)
         port = 6454
         for i in range(cube1_start, cube1_end):
             group.add(StupidArtnet(ip1, port, i))

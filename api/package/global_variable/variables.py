@@ -6,8 +6,8 @@ import queue
 ip1 = "192.168.1.142"
 
 ip2 = "192.168.1.142"
-
-artnet_group = ArtNetGroup.get_artnet(ip1, ip2, 0, 24, 24, 46)
+fps = 30
+artnet_group = ArtNetGroup.get_artnet(ip1, ip2, 0, 24, 24, 46, fps)
 queue_size = 100
 cube = Cube(artnet_group, address_xyz)
 launcher_pool = []
@@ -15,3 +15,4 @@ launcher_access = {}
 size_packet = 512
 process_pool = queue.Queue(queue_size)
 current_thread = [None]
+tokens = {}

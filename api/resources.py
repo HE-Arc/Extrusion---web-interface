@@ -1,11 +1,12 @@
 from flask_restful import Resource
 from reqparser import *
+from package.security.decorators import mode_master
 from package.global_variable.variables import *
 from run import global_var
-from models import TokenModel
+from models import TokenModel, update_token_in_memory
 import datetime
-from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required,
-                                get_jwt_identity, get_raw_jwt, decode_token)
+from flask_jwt_extended import (create_access_token, jwt_required,
+                                decode_token, verify_jwt_in_request)
 
 message_not_started = "cube is not started"
 message_not_master_free = "Api is not in master mode or not free"
@@ -15,23 +16,32 @@ current_message = message_not_started
 
 
 class Token(Resource):
+    def patch(self):
+        data = parser_token_find.parse_args()
+        jti = data['jti']
+        if TokenModel.switch_revoked(jti):
+            update_token_in_memory()
+            return {'message': 'Token {} modified'.format(jti)}
+
+        return {'message': 'Token {} doesnt exist'.format(jti)}
 
     def get(self):
         return TokenModel.return_all()
 
     def delete(self):
-        data = parser_token_delete.parse_args()
-        identity = data['identity']
+        data = parser_token_find.parse_args()
+        jti = data['jti']
 
-        if TokenModel.delete_by_id(data['identity']):
-            return {'message': 'Token {} delete'.format(identity)}
+        if TokenModel.delete_by_jti(jti):
+            update_token_in_memory()
+            return {'message': 'Token {} delete'.format(jti)}
 
-        return {'message': 'Token {} doesnt exist'.format(identity)}
+        return {'message': 'Token {} doesnt exist'.format(jti)}
 
     def post(self):
         data = parser_token_create.parse_args()
         identity = data['identity']
-        date = int(data['date'])
+        date = data['date']
         mode = data['mode']
 
         if TokenModel.find_by_identity(identity):
@@ -43,6 +53,7 @@ class Token(Resource):
             revoked=False,
             date=date
         )
+        print(get_days(date))
         try:
             access_token = create_access_token(identity=new_token.identity,
                                                expires_delta=datetime.timedelta(days=get_days(date)),
@@ -51,6 +62,7 @@ class Token(Resource):
             decode = decode_token(access_token)
             new_token.jti = decode['jti']
             new_token.save_to_db()
+            update_token_in_memory()
             return {
                 'message': 'Token {} was created'.format(identity),
                 'access_token': access_token,
@@ -61,6 +73,8 @@ class Token(Resource):
 
 
 class ChangeMode(Resource):
+    @jwt_required
+    @mode_master
     def post(self):
         data = parser_mode.parse_args()
         global_var['mode'] = data['mode']
@@ -116,7 +130,6 @@ class CubeResource(Resource):  # cube
 
 
 class FaceResource(Resource):  # face
-
     def post(self):
         msg = message_not_started
         if is_started():
@@ -179,7 +192,7 @@ class LedResource(Resource):
 
 
 def can_direct_send():
-    return global_var["mode"] == "master" and global_var["state"] == "free"
+    return global_var["state"] == "free"
 
 
 def is_started():
