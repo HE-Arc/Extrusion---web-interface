@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 from flask import jsonify
 from package.sequence.sequence_manager import SequenceManager
 from package.security.blacklist import is_jti_blacklisted
+import os
 
 app = Flask(__name__)
 api = Api(app)
@@ -14,10 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'caseàchocs12'
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
-app.config['SUPERUSER_TOKEN'] = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NjE2NTQ4MzIsIm5iZiI6MTU2MTY1ND" \
-                                "gzMiwianRpIjoiY2RlMGVmODUtODE0Yi00MDMyLTg0MjYtMTFmNTdmNDU0YTMzIiwiaWRlbnRpdHkiOiJzdXBlc" \
-                                "nVzZXIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJtb2RlIjoic3VwZXJ1c" \
-                                "2VyIn19.VikRbAUyitePctkQ51t1adr4jBOZImyL0LrR4xLmZLs"
+app.config['SUPERUSER_TOKEN'] = os.environ["SUPERUSER_TOKEN"]
 
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
