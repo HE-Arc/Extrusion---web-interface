@@ -151,7 +151,7 @@ function create() {
     let date = $('#revokedDate').val();
     let mode = $('#mode').val();
     if ($('#checkUnlimited').prop("checked")) {
-        let date = 0
+        date = 0
     } else {
         if (date.length === 0) {
             Swal.fire({
@@ -162,12 +162,49 @@ function create() {
             return false;
         } else {
             date = dateToTimestamp(date);
-            alert(date);
         }
 
 
     }
 
+    let form = new FormData();
+    form.append("identity", identity);
+    form.append("date", date);
+    form.append("mode", mode);
+    let myHeaders = new Headers({
+        "Authorization": token
+    });
+
+    let myInit = {
+        method: 'POST',
+        headers: myHeaders,
+        mode: 'cors',
+        cache: 'default',
+        body: form
+    };
+
+    fetch('/token', myInit)
+        .then(response => {
+            return response.json();
+        }).then(json => {
+            console.log(json);
+        if (json.state) {
+            update_tab();
+            Swal.fire({
+                type: 'info',
+                title: json.message,
+                text: json.access_token,
+            });
+
+        } else {
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: json.message,
+            });
+        }
+    });
+    return true;
 
 }
 
@@ -180,7 +217,7 @@ function manageDate(checkbox) {
 }
 
 function dateToTimestamp(date) {
-    let array_date = date.split('.');
-    date = new Date(array_date[2], array_date[1], array_date[0]);
-    return date.getTime() / 1000;
+    date = new Date(date);
+    alert(date);
+    return Math.round(date.getTime() / 1000);
 }

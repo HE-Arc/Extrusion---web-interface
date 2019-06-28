@@ -44,6 +44,8 @@ class Token(Resource):
 
         return {'message': 'something went wrong', 'state': False}
 
+    @jwt_required
+    @mode_superuser
     def post(self):
         data = parser_token_create.parse_args()
         identity = data['identity']
@@ -51,7 +53,7 @@ class Token(Resource):
         mode = data['mode']
 
         if TokenModel.find_by_identity(identity):
-            return {'message': 'Token {} already exists'.format(identity), 'state': "False"}
+            return {'message': 'Token {} already exists'.format(identity), 'state': False}
 
         new_token = TokenModel(
             identity=identity,
