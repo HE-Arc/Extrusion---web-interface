@@ -52,7 +52,7 @@ class Token(Resource):
         new_token = TokenModel(
             identity=identity,
             mode=mode,
-            revoked=True,
+            revoked=False,
             date=date
         )
         print(get_days(date))
