@@ -1,4 +1,4 @@
-let token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NjE2NTQ4MzIsIm5iZiI6MTU2MTY1NDgzMiwianRpIjoiY2RlMGVmODUtODE0Yi00MDMyLTg0MjYtMTFmNTdmNDU0YTMzIiwiaWRlbnRpdHkiOiJzdXBlcnVzZXIiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJtb2RlIjoic3VwZXJ1c2VyIn19.VikRbAUyitePctkQ51t1adr4jBOZImyL0LrR4xLmZLs";
+
 $(window).on("load", function () {
     update_tab();
     $('#createForm').on("submit", function (e) {

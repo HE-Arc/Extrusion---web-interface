@@ -83,13 +83,14 @@
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="/static/security.js"></script>
 <script>
+    let token = '{{ config.SUPERUSER_TOKEN }}';
     $("#revokedDate").flatpickr({
         altFormat: "j F, Y",
         minDate: "today",
         dateFormat: "Y-m-d"
     });
 </script>
+<script src="/static/security.js"></script>
 </body>
 </html>
