@@ -12,13 +12,13 @@ limit_led = 27
 
 
 def string30(str, type):
-    if len(str) < 30:
+    if len(str) <= 30:
         return str
     raise ValidationError(type + " String must be < 30 len")
 
 
 def string60(str, type):
-    if len(str) < 60:
+    if len(str) <= 60:
         return str
     raise ValidationError(type + " String must be < 60 len")
 

@@ -16,29 +16,33 @@ current_message = message_not_started
 
 
 class Token(Resource):
+    @jwt_required
+    @mode_superuser
     def patch(self):
         data = parser_token_find.parse_args()
         jti = data['jti']
         if TokenModel.switch_revoked(jti):
             update_token_in_memory()
-            return {'message': True}
+            return {'message': f'token with ${jti} changed', 'state': True}
 
-        return {'message': False}
+        return {'message': 'something went wrong', 'state': False}
 
     @jwt_required
     @mode_superuser
     def get(self):
         return TokenModel.return_all()
 
+    @jwt_required
+    @mode_superuser
     def delete(self):
         data = parser_token_find.parse_args()
         jti = data['jti']
 
         if TokenModel.delete_by_jti(jti):
             update_token_in_memory()
-            return {'message': 'Token {} delete'.format(jti)}
+            return {'message': f'token with ${jti} deleted', 'state': True}
 
-        return {'message': 'Token {} doesnt exist'.format(jti)}
+        return {'message': 'something went wrong', 'state': False}
 
     def post(self):
         data = parser_token_create.parse_args()
@@ -47,7 +51,7 @@ class Token(Resource):
         mode = data['mode']
 
         if TokenModel.find_by_identity(identity):
-            return {'message': 'Token {} already exists'.format(identity)}
+            return {'message': 'Token {} already exists'.format(identity), 'state': "False"}
 
         new_token = TokenModel(
             identity=identity,
@@ -68,10 +72,11 @@ class Token(Resource):
             return {
                 'message': 'Token {} was created'.format(identity),
                 'access_token': access_token,
+                'state': True
             }
         except Exception as e:
             print(e)
-            return {'message': 'Something went wrong'}, 500
+            return {'message': 'Something went wrong', 'state': False}
 
 
 class ChangeMode(Resource):
@@ -202,5 +207,7 @@ def is_started():
 
 
 def get_days(timestamp):
+    if timestamp == 0:
+        return False
     d1 = datetime.datetime.now()
     return (datetime.datetime.fromtimestamp(timestamp) - d1).days
