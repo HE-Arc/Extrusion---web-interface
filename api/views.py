@@ -1,6 +1,6 @@
 from run import app, api, global_var
 import resources
-from flask import jsonify
+from flask import jsonify, render_template
 from package.global_variable.variables import *
 from flask import request
 from package.sequence.python_seq import ThreadWithTrace
@@ -85,3 +85,8 @@ def stop_process():
         current_thread[0] = None
         msg = "current sequence stop"
     return jsonify({'message': msg})
+
+
+@app.route('/security')
+def tokens():
+    return render_template('tokens.html')

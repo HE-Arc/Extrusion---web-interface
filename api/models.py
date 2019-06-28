@@ -45,11 +45,11 @@ class TokenModel(db.Model):
     def return_all():
         def to_json(x):
             return {
-                'jit': x.jti,
+                'jti': x.jti,
                 'identity': x.identity,
                 'mode': x.mode,
                 'date': x.date,
-                'revoked': x.revoked,
+                'active': not x.revoked,
                 'token': x.token
             }
 

@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from reqparser import *
-from package.security.decorators import mode_master
+from package.security.decorators import mode_master, mode_superuser
 from package.global_variable.variables import *
 from run import global_var
 from models import TokenModel, update_token_in_memory
@@ -21,10 +21,12 @@ class Token(Resource):
         jti = data['jti']
         if TokenModel.switch_revoked(jti):
             update_token_in_memory()
-            return {'message': 'Token {} modified'.format(jti)}
+            return {'message': True}
 
-        return {'message': 'Token {} doesnt exist'.format(jti)}
+        return {'message': False}
 
+    @jwt_required
+    @mode_superuser
     def get(self):
         return TokenModel.return_all()
 
@@ -50,7 +52,7 @@ class Token(Resource):
         new_token = TokenModel(
             identity=identity,
             mode=mode,
-            revoked=False,
+            revoked=True,
             date=date
         )
         print(get_days(date))
