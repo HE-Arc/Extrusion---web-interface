@@ -19,8 +19,10 @@ app.config['SUPERUSER_TOKEN'] = os.environ["SUPERUSER_TOKEN"]
 
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
-global_var = {"started": False, "state": "free"}
-SequenceManager(global_var).start()
+global_var = {"started": False, "mode": "direct", "sequence": False}
+
+sequence_manager = SequenceManager(global_var).start()
+
 import views, models
 
 models.update_token_in_memory()

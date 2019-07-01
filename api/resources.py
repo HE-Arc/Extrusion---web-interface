@@ -6,13 +6,52 @@ from run import global_var
 from models import TokenModel, update_token_in_memory
 import datetime
 from flask_jwt_extended import (create_access_token, jwt_required,
-                                decode_token, verify_jwt_in_request)
+                                decode_token)
+from package.sequence.python_seq import ThreadWithTrace, perform
 
 message_not_started = "cube is not started"
-message_not_master_free = "Api is not in master mode or not free"
+message_not_direct = "Api is not in direct mode"
+message_not_sequence = "Api is not in sequence mode"
 message_sent = "request sent"
 message_wrong = "something went wrong"
 current_message = message_not_started
+
+
+class Sequence(Resource):
+    def post(self):
+        if can_send_sequence():
+            data = parser_seq_add.parse_args()
+            program = data["code"]
+            try:
+                queue_manager.process_pool.put(ThreadWithTrace(data["name"], target=perform, args=(program,)),
+                                               block=False)
+                return format_response('Sequence saved', True)
+            except queue.Full:
+                return format_response('Queue is full', False)
+        return format_response(message_not_sequence, False)
+
+    def delete(self):
+        if can_send_sequence():
+            data = parser_seq_del.parse_args()
+            index = data['index']
+            try:
+                queue_manager.delete(index)
+                return format_response(f'sequence with index {index} delete', True)
+            except KeyError:
+                return format_response('something went wrong !', False)
+        return format_response(message_not_sequence, False)
+
+    def patch(self):
+        if can_send_sequence():
+            data = parser_seq_move.parse_args()
+            old_index = data['old_index']
+            new_index = data['new_index']
+            try:
+                queue_manager.move(old_index, new_index)
+                return format_response(f'sequence with index {old_index} now in {new_index} index', True)
+            except KeyError:
+                return format_response('something went wrong !', False)
+        return format_response(message_not_sequence, False)
 
 
 class Token(Resource):
@@ -23,9 +62,9 @@ class Token(Resource):
         jti = data['jti']
         if TokenModel.switch_revoked(jti):
             update_token_in_memory()
-            return {'message': f'token with ${jti} changed', 'state': True}
+            return format_response(f'token with ${jti} changed', True)
 
-        return {'message': 'something went wrong', 'state': False}
+        return format_response('something went wrong', False)
 
     @jwt_required
     @mode_superuser
@@ -40,9 +79,9 @@ class Token(Resource):
 
         if TokenModel.delete_by_jti(jti):
             update_token_in_memory()
-            return {'message': f'token with ${jti} deleted', 'state': True}
+            return format_response(f'token with ${jti} deleted', True)
 
-        return {'message': 'something went wrong', 'state': False}
+        return format_response('something went wrong', False)
 
     @jwt_required
     @mode_superuser
@@ -53,7 +92,7 @@ class Token(Resource):
         mode = data['mode']
 
         if TokenModel.find_by_identity(identity):
-            return {'message': 'Token {} already exists'.format(identity), 'state': False}
+            return format_response('Token {} already exists'.format(identity), False)
 
         new_token = TokenModel(
             identity=identity,
@@ -77,25 +116,45 @@ class Token(Resource):
                 'state': True
             }
         except Exception as e:
-            print(e)
-            return {'message': 'Something went wrong', 'state': False}
+            return format_response('Something went wrong', False)
+
+
+class ChangeSequence(Resource):
+    def post(self):
+        if can_send_sequence():
+            data = parser_change_sequence.parse_args()
+            start = data['start']
+            if start == global_var['sequence']:
+                return format_response("Cube already in this mode", True)
+            if start:
+                if not is_cube_started():
+                    return format_response("Can't start sending sequence, cube not started", False)
+            else:
+                queue_manager.current_thread.kill()
+
+            global_var["sequence"] = start
+            return format_response(f"Sequence sending state: {start}", True)
+        return format_response("Cube not in sequence mode ", False)
 
 
 class ChangeMode(Resource):
-    @jwt_required
-    @mode_master
     def post(self):
         data = parser_mode.parse_args()
-        global_var['mode'] = data['mode']
-        return {'message': f"api is now in mode {data['mode']}"}
+        mode = data['mode']
+        global_var['mode'] = mode
+        if can_direct_send():
+            queue_manager.kill_current_seq()
+        else:
+            cube.blackout_cube()
+        return format_response(f"api is now in mode {data['mode']}", True)
 
 
 class XyzResource(Resource):  # xyz
 
     def post(self):
         msg = message_not_started
-        if is_started():
-            msg = message_not_master_free
+        if is_cube_started():
+            msg = message_not_direct
             if can_direct_send():
                 data = parser_xyz.parse_args()
                 try:
@@ -110,8 +169,8 @@ class XyzLedResource(Resource):  # xyz
 
     def post(self):
         msg = message_not_started
-        if is_started():
-            msg = message_not_master_free
+        if is_cube_started():
+            msg = message_not_direct
             if can_direct_send():
                 data = parser_xyz_led.parse_args()
                 try:
@@ -126,8 +185,8 @@ class CubeResource(Resource):  # cube
 
     def post(self):
         msg = message_not_started
-        if is_started():
-            msg = message_not_master_free
+        if is_cube_started():
+            msg = message_not_direct
             if can_direct_send():
                 data = parser_cube.parse_args()
                 try:
@@ -141,8 +200,8 @@ class CubeResource(Resource):  # cube
 class FaceResource(Resource):  # face
     def post(self):
         msg = message_not_started
-        if is_started():
-            msg = message_not_master_free
+        if is_cube_started():
+            msg = message_not_direct
             if can_direct_send():
                 data = parser_face.parse_args()
                 try:
@@ -156,8 +215,8 @@ class FaceResource(Resource):  # face
 class SquareResource(Resource):
     def post(self):
         msg = message_not_started
-        if is_started():
-            msg = message_not_master_free
+        if is_cube_started():
+            msg = message_not_direct
             if can_direct_send():
                 data = parser_square.parse_args()
                 try:
@@ -171,8 +230,8 @@ class SquareResource(Resource):
 class LedstripResource(Resource):
     def post(self):
         msg = message_not_started
-        if is_started():
-            msg = message_not_master_free
+        if is_cube_started():
+            msg = message_not_direct
             if can_direct_send():
                 data = parser_ledstrip.parse_args()
                 try:
@@ -187,8 +246,8 @@ class LedstripResource(Resource):
 class LedResource(Resource):
     def post(self):
         msg = message_not_started
-        if is_started():
-            msg = message_not_master_free
+        if is_cube_started():
+            msg = message_not_direct
             if can_direct_send():
                 data = parser_led.parse_args()
                 try:
@@ -201,10 +260,10 @@ class LedResource(Resource):
 
 
 def can_direct_send():
-    return global_var["state"] == "free"
+    return global_var["mode"] == "direct"
 
 
-def is_started():
+def is_cube_started():
     return global_var["started"]
 
 
@@ -213,3 +272,11 @@ def get_days(timestamp):
         return False
     d1 = datetime.datetime.now()
     return (datetime.datetime.fromtimestamp(timestamp) - d1).days
+
+
+def can_send_sequence():
+    return global_var['mode'] == "sequence"
+
+
+def format_response(msg_txt, state):
+    return {'message': msg_txt, 'state': state}

@@ -2,9 +2,7 @@ from run import app, api, global_var
 import resources
 from flask import jsonify, render_template
 from package.global_variable.variables import *
-from flask import request
-from package.sequence.python_seq import ThreadWithTrace
-from package.sequence.python_seq import perform as perf
+from copy import deepcopy
 
 api.add_resource(resources.XyzResource, '/xyz')
 api.add_resource(resources.XyzLedResource, '/xyzled')
@@ -15,6 +13,8 @@ api.add_resource(resources.LedstripResource, '/ledstrip')
 api.add_resource(resources.LedResource, '/led')
 api.add_resource(resources.ChangeMode, '/changemode')
 api.add_resource(resources.Token, '/token')
+api.add_resource(resources.Sequence, '/seq')
+api.add_resource(resources.ChangeSequence, '/changeseq')
 
 
 @app.route('/start')
@@ -23,67 +23,41 @@ def start():
     if global_var["started"] is not True:
         artnet_group.start(True)
         msg = "started"
-        global_var["state"] = "free"
         global_var["started"] = True
     return jsonify({'message': msg})
 
 
 @app.route('/stop')
 def stop():
-    global current_thread
-    msg = "artnet didnt start"
-    if global_var["started"]:
-        try:
-            artnet_group.stop()
-            msg = "stopped"
-            global_var["started"] = False
-        except AttributeError:
-            msg = "artnet didnt start"
-        with process_pool.mutex:
-            process_pool.queue.clear()
-        if current_thread[0] is not None:
-            current_thread[0].kill()
-            current_thread[0] = None
+    try:
+        artnet_group.stop()
+        msg = "stopped"
+        global_var["started"] = False
+        global_var["mode"] = "direct"
+        global_var["sequence"] = False
+        queue_manager.delete_all()
+    except AttributeError:
+        msg = "artnet didnt start"
     cube.blackout_cube()
     return jsonify({'message': msg})
 
 
+@app.route('/state')
+def state():
+    info = deepcopy(global_var)
+    info['nb_seq_in_queue'] = str(queue_manager.get_queue())
+    return jsonify(info)
+
+
 @app.route('/reset')
 def reset():
-    global current_thread
-    with process_pool.mutex:
-        process_pool.queue.clear()
-    if current_thread[0] is not None:
-        current_thread[0].kill()
-        current_thread[0] = None
+    queue_manager.delete_all()
     return jsonify({'message': 'reset'})
 
 
-@app.route('/state')
-def state():
-    return jsonify(global_var)
-
-
-@app.route('/seq', methods=['POST'])
-def seq_python():
-    msg = "error, data should be text/plain with utf8 encoding"
-    if request.content_type == 'text/plain':
-        msg = "sequence saved"
-        prog = request.data.decode('utf-8')
-        try:
-            process_pool.put(ThreadWithTrace(target=perf, args=(prog,)), block=False)
-        except queue.Full:
-            msg = "Queue is full"
-    return jsonify({'message': msg})
-
-
 @app.route('/stopseq')
-def stop_process():
-    msg = "no seq running"
-    if current_thread[0] is not None:
-        current_thread[0].kill()
-        current_thread[0] = None
-        msg = "current sequence stop"
+def stopseq():
+    msg = queue_manager.kill_current_seq()
     return jsonify({'message': msg})
 
 

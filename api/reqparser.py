@@ -1,4 +1,4 @@
-from flask_restful import reqparse
+from flask_restful import reqparse, inputs
 from webargs import ValidationError
 
 limit_brightness = 16
@@ -23,6 +23,20 @@ def string60(str, type):
     raise ValidationError(type + " String must be < 60 len")
 
 
+parser_change_sequence = reqparse.RequestParser()
+parser_change_sequence.add_argument('start', type=inputs.boolean, required=True)
+
+parser_seq_add = reqparse.RequestParser()
+parser_seq_add.add_argument('name', type=string30, required=True)
+parser_seq_add.add_argument('code', type=str, required=True)
+
+parser_seq_del = reqparse.RequestParser()
+parser_seq_del.add_argument('index', type=int, required=True)
+
+parser_seq_move = reqparse.RequestParser()
+parser_seq_move.add_argument('old_index', type=int, required=True)
+parser_seq_move.add_argument('new_index', type=int, required=True)
+
 parser_token_find = reqparse.RequestParser()
 parser_token_find.add_argument('jti', type=string60, required=True)
 
@@ -34,8 +48,8 @@ parser_token_create.add_argument('date', type=int,
                                  help="{error_msg}. Timestamp error", required=True)
 
 parser_mode = reqparse.RequestParser()
-parser_mode.add_argument('mode', choices=('user', 'master'),
-                         help="{error_msg}. mode can be user or master", required=True)
+parser_mode.add_argument('mode', choices=('direct', 'sequence'),
+                         help="{error_msg}. mode can be direct or sequence", required=True)
 
 parser_cube = reqparse.RequestParser()
 parser_cube.add_argument('brightness', type=int, choices=range(limit_brightness),

@@ -47,9 +47,10 @@ class NoImportsVisitor(ast.NodeVisitor):
 
 
 class ThreadWithTrace(threading.Thread):
-    def __init__(self, *args, **keywords):
+    def __init__(self, name, *args, **keywords):
         threading.Thread.__init__(self, *args, **keywords)
         self.killed = False
+        self.name = name
 
     def start(self):
         self.__run_backup = self.run
