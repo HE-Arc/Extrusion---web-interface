@@ -49,13 +49,19 @@ public class DMX_Controller : MonoBehaviour
                 if (data.Length >= 20) {
 
                     // Ar-Net header
-                    byte[] artnet_bytes = new byte[8];
-                    System.Array.Copy(data, 0, artnet_bytes, 0, 8);
+                    byte[] artnet_bytes = new byte[7];
+                    System.Array.Copy(data, 0, artnet_bytes, 0, 7);
                     string artnet_str = System.Text.Encoding.Default.GetString(artnet_bytes);
+                    uint opcode = (uint)data[9] << 8;
+                    opcode |= data[8];
+
+                    uint version = (uint)data[10] << 8;
+                    version |= data[11];
                    
                     // Check if the packet is form Art-Net
-                    if (artnet_str != "Art-Net")
+                    if (artnet_str == "Art-Net" && opcode == 0x5000 && version == 14)
                     {
+
                         //string packet_log = "";
                         //for (int i = 0; i < data.Length; i++)                        
                         //    packet_log += String.Format("{00:X}", data[i]) + " ";
