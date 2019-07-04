@@ -22,6 +22,8 @@ public class DMX_Controller : MonoBehaviour
 
     private bool running;
 
+    bool sequence = false;
+
     // start from unity3d
     public void Start()
     {
@@ -35,18 +37,19 @@ public class DMX_Controller : MonoBehaviour
     // receive thread
     private void ReceiveDMX()
     {
-        client = new UdpClient(port);
 
+        IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
+        client = new UdpClient(port);
         running = true;
+
 
         while (running)
         {
             try
             {
-                IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
                 byte[] data = client.Receive(ref anyIP);
-
-                if (data.Length >= 20) {
+      
+                if (data.Length >= 14) {
 
                     // Ar-Net header
                     byte[] artnet_bytes = new byte[7];
@@ -57,6 +60,8 @@ public class DMX_Controller : MonoBehaviour
 
                     uint version = (uint)data[10] << 8;
                     version |= data[11];
+
+
                    
                     // Check if the packet is form Art-Net
                     if (artnet_str == "Art-Net" && opcode == 0x5000 && version == 14)

@@ -3,15 +3,15 @@
 [Serializable]
 public class CsvSegment
 {
-    public int axis_x { get; set; }
-    public int axis_y { get; set; }
-    public int axis_z { get; set; }
-    public int universe1 { get; set; }
-    public int universe2 { get; set; }
-    public int channelStart1 { get; set; }
-    public int channelEnd1 { get; set; }
-    public int channelStart2 { get; set; }
-    public int channelEnd2 { get; set; }
-    public bool reverse { get; set; }
+    public int AxisX { get; set; }
+    public int AxisY { get; set; }
+    public int AxisZ { get; set; }
+    public int Universe1 { get; set; }
+    public int Universe2 { get; set; }
+    public int ChannelStart1 { get; set; }
+    public int ChannelEnd1 { get; set; }
+    public int ChannelStart2 { get; set; }
+    public int ChannelEnd2 { get; set; }
+    public bool Reverse { get; set; }
 }
 

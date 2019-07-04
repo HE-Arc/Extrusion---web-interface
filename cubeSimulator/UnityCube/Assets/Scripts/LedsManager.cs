@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 
 public class DMX_Leds
@@ -44,6 +45,7 @@ public class LedsManager : MonoBehaviour
     private const int DMX_UNIVERSE_SIZE = 512;
     private const int DMX_LED_SIZE = 3;
     private const float LED_OFF_VALUE = 0f;
+    private static Mutex mut = new Mutex();
 
     // Use this for initialization
     void Start()
@@ -102,12 +104,12 @@ public class LedsManager : MonoBehaviour
 
             // Find the segment in the scene
             Transform segment;
-            bool segment_found = segments_dic.TryGetValue(csv.axis_x + "-" + csv.axis_y + "-" + csv.axis_z, out segment);
+            bool segment_found = segments_dic.TryGetValue(csv.AxisX + "-" + csv.AxisY + "-" + csv.AxisZ, out segment);
             // If the object exist in Unity scene
-            if (segment_found && csv.universe1 != -1)
+            if (segment_found && csv.Universe1 != -1)
             {
-                bool reverse = isReversed(csv.reverse, segment.GetComponent<DebugSegment>().revertAdress);
-                if (csv.universe2 == -1)
+                bool reverse = isReversed(csv.Reverse, segment.GetComponent<DebugSegment>().revertAdress);
+                if (csv.Universe2 == -1)
                 {
                     addLedNormalSegement(segment, csv, reverse);
                 }
@@ -125,15 +127,15 @@ public class LedsManager : MonoBehaviour
         int position = 0;
         if (reverse)
         {
-            int universe = csv.universe2;
-            for (int i = csv.channelEnd2 - 2; i >= csv.channelStart2; i = i - 3)
+            int universe = csv.Universe2;
+            for (int i = csv.ChannelEnd2 - 2; i >= csv.ChannelStart2; i = i - 3)
             {
                 addToScene(segment, universe, i, position);
                 position++;
             }
 
-            universe = csv.universe1;
-            for (int i = csv.channelEnd1 - 2; i >= csv.channelStart1; i = i - 3)
+            universe = csv.Universe1;
+            for (int i = csv.ChannelEnd1 - 2; i >= csv.ChannelStart1; i = i - 3)
             {
                 addToScene(segment, universe, i, position);
                 position++;
@@ -141,15 +143,15 @@ public class LedsManager : MonoBehaviour
         }
         else
         {
-            int universe = csv.universe1;
-            for (int i = csv.channelStart1; i <= csv.channelEnd1 - 2; i = i + 3)
+            int universe = csv.Universe1;
+            for (int i = csv.ChannelStart1; i <= csv.ChannelEnd1 - 2; i = i + 3)
             {
                 addToScene(segment, universe, i, position);
                 position++;
             }
 
-            universe = csv.universe2;
-            for (int i = csv.channelStart2; i <= csv.channelEnd2 - 2; i = i + 3)
+            universe = csv.Universe2;
+            for (int i = csv.ChannelStart2; i <= csv.ChannelEnd2 - 2; i = i + 3)
             {
                 addToScene(segment, universe, i, position);
                 position++;
@@ -162,8 +164,8 @@ public class LedsManager : MonoBehaviour
         int position = 0;
         if (reverse)
         {
-            int universe = csv.universe1;
-            for (int i = csv.channelEnd1 - 2; i >= csv.channelStart1; i = i - 3)
+            int universe = csv.Universe1;
+            for (int i = csv.ChannelEnd1 - 2; i >= csv.ChannelStart1; i = i - 3)
             {
                 addToScene(segment, universe, i, position);
                 position++;
@@ -171,8 +173,8 @@ public class LedsManager : MonoBehaviour
         }
         else
         {
-            int universe = csv.universe1;
-            for (int i = csv.channelStart1; i <= csv.channelEnd1 - 2; i = i + 3)
+            int universe = csv.Universe1;
+            for (int i = csv.ChannelStart1; i <= csv.ChannelEnd1 - 2; i = i + 3)
             {
                 addToScene(segment, universe, i, position);
                 position++;
@@ -207,35 +209,43 @@ public class LedsManager : MonoBehaviour
 
     void Update()
     {
-        if (requests.Count > 0)
+        mut.WaitOne();
+        int size = requests.Count;
+        mut.ReleaseMutex();
+        if (size > 45)
         {
-            // For each leds in the universe set the opacity of the sprite
-            for (int i = 0; i < 512; i++)
+            for (var j = 0; j < 45; j++)
             {
-                SpriteRenderer blinker;
 
-                // If the led exist
-                if (leds_by_universe.TryGetValue("Led-" + requests[0].universe + "-" + i, out blinker))
+                // For each leds in the universe set the opacity of the sprite
+                for (int i = 0; i < 512; i++)
                 {
-                    // Set the opacity of the sprite
-                    blinker.color = new Color(1f, 1f, 1f, requests[0].buffer[i] / 15.0f);
-                }
-            }
+                    SpriteRenderer blinker;
 
-            // Remove the request
-            requests.RemoveAt(0);
+                    // If the led exist
+                    if (leds_by_universe.TryGetValue("Led-" + requests[0].universe + "-" + i, out blinker))
+                    {
+                        // Set the opacity of the sprite
+                        blinker.color = new Color(1f, 1f, 1f, requests[0].buffer[i] / 15.0f);
+                    }
+                }
+                mut.WaitOne();
+                requests.RemoveAt(0);
+                mut.ReleaseMutex();
+            }
         }
     }
 
     // Call by the DMX controller
     public void blinkLeds(uint universe, byte[] values)
     {
+        mut.WaitOne();
         requests.Add(new DMX_Leds((int)universe, values));
+        mut.ReleaseMutex();
     }
 
-    private static bool isReversed(bool cubeFollowXyzSystem, bool unityfollowXyzSystem)
+    private static bool isReversed(bool cubeReverseXyzSystem, bool unityReverseXyzSystem)
     {
-
-        return !(cubeFollowXyzSystem ^ unityfollowXyzSystem);
+        return cubeReverseXyzSystem ^ unityReverseXyzSystem;
     }
 }

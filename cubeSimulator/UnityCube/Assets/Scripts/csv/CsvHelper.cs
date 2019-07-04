@@ -21,7 +21,7 @@ public static class CsvHelper
             var universe = ParseUni(datas[3]);
             try
             {
-                reverse = (datas[5] == "1");
+                reverse = (Convert.ToInt32(datas[5]) == 0);
             }
             catch (IndexOutOfRangeException e)
             {
@@ -30,16 +30,16 @@ public static class CsvHelper
 
             listSegement.Add(new CsvSegment
             {
-                axis_x = Convert.ToInt32(datas[0]),
-                axis_y = Convert.ToInt32(datas[1]),
-                axis_z = Convert.ToInt32(datas[2]),
-                universe1 = universe[0],
-                universe2 = universe[1],
-                channelStart1 = addresses[0],
-                channelEnd1 = addresses[1],
-                channelStart2 = addresses[2],
-                channelEnd2 = addresses[3],
-                reverse = reverse,
+                AxisX = Convert.ToInt32(datas[0]),
+                AxisY = Convert.ToInt32(datas[1]),
+                AxisZ = Convert.ToInt32(datas[2]),
+                Universe1 = universe[0],
+                Universe2 = universe[1],
+                ChannelStart1 = addresses[0],
+                ChannelEnd1 = addresses[1],
+                ChannelStart2 = addresses[2],
+                ChannelEnd2 = addresses[3],
+                Reverse = reverse,
             });
             }
             return listSegement;
