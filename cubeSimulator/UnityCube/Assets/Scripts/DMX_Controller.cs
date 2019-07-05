@@ -12,6 +12,7 @@ public class DMX_Controller : MonoBehaviour
 {
     private LedsManager leds_manager;
 
+
     // receiving Thread
     Thread receiveThread;
 
@@ -22,12 +23,13 @@ public class DMX_Controller : MonoBehaviour
 
     private bool running;
 
-    bool sequence = false;
+ 
 
     // start from unity3d
     public void Start()
     {
-        leds_manager = this.GetComponentInChildren<LedsManager>();
+        leds_manager = this.GetComponent<LedsManager>();
+
 
         receiveThread = new Thread(new ThreadStart(ReceiveDMX));
         receiveThread.IsBackground = true;
