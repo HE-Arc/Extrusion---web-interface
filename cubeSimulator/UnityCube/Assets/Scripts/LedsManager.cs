@@ -37,7 +37,7 @@ public class LedsManager : MonoBehaviour
     private const int nb_universe = 50;
 
     // Table to store spriterenderer components (of each leds)
-    private Dictionary<string, SpriteRenderer> leds_by_universe = new Dictionary<string, SpriteRenderer>();
+    private Dictionary<string, List<SpriteRenderer>> leds_by_universe = new Dictionary<string, List<SpriteRenderer>>();
 
     // Request recivied by the DMX controller
     public List<DMX_Leds> requests = new List<DMX_Leds>();
@@ -192,13 +192,19 @@ public class LedsManager : MonoBehaviour
 
         //Set the name (key in dictionnary)
         led_object.name = "Led-" + universe + "-" + address;
-
         // Set opacity of the sprite to null
         SpriteRenderer sprite_renderer = led_object.GetComponent<SpriteRenderer>();
         sprite_renderer.color = new Color(1f, 1f, 1f, LED_OFF_VALUE);
-
-        // Store the led in the table
-        leds_by_universe.Add(led_object.name, sprite_renderer);
+        List<SpriteRenderer> list_led;
+        if (leds_by_universe.TryGetValue(led_object.name, out list_led))
+        {
+            list_led.Add(sprite_renderer);
+        }
+        else
+        {
+            // Store the led in the table
+            leds_by_universe.Add(led_object.name, new List<SpriteRenderer> { sprite_renderer });
+        }
 
         // Display the value in the editor
         DebugLed debug = led_object.GetComponent<DebugLed>();
@@ -220,13 +226,16 @@ public class LedsManager : MonoBehaviour
                 // For each leds in the universe set the opacity of the sprite
                 for (int i = 0; i < 512; i++)
                 {
-                    SpriteRenderer blinker;
+                    List<SpriteRenderer> blinkers;
 
                     // If the led exist
-                    if (leds_by_universe.TryGetValue("Led-" + requests[0].universe + "-" + i, out blinker))
+                    if (leds_by_universe.TryGetValue("Led-" + requests[0].universe + "-" + i, out blinkers))
                     {
                         // Set the opacity of the sprite
-                        blinker.color = new Color(1f, 1f, 1f, requests[0].buffer[i] / 15.0f);
+                        foreach (var sprite in blinkers)
+                        {
+                            sprite.color = new Color(1f, 1f, 1f, requests[0].buffer[i] / 15.0f);
+                        }
                     }
                 }
                 mut.WaitOne();

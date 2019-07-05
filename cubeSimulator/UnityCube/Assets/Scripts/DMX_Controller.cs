@@ -27,7 +27,7 @@ public class DMX_Controller : MonoBehaviour
     // start from unity3d
     public void Start()
     {
-        leds_manager = this.GetComponent<LedsManager>();
+        leds_manager = this.GetComponentInChildren<LedsManager>();
 
         receiveThread = new Thread(new ThreadStart(ReceiveDMX));
         receiveThread.IsBackground = true;
