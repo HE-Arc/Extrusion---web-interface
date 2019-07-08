@@ -17,6 +17,7 @@ class ArtNetGroup():
             self.listArtNet[a.UNIVERSE] = a
             self.add_sync(a.TARGET_IP)
         self.fps = fps
+        self.is_sleeping = False
         self.nb_art_net = len(self.listArtNet)
 
     def __str__(self):
@@ -40,13 +41,22 @@ class ArtNetGroup():
                 v.show()
 
     def start(self, artSync):
+        self.is_sleeping = False
         self.show(artSync)
         self.__clock = Timer((1000.0 / self.fps) / 1000.0, self.start, [artSync])
         self.__clock.daemon = True
+        self.is_sleeping = True
         self.__clock.start()
 
     def stop(self):
-        self.__clock.cancel()
+        if self.is_sleeping:
+            try:
+                self.__clock.cancel()
+                self.is_sleeping = False
+                return True
+            except:
+                return False
+        return False
 
     def write_file(self, file):
         [file.write(StupidArtnet.print_object_and_packet(i)) for i in self.listArtNet]
@@ -66,12 +76,11 @@ class ArtNetGroup():
         self.listArtNet[universe_address[0]].set_buffer(universe_address[1], universe_address[2], brightness)
 
     @staticmethod
-    def get_artnet(ip1, ip2, cube1_start, cube1_end, cube2_start, cube2_end, fps):
+    def get_artnet(ip1, port1, ip2, port2, cube1_start, cube1_end, cube2_start, cube2_end, fps):
         group = ArtNetGroup(fps)
-        port = 6454
         for i in range(cube1_start, cube1_end):
-            group.add(StupidArtnet(ip1, port, i))
+            group.add(StupidArtnet(ip1, port1, i))
         for i in range(cube2_start, cube2_end):
-            group.add(StupidArtnet(ip2, port, i))
+            group.add(StupidArtnet(ip2, port2, i))
 
         return group

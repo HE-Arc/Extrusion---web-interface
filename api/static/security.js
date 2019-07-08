@@ -1,6 +1,8 @@
 
 $(window).on("load", function () {
     update_tab();
+    update_state();
+    update_seq();
     $('#createForm').on("submit", function (e) {
         create();
         return false;
@@ -76,7 +78,7 @@ function checkboxChange(checkbox) {
                 text: json.message,
             });
             let check = $(`#${checkbox.id}`);
-            old_check = check.prop("checked");
+            let old_check = check.prop("checked");
             check.bootstrapToggle("destroy");
             check.prop("checked", !old_check);
             check.bootstrapToggle();

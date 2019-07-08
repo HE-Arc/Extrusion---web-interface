@@ -8,6 +8,8 @@ import datetime
 from flask_jwt_extended import (create_access_token, jwt_required,
                                 decode_token)
 from package.sequence.python_seq import ThreadWithTrace, perform
+import queue
+from flask import escape
 
 message_not_started = "cube is not started"
 message_not_direct = "Api is not in direct mode"
@@ -95,7 +97,7 @@ class Token(Resource):
             return format_response('Token {} already exists'.format(identity), False)
 
         new_token = TokenModel(
-            identity=identity,
+            identity=escape(identity),
             mode=mode,
             revoked=False,
             date=date
@@ -130,7 +132,7 @@ class ChangeSequence(Resource):
                 if not is_cube_started():
                     return format_response("Can't start sending sequence, cube not started", False)
             else:
-                queue_manager.current_thread.kill()
+                queue_manager.kill_current_seq()
 
             global_var["sequence"] = start
             return format_response(f"Sequence sending state: {start}", True)
@@ -144,6 +146,7 @@ class ChangeMode(Resource):
         global_var['mode'] = mode
         if can_direct_send():
             queue_manager.kill_current_seq()
+            global_var["sequence"] = False
         else:
             cube.blackout_cube()
         return format_response(f"api is now in mode {data['mode']}", True)

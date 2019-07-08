@@ -1,5 +1,4 @@
 import queue
-from threading import Lock
 
 
 class QueueManger:
