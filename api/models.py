@@ -6,7 +6,7 @@ class TokenModel(db.Model):
     __tablename__ = 'tokens'
 
     id = db.Column(db.Integer, primary_key=True)
-    identity = db.Column(db.String(30), unique=True, nullable=False)
+    identity = db.Column(db.String(200), unique=True, nullable=False)
     jti = db.Column(db.String(100), unique=True, nullable=False)
     token = db.Column(db.String(500), nullable=False)
     date = db.Column(db.BigInteger, nullable=False)
