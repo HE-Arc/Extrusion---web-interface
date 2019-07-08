@@ -218,6 +218,7 @@ public class LedsManager : MonoBehaviour
         mut.WaitOne();
         int size = requests.Count;
         mut.ReleaseMutex();
+        Debug.Log(size);
         if (size > 45)
         {
             for (var j = 0; j < 45; j++)
