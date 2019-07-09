@@ -7,7 +7,7 @@
         </div>
         <div class="card">
             <div class="card-body">
-                
+                {{ title}}
             </div>
         </div>
     </div>

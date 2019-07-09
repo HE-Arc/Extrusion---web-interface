@@ -11,6 +11,11 @@ const router = new VueRouter({
         component: r => require.ensure([],() => r(require('./components/Admin'))),
         name:'admin'
       },
+      {
+        path:'/game',
+        component: r => require.ensure([],() => r(require('./components/Game'))),
+        name:'game'
+      },
     ]
 
   }
