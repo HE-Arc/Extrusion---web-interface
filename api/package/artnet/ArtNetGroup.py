@@ -4,7 +4,7 @@ from .ArtSyncGroup import ArtSyncGroup
 from threading import Timer
 
 
-class ArtNetGroup():
+class ArtNetGroup:
     """(Very) simple implementation of ArtnetSync."""
 
     def __init__(self, fps, *args):

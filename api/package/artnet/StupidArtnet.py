@@ -15,7 +15,7 @@ from .StupidArtSync import StupidArtSync
 import random
 
 
-class StupidArtnet():
+class StupidArtnet:
     """(Very) simple implementation of Artnet."""
 
     def __init__(self, targetIP='127.0.0.1', port=6454, universe=0, packet_size=512, fps=30):

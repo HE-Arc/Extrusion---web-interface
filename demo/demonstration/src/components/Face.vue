@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="col-md-3">
+        <h2>{{ title }}</h2>
         <canvas @mousemove="mousemove" @mouseover="mouseover" @mouseleave="mouseup" @mousedown="mousedown"
                 @mouseup="mouseup"
                 ref="my-canvas" id="canvas1" width="200" height="300"></canvas>
@@ -14,6 +15,7 @@
       w: Number,
       h: Number,
       index: Number,
+      title: String,
     },
     data () {
       return {
@@ -38,6 +40,14 @@
       },
       spaceY: function () {
         return this.height / 6
+      },
+      arrayFaceFunction: function () {
+        let tab = []
+        tab[0] = this.faceCheminee
+        tab[1] = this.faceCase
+        tab[2] = this.faceToit
+        tab[3] = this.faceVitre
+        return tab
       }
     },
     methods: {
@@ -96,23 +106,17 @@
         this.yNotShow = Math.round(this.posY / this.spaceY)
       },
       manageCube: function () {
+        this.arrayFaceFunction[this.idx]()
+      },
+      faceVitre: function () {
         if (this.xShow !== this.xNotShow) {
           for (let z = 1; z <= 11; z = z + 2) {
             this.axiosXYZ(this.xShow * 2 + 2, 10, z, 0)
           }
-          for (let x = 3; x <= 9; x = x + 2) {
-            this.axiosXYZ(x, 10, 12 - (this.yShow * 2), 0)
-          }
-
           this.xShow = this.xNotShow
-          this.yShow = this.yNotShow
           for (let z = 1; z <= 11; z = z + 2) {
             this.axiosXYZ(this.xShow * 2 + 2, 10, z, 15)
           }
-          for (let x = 3; x <= 9; x = x + 2) {
-            this.axiosXYZ(x, 10, 12 - (this.yShow * 2), 15)
-          }
-
         }
         if (this.yShow !== this.yNotShow) {
           for (let x = 3; x <= 9; x = x + 2) {
@@ -122,12 +126,68 @@
           for (let x = 3; x <= 9; x = x + 2) {
             this.axiosXYZ(x, 10, 12 - (this.yShow * 2), 15)
           }
-
         }
-
-
-      }
-      ,
+      },
+      faceToit: function () {
+        if (this.xShow !== this.xNotShow) {
+          for (let z = 1; z <= 11; z = z + 2) {
+            this.axiosXYZ(10, 10 - this.xShow * 2, z, 0)
+          }
+          this.xShow = this.xNotShow
+          for (let z = 1; z <= 11; z = z + 2) {
+            this.axiosXYZ(10, 10 - this.xShow * 2, z, 15)
+          }
+        }
+        if (this.yShow !== this.yNotShow) {
+          for (let y = 3; y <= 9; y = y + 2) {
+            this.axiosXYZ(10, y, 12 - (this.yShow * 2), 0)
+          }
+          this.yShow = this.yNotShow
+          for (let y = 3; y <= 9; y = y + 2) {
+            this.axiosXYZ(10, y, 12 - (this.yShow * 2), 15)
+          }
+        }
+      },
+      faceCase: function () {
+        if (this.xShow !== this.xNotShow) {
+          for (let z = 1; z <= 11; z = z + 2) {
+            this.axiosXYZ(10 - (this.xShow * 2 + 2), 0, z, 0)
+          }
+          this.xShow = this.xNotShow
+          for (let z = 1; z <= 11; z = z + 2) {
+            this.axiosXYZ(10 - (this.xShow * 2 + 2), 0, z, 15)
+          }
+        }
+        if (this.yShow !== this.yNotShow) {
+          for (let x = 1; x <= 7; x = x + 2) {
+            this.axiosXYZ(x, 0, 12 - (this.yShow * 2), 0)
+          }
+          this.yShow = this.yNotShow
+          for (let x = 1; x <= 7; x = x + 2) {
+            this.axiosXYZ(x, 0, 12 - (this.yShow * 2), 15)
+          }
+        }
+      },
+      faceCheminee: function () {
+        if (this.xShow !== this.xNotShow) {
+          for (let z = 1; z <= 11; z = z + 2) {
+            this.axiosXYZ(0, this.xShow * 2, z, 0)
+          }
+          this.xShow = this.xNotShow
+          for (let z = 1; z <= 11; z = z + 2) {
+            this.axiosXYZ(0, this.xShow * 2, z, 15)
+          }
+        }
+        if (this.yShow !== this.yNotShow) {
+          for (let y = 1; y <= 7; y = y + 2) {
+            this.axiosXYZ(0, y, 12 - (this.yShow * 2), 0)
+          }
+          this.yShow = this.yNotShow
+          for (let y = 1; y <= 7; y = y + 2) {
+            this.axiosXYZ(0, y, 12 - (this.yShow * 2), 15)
+          }
+        }
+      },
       axiosXYZ: async function (x, y, z, brightness) {
         let form = new FormData()
         form.append('idx_x', x)

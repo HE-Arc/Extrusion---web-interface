@@ -1,4 +1,4 @@
-class ArtSyncGroup():
+class ArtSyncGroup:
     """(Very) simple implementation of ArtnetSync."""
 
     def __init__(self, *args):

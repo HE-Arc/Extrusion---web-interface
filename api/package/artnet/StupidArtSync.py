@@ -13,7 +13,7 @@ import socket
 import sys
 
 
-class StupidArtSync():
+class StupidArtSync:
     """(Very) simple implementation of ArtnetSync."""
 
     def __init__(self, targetIP='127.0.0.1', port=6454):

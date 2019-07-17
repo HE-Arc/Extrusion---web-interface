@@ -121,7 +121,7 @@ class Token(Resource):
             return format_response('Something went wrong', False)
 
 
-class ChangeSequence(Resource):
+class StartSequence(Resource):
     def post(self):
         if can_send_sequence():
             data = parser_change_sequence.parse_args()

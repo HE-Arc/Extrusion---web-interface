@@ -17,7 +17,7 @@ api.add_resource(resources.LedResource, '/led')
 api.add_resource(resources.ChangeMode, '/changemode')
 api.add_resource(resources.Token, '/token')
 api.add_resource(resources.Sequence, '/seq')
-api.add_resource(resources.ChangeSequence, '/changeseq')
+api.add_resource(resources.StartSequence, '/startseq')
 
 
 @app.route('/start')
@@ -72,7 +72,7 @@ def stopseq():
     return jsonify({'message': msg})
 
 
-@app.route('/security')
+@app.route('/admin')
 def admin():
     if session.get('logged_admin', False):
         return render_template('admin.html')
