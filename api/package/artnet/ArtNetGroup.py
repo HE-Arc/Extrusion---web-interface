@@ -5,11 +5,22 @@ from threading import Timer
 
 
 class ArtNetGroup:
-    """(Very) simple implementation of ArtnetSync."""
+    """ArtNetGroup is a class to manage multiple instance of StupidArtnet"""
 
-    def __init__(self, fps, *args):
-        """Class Initialization."""
+    def __init__(self, fps, ip1, port1, ip2, port2, *args):
+        """Constructor of ArtNetGroup
+
+        :param
+        fps -- fps to send all information on the network
+        ip1 -- ip of the CaseCheminee side
+        port1 -- port of the CaseCheminee side
+
+        """
         # Instance variables
+        self.ip1 = ip1
+        self.ip2 = ip2
+        self.port1 = port1
+        self.port2 = port2
         self.listArtNet = {}
         self.ips = set()
         self.sync = ArtSyncGroup()
@@ -29,6 +40,12 @@ class ArtNetGroup:
     def set_all_universe(self, packet):
         for v in self.listArtNet.values():
             v.set(packet)
+
+    def set_fps(self, fps):
+        self.fps = fps
+
+    def get_fps(self):
+        return self.fps
 
     def show(self, artSync):
         if artSync:
@@ -75,9 +92,25 @@ class ArtNetGroup:
     def set(self, universe_address, brightness):
         self.listArtNet[universe_address[0]].set_buffer(universe_address[1], universe_address[2], brightness)
 
+    def set_ip(self, ip1, port1, ip2, port2, cube1_start, cube1_end, cube2_start, cube2_end):
+        self.ips.clear()
+        self.sync.clear()
+        self.add_sync(ip1)
+        self.add_sync(ip2)
+        for i in range(cube1_start, cube1_end):
+            self.listArtNet[i].TARGET_IP = ip1
+            self.listArtNet[i].UDP_PORT = port1
+        for i in range(cube2_start, cube2_end):
+            self.listArtNet[i].TARGET_IP = ip2
+            self.listArtNet[i].UDP_PORT = port2
+        self.ip1 = ip1
+        self.ip2 = ip2
+        self.port1 = port1
+        self.port2 = port2
+
     @staticmethod
     def get_artnet(ip1, port1, ip2, port2, cube1_start, cube1_end, cube2_start, cube2_end, fps):
-        group = ArtNetGroup(fps)
+        group = ArtNetGroup(fps, ip1, port1, ip2, port2)
         for i in range(cube1_start, cube1_end):
             group.add(StupidArtnet(ip1, port1, i))
         for i in range(cube2_start, cube2_end):

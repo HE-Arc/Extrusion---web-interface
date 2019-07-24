@@ -7,9 +7,14 @@ const router = new VueRouter({
     mode: 'history',
     routes:[
       {
-        path:'/admin',
+        path:'/',
         component: r => require.ensure([],() => r(require('./components/Admin'))),
         name:'admin'
+      },
+      {
+        path:'/seq',
+        component: r => require.ensure([],() => r(require('./components/Sequence'))),
+        name:'seq'
       },
       {
         path:'/game',

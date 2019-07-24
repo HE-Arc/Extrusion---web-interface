@@ -18,6 +18,9 @@ class ArtSyncGroup:
         for i in self.listArtNet:
             i.send()
 
+    def clear(self):
+        self.listArtNet.clear()
+
     def add(self, *args):
         for i in args:
             self.listArtNet.append(i)

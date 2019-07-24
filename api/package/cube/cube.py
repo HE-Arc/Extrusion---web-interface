@@ -44,8 +44,11 @@ class Cube(metaclass=SingletonMeta):
         self.xyz = np.array([[[Xyz(address_xyz, x, y, z) for z in range(13)] for y in range(11)] for x in range(11)])
 
     def show(self, brightness):
-        for f in self.faces:
-            f.show(brightness)
+        try:
+            for f in self.faces:
+                f.show(brightness)
+        except:
+            raise
 
     def blackout_cube(self):
         self.show(0)

@@ -5,7 +5,6 @@ from flask_jwt_extended import JWTManager
 from flask import jsonify
 from package.sequence.sequence_manager import SequenceManager
 from package.security.blacklist import is_jti_blacklisted
-import os
 from flask_cors import CORS
 import datetime
 from passlib.hash import pbkdf2_sha256 as sha256
@@ -14,16 +13,18 @@ app = Flask(__name__)
 api = Api(app)
 CORS(app)
 
+app.config['SQLALCHEMY_DATABASE_URI'] =
+app.config['SECRET_KEY'] =
+app.config['JWT_SECRET_KEY'] =
+app.config['admin_user'] =
+app.config['admin_pwd'] =
+
+app.config['SUPERUSER_TOKEN'] =
+
 app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=1)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = os.environ["SECRET_KEY"]
-app.config['JWT_SECRET_KEY'] = os.environ["JWT_SECRET_KEY"]
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
-app.config['SUPERUSER_TOKEN'] = os.environ["SUPERUSER_TOKEN"]
-app.config['admin_user'] = os.environ["admin_user"]
-app.config['admin_pwd'] = sha256.hash(os.environ["admin_pwd"])
 
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
@@ -33,12 +34,8 @@ sequence_manager = SequenceManager(global_var).start()
 
 import views, models
 
+db.create_all()
 models.update_token_in_memory()
-
-
-@app.before_first_request
-def create_tables():
-    db.create_all()
 
 
 @jwt.token_in_blacklist_loader

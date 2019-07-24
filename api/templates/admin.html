@@ -31,10 +31,12 @@
                     Mode:
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
                         <label class="btn btn-secondary active">
-                            <input type="radio" name="options" id="direct" autocomplete="off" onchange="modeChange(this)"> Direct
+                            <input type="radio" name="options" id="direct" autocomplete="off"
+                                   onchange="modeChange(this)"> Direct
                         </label>
                         <label class="btn btn-secondary">
-                            <input type="radio" name="options" id="sequence" autocomplete="off" onchange="modeChange(this)"> Sequence
+                            <input type="radio" name="options" id="sequence" autocomplete="off"
+                                   onchange="modeChange(this)"> Sequence
                         </label>
                     </div>
                 </div>
@@ -48,10 +50,55 @@
                         <span id="spanSeq"></span>
                     </label>
                 </div>
+                <div id="seqInfo" class="col-md-4">
+                    <label class="h4">Fps:
+                        <input id="slide_fps" type="range" min="1" max="100" class="slider"
+                               onchange="sliderChange(this)">
+                        <input id="spin_fps" type="number" max="100" min="0" onchange="spinerChange(this)">
+                    </label>
+                </div>
             </div>
         </div>
     </div>
-        <div class="card mt-5">
+    <div class="card mt-5">
+        <div class="card-header">
+            NetWork manager
+        </div>
+        <div class="card-body">
+            <div id="card" class="row">
+                <form id="networkForm" class="form-inline">
+                    <div class="form-group">
+                        <div class="card mr-5">
+                            <div class="card-header">
+                                CaseCheminée
+                            </div>
+                            <div class="card-body">
+                                <label for="ip1">Ip:</label>
+                                <input type="input" class="form-control" id="ip1" required pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$">
+                                <label for="port1">Port:</label>
+                                <input id="port1" type="number" min="0" max="65535" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="card ml-5 mr-5">
+                            <div class="card-header">
+                                ToitVitre
+                            </div>
+                            <div class="card-body">
+                                <label for="ip2">Ip:</label>
+                                <input type="input" class="form-control" id="ip2" required pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$">
+                                <label for="port2">Port:</label>
+                                <input id="port2" type="number" min="0" max="65535" required>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
         <div id="nbSeq" class="card-header">
         </div>
         <div class="card-body">
@@ -81,6 +128,7 @@
             </div>
             <div class="form-group">
                 <select id="mode" class="custom-select" required>
+                    <option value="superuser">Superuser</option>
                     <option value="master">Master</option>
                     <option value="user">User</option>
                 </select>

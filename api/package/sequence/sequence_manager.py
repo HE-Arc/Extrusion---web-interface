@@ -19,5 +19,5 @@ class SequenceManager(Thread):
                     queue_manager.current_thread.start()
                     queue_manager.current_thread.join()
                     cube.blackout_cube()
-                    time.sleep(3)
+                    time.sleep(2)
         return

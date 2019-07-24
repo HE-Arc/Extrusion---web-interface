@@ -7,5 +7,8 @@ class Square:
         self.ledstrips = [Ledstrip(address_ledstrip[idx_face][idx_square][i]) for i in range(4)]
 
     def show(self, brightness):
-        for l in self.ledstrips:
-            l.show(brightness)
+        try:
+            for l in self.ledstrips:
+                l.show(brightness)
+        except:
+            raise

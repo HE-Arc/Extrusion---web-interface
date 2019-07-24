@@ -48,6 +48,12 @@
         tab[2] = this.faceToit
         tab[3] = this.faceVitre
         return tab
+      },
+      link:function () {
+        return localStorage.getItem('link')
+      },
+      token:function () {
+        return localStorage.getItem('token')
       }
     },
     methods: {
@@ -196,8 +202,9 @@
         form.append('brightness', brightness)
         await this.axios({
           method: 'post',
-          url: 'http://127.0.0.1:5000/xyz',
+          url: `${this.link}/xyz`,
           data: form,
+          headers: {"Authorization": `Bearer ${this.token}`},
         }).then(function (response) {
           //handle success
           console.log(response)
@@ -211,8 +218,9 @@
         form.append('brightness', 0)
         await this.axios({
           method: 'post',
-          url: 'http://127.0.0.1:5000/face',
+          url: `${this.link}/face`,
           data: form,
+          headers: {"Authorization": `Bearer ${this.token}`},
         }).then(function (response) {
           //handle success
           return console.log(response.data.message)

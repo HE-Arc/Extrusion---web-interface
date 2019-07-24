@@ -18,6 +18,8 @@ api.add_resource(resources.ChangeMode, '/changemode')
 api.add_resource(resources.Token, '/token')
 api.add_resource(resources.Sequence, '/seq')
 api.add_resource(resources.StartSequence, '/startseq')
+api.add_resource(resources.Fps, '/fps')
+api.add_resource(resources.Network, '/network')
 
 
 @app.route('/start')
@@ -54,22 +56,36 @@ def stop():
 
 
 @app.route('/state')
+@jwt_required
 def state():
     info = deepcopy(global_var)
     info['nb_seq_in_queue'] = queue_manager.nb_seq_in_queue()
+    info['fps'] = artnet_group.get_fps()
+    info['net'] = {'ip1': artnet_group.ip1, 'ip2': artnet_group.ip2, 'port1': artnet_group.port1,
+                   'port2': artnet_group.port2}
     return jsonify(info)
 
 
 @app.route('/reset')
+@jwt_required
+@mode_superuser
 def reset():
-    queue_manager.delete_all()
-    return jsonify({'message': 'reset'})
+    try:
+        queue_manager.delete_all()
+        return jsonify({'message': 'reset', 'state': True})
+    except:
+        return jsonify({'message': 'An error occured', 'state': False})
 
 
 @app.route('/stopseq')
+@jwt_required
+@mode_superuser
 def stopseq():
-    msg = queue_manager.kill_current_seq()
-    return jsonify({'message': msg})
+    try:
+        msg = queue_manager.kill_current_seq()
+        return jsonify({'message': msg, 'state': True})
+    except:
+        return jsonify({'message': 'An error occured', 'state': False})
 
 
 @app.route('/admin')

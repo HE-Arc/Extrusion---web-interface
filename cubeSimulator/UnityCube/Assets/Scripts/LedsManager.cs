@@ -40,12 +40,12 @@ public class LedsManager : MonoBehaviour
     private Dictionary<string, List<SpriteRenderer>> leds_by_universe = new Dictionary<string, List<SpriteRenderer>>();
 
     // Request recivied by the DMX controller
-    public List<DMX_Leds> requests = new List<DMX_Leds>();
+    public Queue<DMX_Leds> requests = new Queue<DMX_Leds>();
 
     private const int DMX_UNIVERSE_SIZE = 512;
     private const int DMX_LED_SIZE = 3;
     private const float LED_OFF_VALUE = 0f;
-    private static Mutex mut = new Mutex();
+
 
     // Use this for initialization
     void Start()
@@ -215,32 +215,32 @@ public class LedsManager : MonoBehaviour
 
     void Update()
     {
-        mut.WaitOne();
-        int size = requests.Count;
-        mut.ReleaseMutex();
+        int size;
+
+        size = requests.Count;
+
+        Debug.Log(size);
         if (size > 45)
         {
             for (var j = 0; j < 45; j++)
             {
-
+                var data = requests.Dequeue();
                 // For each leds in the universe set the opacity of the sprite
                 for (int i = 0; i < 512; i++)
                 {
+
                     List<SpriteRenderer> blinkers;
 
                     // If the led exist
-                    if (leds_by_universe.TryGetValue("Led-" + requests[0].universe + "-" + i, out blinkers))
+                    if (leds_by_universe.TryGetValue("Led-" + data.universe + "-" + i, out blinkers))
                     {
                         // Set the opacity of the sprite
                         foreach (var sprite in blinkers)
                         {
-                            sprite.color = new Color(1f, 1f, 1f, requests[0].buffer[i] / 15.0f);
+                            sprite.color = new Color(1f, 1f, 1f, data.buffer[i] / 15.0f);
                         }
                     }
                 }
-                mut.WaitOne();
-                requests.RemoveAt(0);
-                mut.ReleaseMutex();
             }
         }
     }
@@ -248,9 +248,7 @@ public class LedsManager : MonoBehaviour
     // Call by the DMX controller
     public void blinkLeds(uint universe, byte[] values)
     {
-        mut.WaitOne();
-        requests.Add(new DMX_Leds((int)universe, values));
-        mut.ReleaseMutex();
+           requests.Enqueue(new DMX_Leds((int)universe, values));
     }
 
     private static bool isReversed(bool cubeReverseXyzSystem, bool unityReverseXyzSystem)

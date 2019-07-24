@@ -11,12 +11,9 @@ class Face:
         # self.face_universe_address = data_cube.face[idx_face]
 
     def show(self, brightness):
-        for s in self.squares:
-            s.show(brightness)
-
-    """def show_face(self, brightness):
         try:
-            for t in self.face_universe_address:
-                variables.artnet_group.set(t, brightness)
-        except KeyError:
-            pass"""
+            for s in self.squares:
+                s.show(brightness)
+        except:
+            raise
+

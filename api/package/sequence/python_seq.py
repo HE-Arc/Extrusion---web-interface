@@ -6,35 +6,59 @@ from package.global_variable.variables import *
 
 
 def delay(pause_time):
-    time.sleep(pause_time)
+    try:
+        pause = 10 if pause_time > 10 else pause_time
+        time.sleep(pause)
+    except:
+        print("Error in pause")
 
 
 def fun_cube(brightness):
-    cube.show(brightness)
+    try:
+        cube.show(brightness)
+    except:
+        print("Error in cube function")
 
 
 def face(idx_face, brightness):
-    cube.faces[idx_face].show(brightness)
-
+    try:
+        cube.faces[idx_face].show(brightness)
+    except:
+        print("Error in face function")
 
 def square(idx_face, idx_square, brightness):
-    cube.faces[idx_face].squares[idx_square].show(brightness)
+    try:
+        cube.faces[idx_face].squares[idx_square].show(brightness)
+    except:
+        print("Error in square function")
 
 
 def ledstrip(idx_face, idx_square, idx_ledstrip, brightness):
-    cube.faces[idx_face].squares[idx_square].ledstrips[idx_ledstrip].show(brightness)
+    try:
+        cube.faces[idx_face].squares[idx_square].ledstrips[idx_ledstrip].show(brightness)
+    except:
+        print("Error in ledstrip function")
 
 
 def led(idx_face, idx_square, idx_ledstrip, idx_led, brightness):
-    cube.faces[idx_face].squares[idx_square].ledstrips[idx_ledstrip].led[idx_led].show(brightness)
+    try:
+        cube.faces[idx_face].squares[idx_square].ledstrips[idx_ledstrip].led[idx_led].show(brightness)
+    except:
+        print("Error in led function")
 
 
 def xyz(x, y, z, brightness):
-    cube.xyz[x, y, z].show(brightness)
+    try:
+        cube.xyz[x, y, z].show(brightness)
+    except:
+        print("Error in xyz function")
 
 
 def xyz_led(x, y, z, idx_led, brigthness):
-    cube.xyz[x, y, z].led[idx_led].show(brigthness)
+    try:
+        cube.xyz[x, y, z].led[idx_led].show(brigthness)
+    except:
+        print("Error in xyz_led function")
 
 
 class NoImportsVisitor(ast.NodeVisitor):

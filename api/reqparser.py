@@ -17,41 +17,56 @@ def string30(str, type):
     raise ValidationError(type + " String must be < 30 len")
 
 
+def string15(str, type):
+    if len(str) <= 15:
+        return str
+    raise ValidationError(type + " String must be < 15 len")
+
+
 def string60(str, type):
     if len(str) <= 60:
         return str
     raise ValidationError(type + " String must be < 60 len")
 
 
+parser_change_network = reqparse.RequestParser(bundle_errors=True)
+parser_change_network.add_argument('ip1', type=string15, required=True)
+parser_change_network.add_argument('ip2', type=string15, required=True)
+parser_change_network.add_argument('port1', type=int, choices=range(0, 65536), required=True)
+parser_change_network.add_argument('port2', type=int, choices=range(0, 65536), required=True)
+
 parser_change_sequence = reqparse.RequestParser()
 parser_change_sequence.add_argument('start', type=inputs.boolean, required=True)
 
-parser_seq_add = reqparse.RequestParser()
+parser_change_fps = reqparse.RequestParser()
+parser_change_fps.add_argument('fps', type=int, choices=range(1, 101), required=True)
+
+parser_seq_add = reqparse.RequestParser(bundle_errors=True)
 parser_seq_add.add_argument('name', type=string30, required=True)
 parser_seq_add.add_argument('code', type=str, required=True)
 
 parser_seq_del = reqparse.RequestParser()
 parser_seq_del.add_argument('index', type=int, required=True)
 
-parser_seq_move = reqparse.RequestParser()
+parser_seq_move = reqparse.RequestParser(bundle_errors=True)
 parser_seq_move.add_argument('old_index', type=int, required=True)
 parser_seq_move.add_argument('new_index', type=int, required=True)
 
 parser_token_find = reqparse.RequestParser()
 parser_token_find.add_argument('jti', type=string60, required=True)
 
-parser_token_create = reqparse.RequestParser()
+parser_token_create = reqparse.RequestParser(bundle_errors=True)
 parser_token_create.add_argument('identity', type=string30, required=True)
 parser_token_create.add_argument('mode', choices=('user', 'master', 'superuser'),
                                  help="{error_msg}. mode can be user or master", required=True)
 parser_token_create.add_argument('date', type=int,
                                  help="{error_msg}. Timestamp error", required=True)
 
-parser_mode = reqparse.RequestParser()
+parser_mode = reqparse.RequestParser(bundle_errors=True)
 parser_mode.add_argument('mode', choices=('direct', 'sequence'),
                          help="{error_msg}. mode can be direct or sequence", required=True)
 
-parser_cube = reqparse.RequestParser()
+parser_cube = reqparse.RequestParser(bundle_errors=True)
 parser_cube.add_argument('brightness', type=int, choices=range(limit_brightness),
                          default=15, help="{error_msg}. brightness is between 0 and 15, 15 by default")
 

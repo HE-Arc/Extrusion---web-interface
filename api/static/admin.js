@@ -1,15 +1,82 @@
 function update_state() {
+    let myHeaders = new Headers({
+        "Authorization": token
+    });
 
-    fetch('/state')
+    let myInit = {
+        method: 'GET',
+        headers: myHeaders,
+        mode: 'cors',
+        cache: 'default',
+    };
+
+    fetch('/state',myInit)
         .then(response => {
             return response.json();
         })
         .then(json => {
+            console.log(json)
             manageMode(json.mode);
             manageStart(json.started);
             manageSeq(json.sequence);
+            manageFps(json.fps);
+            manageNetwork(json.net);
             $("#card").find("[data-toggle='toggle']").bootstrapToggle();
         })
+}
+
+function manageNetwork(net) {
+    $('#ip1').val(net.ip1);
+    $('#port1').val(net.port1);
+    $('#ip2').val(net.ip2);
+    $('#port2').val(net.port2);
+}
+
+function sendNetwork() {
+    let ip1 = $('#ip1').val();
+    let port1 = $('#port1').val();
+    let ip2 = $('#ip2').val();
+    let port2 = $('#port2').val();
+    let form = new FormData();
+    form.append("ip1", ip1);
+    form.append("ip2", ip2);
+    form.append("port1", port1);
+    form.append("port2", port2);
+    let myHeaders = new Headers({
+        "Authorization": token
+    });
+
+    let myInit = {
+        method: 'POST',
+        headers: myHeaders,
+        mode: 'cors',
+        cache: 'default',
+        body: form,
+    };
+
+    fetch('/network', myInit)
+        .then(response => {
+            return response.json();
+        }).then(json => {
+        if (!json.state) {
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: json.message,
+            });
+        } else {
+            Swal.fire({
+                type: 'success',
+                title: 'Network set',
+                text: json.message,
+            });
+        }
+    });
+}
+
+function manageFps(fps) {
+    $('#slide_fps').val(fps);
+    $('#spin_fps').val(fps);
 }
 
 function update_seq() {
@@ -25,6 +92,46 @@ function update_seq() {
 
 function manageMode(mode) {
     $(`#${mode}`).button("checked")
+}
+
+function spinerChange(spiner) {
+    $('#slide_fps').val(spiner.value);
+    sendfps(spiner.value);
+}
+
+function sliderChange(slider) {
+    $('#spin_fps').val(slider.value);
+    sendfps(slider.value);
+}
+
+function sendfps(fps) {
+    let form = new FormData();
+    form.append("fps", fps);
+    let myHeaders = new Headers({
+        "Authorization": token
+    });
+
+    let myInit = {
+        method: 'POST',
+        headers: myHeaders,
+        mode: 'cors',
+        cache: 'default',
+        body: form,
+    };
+
+    fetch('/fps', myInit)
+        .then(response => {
+            return response.json();
+        }).then(json => {
+        if (!json.state) {
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: json.message,
+            });
+            update_state();
+        }
+    });
 }
 
 function manageStart(started) {
@@ -103,7 +210,7 @@ function seqChange(btn) {
         body: form
     };
 
-    fetch('/changeseq', myInit)
+    fetch('/startseq', myInit)
         .then(response => {
             return response.json();
         }).then(json => {

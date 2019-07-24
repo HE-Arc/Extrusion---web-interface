@@ -40,10 +40,6 @@ class QueueManger:
             except IndexError:
                 raise
 
-    def get_queue(self):
-        with self.process_pool.mutex:
-            return self.process_pool.queue
-
     def nb_seq_in_queue(self):
         with self.process_pool.mutex:
             return len(self.process_pool.queue)

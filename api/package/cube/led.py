@@ -42,5 +42,4 @@ class Led:
             if self.exist:
                 variables.artnet_group.set((self.universe, self.address_start, self.address_end), brightness)
         except Exception as e:
-            print(e)
             raise

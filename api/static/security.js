@@ -1,10 +1,13 @@
-
 $(window).on("load", function () {
     update_tab();
     update_state();
     update_seq();
     $('#createForm').on("submit", function (e) {
         create();
+        return false;
+    });
+    $('#networkForm').on("submit", function (e) {
+        sendNetwork();
         return false;
     });
 });
@@ -36,7 +39,7 @@ function update_tab() {
                             <td>${item.mode}</td>
                             <td><button type="button" class="btn btn-sm btn-success" data-toggle="popover" title="Copy token" data-content="${item.token}">token</button></td>
                             <td>${get_days(item.date)}</td>`;
-                    if (item.mode !== "superuser") {
+                    if (`Bearer ${item.token}` !== token) {
                         buffer += `<td><input id ="${item.jti}" type="checkbox" ${checked} data-toggle="toggle" data-onstyle="dark" onchange="checkboxChange(this)"></td>`;
                         buffer += `<td><button value="${item.jti}" type="button" class="btn btn-sm btn-danger" onclick="deleteToken(this)">delete</button></td></tr>`;
                     } else {
@@ -189,7 +192,7 @@ function create() {
         .then(response => {
             return response.json();
         }).then(json => {
-            console.log(json);
+        console.log(json);
         if (json.state) {
             update_tab();
             Swal.fire({
@@ -220,6 +223,5 @@ function manageDate(checkbox) {
 
 function dateToTimestamp(date) {
     date = new Date(date);
-    alert(date);
     return Math.round(date.getTime() / 1000);
 }
