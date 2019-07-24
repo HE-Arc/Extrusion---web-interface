@@ -2,6 +2,11 @@ import csv
 
 
 def transform(file_path, nb_square):
+    """transform face csv file into data
+
+    :param file_path: face file path of csv file
+    :return: array of tuple data
+    """
     data_face = [[None for ledstrip in range(4)] for square in range(nb_square)]
     with open(file_path) as csv_file:
         reader = csv.reader(csv_file, delimiter=';')

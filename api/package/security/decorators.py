@@ -3,6 +3,11 @@ from functools import wraps
 
 
 def mode_master(function):
+    """Decorator for master access
+
+    :param function: function of th decorator
+    :return:
+    """
     @wraps(function)
     def wrapper(*args, **kwargs):
         try:
@@ -17,6 +22,11 @@ def mode_master(function):
 
 
 def mode_superuser(function):
+    """Decorator for superuser access
+
+    :param function: function of th decorator
+    :return:
+    """
     @wraps(function)
     def wrapper(*args, **kwargs):
         try:
@@ -31,6 +41,11 @@ def mode_superuser(function):
 
 
 def mode_user(function):
+    """Decorator for user access
+
+    :param function: function of th decorator
+    :return:
+    """
     @wraps(function)
     def wrapper(*args, **kwargs):
         try:

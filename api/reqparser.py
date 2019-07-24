@@ -12,18 +12,36 @@ limit_led = 27
 
 
 def string30(str, type):
+    """ fonction to limit test size to 30
+
+    :param str: text
+    :param type: use by function
+    :return: text if correct
+    """
     if len(str) <= 30:
         return str
     raise ValidationError(type + " String must be < 30 len")
 
 
 def string15(str, type):
+    """ fonction to limit test size to 15
+
+    :param str: text
+    :param type: use by function
+    :return: text if correct
+    """
     if len(str) <= 15:
         return str
     raise ValidationError(type + " String must be < 15 len")
 
 
 def string60(str, type):
+    """ fonction to limit test size to 60
+
+    :param str: text
+    :param type: use by function
+    :return: text if correct
+    """
     if len(str) <= 60:
         return str
     raise ValidationError(type + " String must be < 60 len")

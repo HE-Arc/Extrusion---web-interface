@@ -3,6 +3,11 @@ import numpy as np
 
 
 def transform(file_path):
+    """transform xyz csv file into data
+
+    :param file_path: xyz file path of csv file
+    :return: array of tuple data
+    """
     data_xyz = np.empty((11, 11, 13), dtype=object)
     with open(file_path) as csv_file:
         reader = csv.reader(csv_file, delimiter=';')

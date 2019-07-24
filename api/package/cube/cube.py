@@ -38,12 +38,25 @@ class SingletonMeta(type):
 
 
 class Cube(metaclass=SingletonMeta):
+    """Class that represent the cube
+
+    """
     def __init__(self, artnet, address_xyz) -> None:
+        """Constructor of Cube
+
+        :param artnet: Artnet group which manage ArtNet Data
+        :param address_xyz: Data for xyz system
+        """
         self.artnet = artnet
         self.faces = [Face(i) for i in range(6)]
         self.xyz = np.array([[[Xyz(address_xyz, x, y, z) for z in range(13)] for y in range(11)] for x in range(11)])
 
     def show(self, brightness):
+        """Illuminate the cube with brightness
+
+        :param brightness: int between 0 and 15 include
+        :raise exception
+        """
         try:
             for f in self.faces:
                 f.show(brightness)
@@ -51,5 +64,8 @@ class Cube(metaclass=SingletonMeta):
             raise
 
     def blackout_cube(self):
+        """Blackout the cube
+
+        """
         self.show(0)
         self.artnet.show(True)

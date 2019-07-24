@@ -1,3 +1,7 @@
+/**
+ * callback function when page is full loaded
+ * get all information in api an set data in page
+ */
 $(window).on("load", function () {
     update_tab();
     update_state();
@@ -12,6 +16,9 @@ $(window).on("load", function () {
     });
 });
 
+/**
+ * function to update information in token table
+ */
 function update_tab() {
     let myHeaders = new Headers({
         "Authorization": token,
@@ -54,7 +61,10 @@ function update_tab() {
         })
 }
 
-
+/**
+ * callback function when token active status is change
+ * @param checkbox information for the status
+ */
 function checkboxChange(checkbox) {
     let form = new FormData();
     form.append("jti", checkbox.id);
@@ -89,6 +99,10 @@ function checkboxChange(checkbox) {
     });
 }
 
+/**
+ * callback function when a token delete button is pressed
+ * @param button button information
+ */
 function deleteToken(button) {
     Swal.fire({
         title: 'Are you sure?',
@@ -139,6 +153,11 @@ function deleteToken(button) {
     });
 }
 
+/**
+ * function to convert timestamp into remaining days
+ * @param timestamp timestamp to convert
+ * @returns {string|number} remaining days
+ */
 function get_days(timestamp) {
     if (timestamp == 0) {
         return "unlimited"
@@ -151,8 +170,12 @@ function get_days(timestamp) {
 
 }
 
+/**
+ * callback function to create a token in api
+ * @returns {boolean} boolean to manage calendar
+ */
 function create() {
-    let identity = $('#identity').val(); //need to parse prevent injection
+    let identity = $('#identity').val();
     let date = $('#revokedDate').val();
     let mode = $('#mode').val();
     if ($('#checkUnlimited').prop("checked")) {
@@ -213,6 +236,10 @@ function create() {
 
 }
 
+/**
+ * callback function checkbox of unlimited date
+ * @param checkbox checkbox information
+ */
 function manageDate(checkbox) {
     let date = $('#revokedDate');
     date.prop("disabled", checkbox.checked);
@@ -221,6 +248,11 @@ function manageDate(checkbox) {
 
 }
 
+/**
+ * convert a date object to timestamp
+ * @param date date object
+ * @returns {number} timestamp
+ */
 function dateToTimestamp(date) {
     date = new Date(date);
     return Math.round(date.getTime() / 1000);

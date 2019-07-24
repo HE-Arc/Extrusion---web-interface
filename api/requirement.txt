@@ -13,6 +13,7 @@ marshmallow==2.19.5
 numpy==1.16.4
 passlib==1.7.1
 ply==3.11
+psycopg2==2.8.3
 pydot==1.4.1
 PyJWT==1.7.1
 PyMySQL==0.9.3

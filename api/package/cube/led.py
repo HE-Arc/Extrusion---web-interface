@@ -10,7 +10,15 @@ nb_led_by_ledstrip = 3
 # way can be 0 or 1
 
 class Led:
+    """Represent a led of the cube
+
+    """
     def __init__(self, address, idx_led):
+        """Constructor of led
+
+        :param address: tuple of led address
+        :param idx_led: led index
+        """
         self.exist = False
         if address is not None:
             self.exist = True
@@ -38,6 +46,11 @@ class Led:
                     self.address_start = self.address_end - (nb_led_by_ledstrip - 1)
 
     def show(self, brightness):
+        """Illuminate the led with brightness
+
+        :param brightness: int between 0 and 15 include
+        :raise exception
+        """
         try:
             if self.exist:
                 variables.artnet_group.set((self.universe, self.address_start, self.address_end), brightness)

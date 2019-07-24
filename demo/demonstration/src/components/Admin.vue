@@ -11,7 +11,7 @@
             </div>
             <div class="col-12">
                 <label for="token">Token</label>
-                <input v-model="token" type="text" class="form-control" id="token">
+                <textarea v-model="token" type="text" class="form-control" id="token" rows="5"></textarea>
             </div>
         </div>
     </div>

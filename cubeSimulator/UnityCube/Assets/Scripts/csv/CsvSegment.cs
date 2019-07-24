@@ -1,5 +1,8 @@
 ﻿using System;
 
+/// <summary>
+/// Data Class to store csv segement informations
+/// </summary>
 [Serializable]
 public class CsvSegment
 {

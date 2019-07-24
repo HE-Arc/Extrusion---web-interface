@@ -8,6 +8,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
+/// <summary>
+/// Class to manage DMX data for the cube
+/// </summary>
 public class DMX_Controller : MonoBehaviour
 {
     private LedsManager leds_manager;
@@ -26,6 +29,10 @@ public class DMX_Controller : MonoBehaviour
  
 
     // start from unity3d
+    /// <summary>
+    /// function start form unity3d
+    /// This function start the thread
+    /// </summary>
     public void Start()
     {
         leds_manager = this.GetComponent<LedsManager>();
@@ -37,6 +44,9 @@ public class DMX_Controller : MonoBehaviour
     }
     
     // receive thread
+    /// <summary>
+    /// Function that manage DMX paquet for the cube
+    /// </summary>
     private void ReceiveDMX()
     {
 
@@ -113,6 +123,9 @@ public class DMX_Controller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Function to close connection and kill thread when application is close
+    /// </summary>
     private void OnDisable()
     {
         client.Close();

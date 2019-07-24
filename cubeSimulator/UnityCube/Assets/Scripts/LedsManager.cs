@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading;
 using UnityEngine;
 
+/// <summary>
+/// Data Class to store information recieve in DMX network paquet
+/// </summary>
 public class DMX_Leds
 {
     public DMX_Leds(int universe, byte[] buffer)
@@ -18,6 +21,9 @@ public class DMX_Leds
     public byte[] buffer;
 }
 
+/// <summary>
+/// Class to manage led on the cube
+/// </summary>
 public class LedsManager : MonoBehaviour
 {
 
@@ -48,6 +54,10 @@ public class LedsManager : MonoBehaviour
 
 
     // Use this for initialization
+    /// <summary>
+    /// function start form unity3d
+    /// Create all the led on the specific part of the cube
+    /// </summary>
     void Start()
     {
         // Get all gameobjects with the tag "Segment".
@@ -86,9 +96,9 @@ public class LedsManager : MonoBehaviour
             }
         }
 
-        // Read json file to get the address of each led (univers + channel).
+        // Read csv file to get the address of each led (univers + channel).
         // The adress were stored for each segment.
-        //TextAsset cube_asset = Resources.Load<TextAsset>("json/Cube");
+        //TextAsset cube_asset = Resources.Load<TextAsset>("xyz/xyz");
         //JsonSegment[] json_segments = JsonHelper.FromJson<JsonSegment>(cube_asset.text);
 
         TextAsset cube_asset = Resources.Load<TextAsset>("xyz/xyz");
@@ -121,6 +131,12 @@ public class LedsManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// function to create led when ledstrip addresses is on 2 universe
+    /// </summary>
+    /// <param name="segment">unity model on cube</param>
+    /// <param name="csv"> segement address information</param>
+    /// <param name="reverse">the direction</param>
     private void addSeparatedSegment(Transform segment, CsvSegment csv, bool reverse)
     {
 
@@ -159,6 +175,12 @@ public class LedsManager : MonoBehaviour
         }
 
     }
+    /// <summary>
+    /// function to create led when ledstrip addresses is on 1 universe
+    /// </summary>
+    /// <param name="segment">unity model on cube</param>
+    /// <param name="csv"> segement address information</param>
+    /// <param name="reverse">the direction</param>
     private void addLedNormalSegement(Transform segment, CsvSegment csv, bool reverse)
     {
         int position = 0;
@@ -184,6 +206,13 @@ public class LedsManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Add leds on the segement
+    /// </summary>
+    /// <param name="segment">segement to add leds</param>
+    /// <param name="universe">universe of the segement</param>
+    /// <param name="address">start adress of led</param>
+    /// <param name="position">position of the led</param>
     void addToScene(Transform segment, int universe, int address, int position)
     {
         // Instantiate a led at the right position in the segment parent
@@ -212,7 +241,10 @@ public class LedsManager : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Function that display the scene with a fps
+    /// This function use DMX_Led data in the queue to update the illuminsation of the led in scene
+    /// </summary>
     void Update()
     {
         int size;
@@ -245,12 +277,21 @@ public class LedsManager : MonoBehaviour
         }
     }
 
-    // Call by the DMX controller
+    /// <summary>
+    /// function to put DMX data in the queue
+    /// </summary>
+    /// <param name="universe">DMX unviverse</param>
+    /// <param name="values">Byte array of DMX data</param>
     public void blinkLeds(uint universe, byte[] values)
     {
            requests.Enqueue(new DMX_Leds((int)universe, values));
     }
-
+    /// <summary>
+    /// Functio to know if the led in segement must follow the direction or revers it
+    /// </summary>
+    /// <param name="cubeReverseXyzSystem">led addresses on cube follow xyz coordinate system</param>
+    /// <param name="unityReverseXyzSystem">Segement in unity follow xyz coordinate system</param>
+    /// <returns></returns>
     private static bool isReversed(bool cubeReverseXyzSystem, bool unityReverseXyzSystem)
     {
         return cubeReverseXyzSystem ^ unityReverseXyzSystem;

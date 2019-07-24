@@ -4,12 +4,24 @@ import time
 
 
 class SequenceManager(Thread):
+    """Class daemon thread to manage Queue
+
+    """
     def __init__(self, global_var):
+        """Constructor of SequenceManager
+
+        :param global_var: global var of API
+        """
         Thread.__init__(self)
         self.global_var = global_var
         self.daemon = True
 
     def run(self):
+        """callback function of the thread
+
+         this function manage the queue of the API
+        :return: end of daemon thread
+        """
         while True:
             time.sleep(2)
             if self.global_var['sequence']:

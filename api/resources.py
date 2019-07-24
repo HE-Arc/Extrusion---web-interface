@@ -21,9 +21,21 @@ current_message = message_not_started
 
 
 class Network(Resource):
+    """Class resource of Network
+
+    route:/network
+    This class manage the route to change network information
+
+    """
     @jwt_required
     @mode_superuser
     def post(self):
+        """Post function of network
+
+        Change the network data to send ArtNet Data
+
+        :return information of request
+        """
         data = parser_change_network.parse_args()
         try:
             if not is_cube_started():
@@ -44,9 +56,20 @@ class Network(Resource):
 
 
 class Fps(Resource):
+    """Class resource of fps
+
+    route:/fps
+    this class manage the route to configure fps to send data
+    """
     @jwt_required
     @mode_superuser
     def post(self):
+        """post funcion of fps
+
+        Change fps of ArtNet sending
+
+        :return information of request
+        """
         data = parser_change_fps.parse_args()
         try:
             artnet_group.set_fps(data['fps'])
@@ -56,9 +79,20 @@ class Fps(Resource):
 
 
 class Sequence(Resource):
+    """Class resource of sequence
+
+    route:/seq
+    This class manage all the request to manage sequence
+    """
     @jwt_required
     @mode_user
     def post(self):
+        """post function of sequence
+
+        Add a sequence to queue
+
+        :return information of request
+        """
         if can_send_sequence():
             data = parser_seq_add.parse_args()
             program = data["code"]
@@ -74,6 +108,12 @@ class Sequence(Resource):
     @jwt_required
     @mode_superuser
     def delete(self):
+        """delete function of sequence
+
+        delete a sequence in the queue
+
+        :return information of request
+        """
         if can_send_sequence():
             data = parser_seq_del.parse_args()
             index = data['index']
@@ -87,6 +127,12 @@ class Sequence(Resource):
     @jwt_required
     @mode_superuser
     def patch(self):
+        """patch function of sequence
+
+        move a sequence in the queue
+
+        :return information of request
+        """
         if can_send_sequence():
             data = parser_seq_move.parse_args()
             old_index = data['old_index']
@@ -100,9 +146,21 @@ class Sequence(Resource):
 
 
 class Token(Resource):
+    """Class resource of token
+
+    route:/token
+    This class manage all the request to manage token
+
+    """
     @jwt_required
     @mode_superuser
     def patch(self):
+        """patch function of token
+
+        Change the revoked status of a token in db
+
+        :return information of request
+        """
         data = parser_token_find.parse_args()
         jti = data['jti']
         if TokenModel.switch_revoked(jti):
@@ -114,11 +172,23 @@ class Token(Resource):
     @jwt_required
     @mode_superuser
     def get(self):
+        """get function of token
+
+        get all information of all token in db
+
+        :return information of request
+        """
         return TokenModel.return_all()
 
     @jwt_required
     @mode_superuser
     def delete(self):
+        """delete function of token
+
+        delete a token in db
+
+        :return information of request
+        """
         data = parser_token_find.parse_args()
         jti = data['jti']
 
@@ -131,6 +201,12 @@ class Token(Resource):
     @jwt_required
     @mode_superuser
     def post(self):
+        """post function of token
+
+        Create a new token
+
+        :return information of request
+        """
         data = parser_token_create.parse_args()
         identity = data['identity']
         date = data['date']
@@ -165,9 +241,20 @@ class Token(Resource):
 
 
 class StartSequence(Resource):
+    """Class resource of start stop sequence
+
+    /startsea
+    This class manage the function to start and stop sequence sending
+    """
     @jwt_required
     @mode_superuser
     def post(self):
+        """post function of startSequence
+
+        start or stop to send sequence to the cube
+
+        :return information of request
+        """
         if can_send_sequence():
             data = parser_change_sequence.parse_args()
             start = data['start']
@@ -185,9 +272,21 @@ class StartSequence(Resource):
 
 
 class ChangeMode(Resource):
+    """Class resource to manage mode
+
+    /chagemode
+    Change the mode of the cube
+
+    """
     @jwt_required
     @mode_superuser
     def post(self):
+        """post function of ChangeMode
+
+        Change the mode of the cube in direct or sequence
+
+        :return information of request
+        """
         data = parser_mode.parse_args()
         mode = data['mode']
         global_var['mode'] = mode
@@ -200,9 +299,20 @@ class ChangeMode(Resource):
 
 
 class XyzResource(Resource):  # xyz
+    """Class resource Of Xyz coordinates
+
+    /xyz
+    This class manage the request of xyz coordinate system
+
+    """
     @jwt_required
     @mode_master
     def post(self):
+        """post function of /xyz
+
+        route to illuminate a ledstrip with xyz coordinate system
+        :return information of request
+        """
         is_ok = False
         msg = message_not_started
         if is_cube_started():
@@ -219,9 +329,20 @@ class XyzResource(Resource):  # xyz
 
 
 class XyzLedResource(Resource):  # xyz
+    """Class resource Of Xyz led
+
+    /xyzled
+    This class manage the request of xyz coordinate system
+
+    """
     @jwt_required
     @mode_master
     def post(self):
+        """post function of /xyzled
+
+        route to illuminate a led with xyz coordinate system
+        :return information of request
+        """
         msg = message_not_started
         is_ok = False
         if is_cube_started():
@@ -238,9 +359,20 @@ class XyzLedResource(Resource):  # xyz
 
 
 class CubeResource(Resource):  # cube
+    """Class resource Of cube
+
+    /cube
+    This class manage the request of cube
+
+    """
     @jwt_required
     @mode_master
     def post(self):
+        """post function of /cube
+
+        route to illuminate the cube
+        :return information of request
+        """
         msg = message_not_started
         is_ok = False
         if is_cube_started():
@@ -257,9 +389,20 @@ class CubeResource(Resource):  # cube
 
 
 class FaceResource(Resource):  # face
+    """Class resource Of face
+
+    /face
+    This class manage the request of face
+
+    """
     @jwt_required
     @mode_master
     def post(self):
+        """post function of /face
+
+        route to illuminate a face
+        :return information of request
+        """
         msg = message_not_started
         is_ok = False
         if is_cube_started():
@@ -276,9 +419,20 @@ class FaceResource(Resource):  # face
 
 
 class SquareResource(Resource):
+    """Class resource Of square
+
+    /square
+    This class manage the request of square
+
+    """
     @jwt_required
     @mode_master
     def post(self):
+        """post function of /square
+
+        route to illuminate a square
+        :return information of request
+        """
         msg = message_not_started
         is_ok = False
         if is_cube_started():
@@ -295,9 +449,20 @@ class SquareResource(Resource):
 
 
 class LedstripResource(Resource):
+    """Class resource Of ledstrip
+
+    /ledstrip
+    This class manage the request of ledstrip
+
+    """
     @jwt_required
     @mode_master
     def post(self):
+        """post function of /ledstrip
+
+        route to illuminate a ledstrip
+        :return information of request
+        """
         msg = message_not_started
         is_ok = False
         if is_cube_started():
@@ -315,9 +480,20 @@ class LedstripResource(Resource):
 
 
 class LedResource(Resource):
+    """Class resource Of led
+
+    /led
+    This class manage the request of led
+
+    """
     @jwt_required
     @mode_master
     def post(self):
+        """post function of /led
+
+        route to illuminate a led
+        :return information of request
+        """
         msg = message_not_started
         is_ok = False
         if is_cube_started():
@@ -335,14 +511,27 @@ class LedResource(Resource):
 
 
 def can_direct_send():
+    """Know if cube is in direct mode
+
+    :return: boolean true in direct mode
+    """
     return global_var["mode"] == "direct"
 
 
 def is_cube_started():
+    """know if cube is started
+
+    :return: boolean true if cube started
+    """
     return global_var["started"]
 
 
 def get_days(timestamp):
+    """ return remaining days form timestamp
+
+    :param timestamp: timestamp to convert
+    :return: remaining days
+    """
     if timestamp == 0:
         return False
     d1 = datetime.datetime.now()
@@ -350,8 +539,18 @@ def get_days(timestamp):
 
 
 def can_send_sequence():
+    """Know if cube in sequence mode
+
+    :return: boolean true if in sequence mode
+    """
     return global_var['mode'] == "sequence"
 
 
 def format_response(msg_txt, state):
+    """format response of all route in api
+
+    :param msg_txt: information message
+    :param state: status of request
+    :return: formatted response
+    """
     return {'message': msg_txt, 'state': state}

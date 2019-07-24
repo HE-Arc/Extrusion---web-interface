@@ -1,3 +1,6 @@
+/**
+ * Function to update all information on the page
+ */
 function update_state() {
     let myHeaders = new Headers({
         "Authorization": token
@@ -25,6 +28,10 @@ function update_state() {
         })
 }
 
+/**
+ * Function to manage Network informations
+ * @param net network information
+ */
 function manageNetwork(net) {
     $('#ip1').val(net.ip1);
     $('#port1').val(net.port1);
@@ -32,6 +39,9 @@ function manageNetwork(net) {
     $('#port2').val(net.port2);
 }
 
+/**
+ * Function to send network data to api
+ */
 function sendNetwork() {
     let ip1 = $('#ip1').val();
     let port1 = $('#port1').val();
@@ -74,11 +84,18 @@ function sendNetwork() {
     });
 }
 
+/**
+ * Function to manage fps information
+ * @param fps fps information
+ */
 function manageFps(fps) {
     $('#slide_fps').val(fps);
     $('#spin_fps').val(fps);
 }
 
+/**
+ * function to manage nb sequence in queue information
+ */
 function update_seq() {
 
     fetch('/state')
@@ -90,20 +107,36 @@ function update_seq() {
         })
 }
 
+/**
+ * function to manage mode button
+ * @param mode
+ */
 function manageMode(mode) {
     $(`#${mode}`).button("checked")
 }
 
+/**
+ * callback function when spiner change
+ * @param spiner spiner data
+ */
 function spinerChange(spiner) {
     $('#slide_fps').val(spiner.value);
     sendfps(spiner.value);
 }
 
+/**
+ * callback function when slider change
+ * @param slider slider data
+ */
 function sliderChange(slider) {
     $('#spin_fps').val(slider.value);
     sendfps(slider.value);
 }
 
+/**
+ * function to send fps to api
+ * @param fps fps to send
+ */
 function sendfps(fps) {
     let form = new FormData();
     form.append("fps", fps);
@@ -134,6 +167,10 @@ function sendfps(fps) {
     });
 }
 
+/**
+ * function to manage on off cube button
+ * @param started if cube is started or not
+ */
 function manageStart(started) {
     let check = $("#spanStart");
     let checked = (started) ? "checked" : "";
@@ -141,6 +178,10 @@ function manageStart(started) {
     check.html(buffer);
 }
 
+/**
+ * function to manage sequence button
+ * @param seq if sequence is started or not
+ */
 function manageSeq(seq) {
     let check = $("#spanSeq");
     let checked = (seq) ? "checked" : "";
@@ -148,6 +189,10 @@ function manageSeq(seq) {
     check.html(buffer);
 }
 
+/**
+ * callback function to start cube button
+ * @param btn button information
+ */
 function startChange(btn) {
     let startStop = (btn.checked) ? "start" : "stop";
     let myHeaders = new Headers({
@@ -171,6 +216,10 @@ function startChange(btn) {
 
 }
 
+/**
+ * callback function to mode button
+ * @param btn button information
+ */
 function modeChange(btn) {
     let form = new FormData();
     form.append("mode", btn.id);
@@ -195,6 +244,10 @@ function modeChange(btn) {
 
 }
 
+/**
+ * callback function to sequence button
+ * @param btn button information
+ */
 function seqChange(btn) {
     let form = new FormData();
     form.append("start", btn.checked);
@@ -231,6 +284,10 @@ function seqChange(btn) {
 
 }
 
+/**
+ * callback function to kill sequence button
+ * @param btn button information
+ */
 function killSeq(btn) {
     fetch('/stopseq')
         .then(response => {
@@ -242,6 +299,10 @@ function killSeq(btn) {
         })
 }
 
+/**
+ * callback function to reset sequence button
+ * @param btn button information
+ */
 function reset(btn) {
     Swal.fire({
         title: 'Are you sure?',

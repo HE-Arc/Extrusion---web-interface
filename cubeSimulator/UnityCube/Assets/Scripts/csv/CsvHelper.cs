@@ -3,12 +3,20 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Class to convert csv file into CsvSegement
+/// </summary>
 [Serializable]
 public static class CsvHelper
 {
     private static char lineSeperator = '\n';
     private static char fieldSeperator = ';';
 
+    /// <summary>
+    /// Function to convert csv file into CsvSegement list
+    /// </summary>
+    /// <param name="csv">csv string</param>
+    /// <returns>list of CsvSegement that was in the csv string</returns>
     public static List<CsvSegment> FromCsv(string csv)
     {
         List<CsvSegment> listSegement = new List<CsvSegment>();
@@ -45,7 +53,11 @@ public static class CsvHelper
             return listSegement;
         }
 
-
+        /// <summary>
+        /// Function to find 1 or 2 univers 
+        /// </summary>
+        /// <param name="data">string where there are universe</param>
+        /// <returns>list of unvivers that were in the string</returns>
         public static int[] ParseUni(string data)
         {
             int[] universe = new int[2];
@@ -69,6 +81,11 @@ public static class CsvHelper
             return universe;
         }
 
+        /// <summary>
+        /// Function to find addresses 
+        /// </summary>
+        /// <param name="data">string where there are addresses</param>
+        /// <returns>list of addresses that were in the string</returns>
         public static int[] Parseaddress(string data)
         {
             int[] ArrayAddress = new int[4];

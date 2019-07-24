@@ -26,6 +26,12 @@ api.add_resource(resources.Network, '/network')
 @jwt_required
 @mode_superuser
 def start():
+    """function for /start
+
+    Start to send ArtNet data
+
+    :return information of request
+    """
     msg = "already started"
     if global_var["started"] is not True:
         artnet_group.start(True)
@@ -38,6 +44,12 @@ def start():
 @jwt_required
 @mode_superuser
 def stop():
+    """function for /stop
+
+    Stop to send ArtNet data
+
+    :return information of request
+    """
     stop_cube = False
     try:
         stop_cube = artnet_group.stop()
@@ -58,6 +70,12 @@ def stop():
 @app.route('/state')
 @jwt_required
 def state():
+    """function for route /state
+
+    give api information
+
+    :return all information of api status
+    """
     info = deepcopy(global_var)
     info['nb_seq_in_queue'] = queue_manager.nb_seq_in_queue()
     info['fps'] = artnet_group.get_fps()
@@ -70,6 +88,12 @@ def state():
 @jwt_required
 @mode_superuser
 def reset():
+    """function for /reset
+
+    erase the sequence queue and stop current sequence
+
+    all information of api status
+    """
     try:
         queue_manager.delete_all()
         return jsonify({'message': 'reset', 'state': True})
@@ -81,6 +105,12 @@ def reset():
 @jwt_required
 @mode_superuser
 def stopseq():
+    """function for /stopseq
+
+    stop current sequence running on the cube
+
+    all information of api status
+    """
     try:
         msg = queue_manager.kill_current_seq()
         return jsonify({'message': msg, 'state': True})
@@ -90,6 +120,12 @@ def stopseq():
 
 @app.route('/admin')
 def admin():
+    """function for /admin
+
+    return the template admin.html if connected user ask it
+
+    :return: template of admin.html
+    """
     if session.get('logged_admin', False):
         return render_template('admin.html')
     else:
@@ -98,6 +134,13 @@ def admin():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """function for /login
+
+    create session for user
+    if already login go to /admin
+
+    :return: template of login.html
+    """
     if request.method == 'GET':
         if session.get('logged_admin', False):
             return admin()
@@ -114,5 +157,9 @@ def login():
 
 @app.route('/logout')
 def logout():
+    """function for /logout
+     disconnect a user
+    :return: go to login page
+    """
     session.pop('logged_admin', False)
     return redirect(url_for('login'))
