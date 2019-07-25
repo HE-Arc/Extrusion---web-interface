@@ -9,7 +9,7 @@
           rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
-<body>
+<body style="min-height: 100vh;">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Cube manager</a>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -74,7 +74,8 @@
                             </div>
                             <div class="card-body">
                                 <label for="ip1">Ip:</label>
-                                <input type="input" class="form-control" id="ip1" required pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$">
+                                <input type="input" class="form-control" id="ip1" required
+                                       pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$">
                                 <label for="port1">Port:</label>
                                 <input id="port1" type="number" min="0" max="65535" required>
                             </div>
@@ -87,7 +88,8 @@
                             </div>
                             <div class="card-body">
                                 <label for="ip2">Ip:</label>
-                                <input type="input" class="form-control" id="ip2" required pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$">
+                                <input type="input" class="form-control" id="ip2" required
+                                       pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$">
                                 <label for="port2">Port:</label>
                                 <input id="port2" type="number" min="0" max="65535" required>
                             </div>
@@ -163,12 +165,12 @@
         <tbody>
         </tbody>
     </table>
-        <footer class="navbar bg-light fixed-bottom">
-        <div class="container">
-            <span><img src="/static/arc.png" alt="" width="200px" height="40px" class="mr-3">Développé par Charles-Lewis Jaggi, Tous droits réservés</span>
-        </div>
-    </footer>
 </div>
+<footer class="navbar bg-light">
+    <div class="container">
+        <span><img src="/static/arc.png" alt="" width="200px" height="40px" class="mr-3">Développé par Charles-Lewis Jaggi, Tous droits réservés</span>
+    </div>
+</footer>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
