@@ -4,22 +4,22 @@ Forge: https://github.com/HE-Arc/Extrusion---web-interface
 
 ## Arborescence
 -api : contient le code de l'api
-	- package: packages développés pour l'api
+	- package: packages dÃ©veloppÃ©s pour l'api
 		- artner: regroupe le code de la gestion artnet
-		- cube: regroupe le code des systèmes de coordonnées
+		- cube: regroupe le code des systÃ¨mes de coordonnÃ©es
 		- global_variable: regroupe les variables globales de l'api
-		- import_data: regroupe les scriptes d'importation des données 
-		- security: regroupe le code de la gestion de la sécruité
-		- sequence: regroupe le code de la gestion des séquences
+		- import_data: regroupe les scriptes d'importation des donnÃ©es 
+		- security: regroupe le code de la gestion de la sÃ©cruitÃ©
+		- sequence: regroupe le code de la gestion des sÃ©quences
 
 - Artnet-python-cube : contient tous les tests des protocoles de tests
 - cubeSimulator: contient le projet Unity du simulateur
-- demo: contien le code (Vue.Js) de l'application de démonstration
-- sequence: contient le code des langages de séquence développées
+- demo: contien le code (Vue.Js) de l'application de dÃ©monstration
+- sequence: contient le code des langages de sÃ©quence dÃ©veloppÃ©es
 
 
-## Logicel utilisés
-Développement
+## Logicel utilisÃ©s
+DÃ©veloppement
 -    PyCharm
 -    WebStorm
 -    Visual Studio 2017
@@ -40,8 +40,8 @@ Languages
 ## Manuel d'utilisation
 voir manuel_utilisation.pdf
 
-## procédure d'installation
-voir procédure_installation.pdf
+## procÃ©dure d'installation
+voir procÃ©dure_installation.pdf
 
 
 
