@@ -1,8 +1,0 @@
-secur route avec if seq
-le blackout apres la pause sinon rien, si on met une instruction se passe rien a cuse du blackout
-pk pas de none si seq lancer une fois
-limites:
-avec chenillard sur square
-30 fps : 0.1 de delay
-60 fps: 0.05
-à 100 paquets le 0.02 devient ok
