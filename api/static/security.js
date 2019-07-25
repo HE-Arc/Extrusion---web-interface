@@ -215,7 +215,6 @@ function create() {
         .then(response => {
             return response.json();
         }).then(json => {
-        console.log(json);
         if (json.state) {
             update_tab();
             Swal.fire({

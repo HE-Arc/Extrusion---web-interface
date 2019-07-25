@@ -13,12 +13,11 @@ function update_state() {
         cache: 'default',
     };
 
-    fetch('/state',myInit)
+    fetch('/state', myInit)
         .then(response => {
             return response.json();
         })
         .then(json => {
-            console.log(json)
             manageMode(json.mode);
             manageStart(json.started);
             manageSeq(json.sequence);
@@ -97,8 +96,17 @@ function manageFps(fps) {
  * function to manage nb sequence in queue information
  */
 function update_seq() {
+    let myHeaders = new Headers({
+        "Authorization": token
+    });
 
-    fetch('/state')
+    let myInit = {
+        method: 'GET',
+        headers: myHeaders,
+        mode: 'cors',
+        cache: 'default',
+    };
+    fetch('/state', myInit)
         .then(response => {
             return response.json();
         })
@@ -274,7 +282,6 @@ function seqChange(btn) {
                 text: json.message,
             });
             let check = $(`#${btn.id}`);
-            console.log(btn.id);
             let old_check = check.prop("checked");
             check.bootstrapToggle("destroy");
             check.prop("checked", !old_check);
@@ -289,12 +296,21 @@ function seqChange(btn) {
  * @param btn button information
  */
 function killSeq(btn) {
-    fetch('/stopseq')
+    let myHeaders = new Headers({
+        "Authorization": token
+    });
+
+    let myInit = {
+        method: 'GET',
+        headers: myHeaders,
+        mode: 'cors',
+        cache: 'default',
+    };
+    fetch('/stopseq', myInit)
         .then(response => {
             return response.json();
         })
         .then(json => {
-            console.log(json.message);
             update_seq();
         })
 }
@@ -304,6 +320,16 @@ function killSeq(btn) {
  * @param btn button information
  */
 function reset(btn) {
+    let myHeaders = new Headers({
+        "Authorization": token
+    });
+
+    let myInit = {
+        method: 'GET',
+        headers: myHeaders,
+        mode: 'cors',
+        cache: 'default',
+    };
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -314,12 +340,11 @@ function reset(btn) {
         confirmButtonText: 'Yes, Reset!'
     }).then((result) => {
         if (result.value) {
-            fetch('/reset')
+            fetch('/reset', myInit)
                 .then(response => {
                     return response.json();
                 })
                 .then(json => {
-                    console.log(json.message);
                     update_seq();
                 })
         }
