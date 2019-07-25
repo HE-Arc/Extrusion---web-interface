@@ -98,6 +98,7 @@ class Sequence(Resource):
             program = data["code"]
             name = escape(data['name'])
             try:
+                # add sequence to queue
                 queue_manager.process_pool.put(ThreadWithTrace(name, target=perform, args=(program,)),
                                                block=False)
                 return format_response('Sequence saved', True)
@@ -215,6 +216,7 @@ class Token(Resource):
         if TokenModel.find_by_identity(identity):
             return format_response('Token {} already exists'.format(identity), False)
 
+        # create model
         new_token = TokenModel(
             identity=escape(identity),
             mode=mode,
@@ -222,13 +224,17 @@ class Token(Resource):
             date=date
         )
         try:
+            # create token with request information
             access_token = create_access_token(identity=new_token.identity,
                                                expires_delta=datetime.timedelta(days=get_days(date)),
                                                user_claims={'mode': new_token.mode})
+            # get information of token to put in the model
             new_token.token = access_token
             decode = decode_token(access_token)
             new_token.jti = decode['jti']
+            # save model in db
             new_token.save_to_db()
+            # update token in memory
             update_token_in_memory()
             return {
                 'message': 'Token {} was created'.format(identity),
@@ -258,9 +264,11 @@ class StartSequence(Resource):
         if can_send_sequence():
             data = parser_change_sequence.parse_args()
             start = data['start']
+            # check if cube is already started
             if start == global_var['sequence']:
                 return format_response("Cube already started", True)
             if start:
+                # check if cube is started
                 if not is_cube_started():
                     return format_response("Can't start sending sequence, cube not started", False)
             else:

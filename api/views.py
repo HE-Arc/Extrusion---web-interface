@@ -55,9 +55,11 @@ def stop():
         stop_cube = artnet_group.stop()
         if stop_cube:
             msg = "stopped"
+            # reset global variables
             global_var["started"] = False
             global_var["mode"] = "direct"
             global_var["sequence"] = False
+            # erase all sequence in the queue
             queue_manager.delete_all()
         else:
             msg = "error when stopping"

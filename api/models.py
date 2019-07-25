@@ -71,6 +71,7 @@ class TokenModel(db.Model):
 
         :return: json representation of table token
         """
+        # in app it is not revoked but activate, so switch revoked information
         def to_json(x):
             return {
                 'jti': x.jti,

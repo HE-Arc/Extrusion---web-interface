@@ -168,7 +168,7 @@ function sendfps(fps) {
 }
 
 /**
- * function to manage on off cube button
+ * function to manage on/off cube button
  * @param started if cube is started or not
  */
 function manageStart(started) {

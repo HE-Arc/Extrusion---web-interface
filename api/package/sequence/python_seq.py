@@ -184,20 +184,27 @@ def perform(prog):
     :param prog: sequence code
     :return:
     """
-    tree = ast.parse(prog)
-    NoImportsVisitor().visit(tree)
+    try:
+        # create ast tree of code in prog
+        tree = ast.parse(prog)
+        # check if tree has unauthorized node
+        NoImportsVisitor().visit(tree)
 
-    exec(compile(tree, filename="<ast>", mode="exec"),
-         {'exec': None,
-          'eval': None,
-          'dir': None,
-          'compile': None,
-          'delay': time.sleep,
-          'cube': fun_cube,
-          'face': face,
-          'square': square,
-          'ledstrip': ledstrip,
-          'led': led,
-          'xyz': xyz,
-          'xyz_led': xyz_led},
-         {})
+        # execute the code
+        exec(compile(tree, filename="<ast>", mode="exec"),
+             {'exec': None,
+              'eval': None,
+              'dir': None,
+              'compile': None,
+              'print': None,
+              'delay': time.sleep,
+              'cube': fun_cube,
+              'face': face,
+              'square': square,
+              'ledstrip': ledstrip,
+              'led': led,
+              'xyz': xyz,
+              'xyz_led': xyz_led},
+             {})
+    except:
+        print("Error in code")

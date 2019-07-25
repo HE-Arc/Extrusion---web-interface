@@ -22,27 +22,41 @@ class Led:
         self.exist = False
         if address is not None:
             self.exist = True
+            # check if the ledstrip, where is the led, is on 2 universe
             if len(address) == 7:
+                # check if the ledstrip, where is the led ,follow coordinate system
                 if address[0] == 1:
+                    # on 2 universes, take the good universe and start address according to the the led index
                     self.universe, self.address_start, balance = ((address[4], address[5], cut_little_ledstrip),
                                                                   (address[1], address[2], 0))[
                         idx_led < cut_little_ledstrip]
 
+                    # set start address of the led,
+                    # remove balance if on the second address. the address on second ledstrip must restart to 0
                     self.address_start = self.address_start + nb_led_by_ledstrip * (idx_led - balance)
+                    # set end address according to start address
                     self.address_end = self.address_start + (nb_led_by_ledstrip - 1)
                 else:
+                    # on 2 universes, take the good universe and start address according to the the led index
                     self.universe, self.address_end, balance = ((address[1], address[3], cut_big_ledstrip),
                                                                 (address[4], address[6], 0))[idx_led < cut_big_ledstrip]
-
+                    # set end address of the led,
+                    # remove balance if on the second address.
+                    # the address on second ledstrip must restart to end address
                     self.address_end = self.address_end - nb_led_by_ledstrip * (idx_led - balance)
+                    # set start address according to end address
                     self.address_start = self.address_end - (nb_led_by_ledstrip - 1)
             else:
                 self.universe = address[1]
                 if address[0] == 1:
+                    # set start address according to led index
                     self.address_start = address[2] + nb_led_by_ledstrip * idx_led
+                    # set end address according to start address
                     self.address_end = self.address_start + (nb_led_by_ledstrip - 1)
                 else:
+                    # set end address according to led index
                     self.address_end = address[3] - nb_led_by_ledstrip * idx_led
+                    # set start address according to end address
                     self.address_start = self.address_end - (nb_led_by_ledstrip - 1)
 
     def show(self, brightness):

@@ -7,6 +7,7 @@ def transform(file_path, nb_square):
     :param file_path: face file path of csv file
     :return: array of tuple data
     """
+    # create array to receive data, full with None
     data_face = [[None for ledstrip in range(4)] for square in range(nb_square)]
     with open(file_path) as csv_file:
         reader = csv.reader(csv_file, delimiter=';')
@@ -14,13 +15,16 @@ def transform(file_path, nb_square):
             try:
                 square_idx = int(row[0])
                 ledstrip_idx = int(row[1])
+                # check if address exist on the cube
                 if row[2] != '-':
                     way = int(row[4])
                     try:
+                        # check if ledstrip is on 1 universe
                         addresses = row[3].split('-')
                         data_face[square_idx][ledstrip_idx] = (way,
                                                                int(row[2]), int(addresses[0]), int(addresses[1]))
                     except ValueError:
+                        # ledstrip on 2 universes
                         universes = row[2].split('/')
                         addresses = row[3].split('/')
                         addresses_1 = addresses[0].split('-')

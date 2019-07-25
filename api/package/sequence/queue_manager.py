@@ -5,6 +5,7 @@ class QueueManger:
     """Class to manage a thread-safe queue
 
     """
+
     def __init__(self, size):
         """Constructor of QueueManage
 
