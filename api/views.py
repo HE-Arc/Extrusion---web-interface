@@ -7,6 +7,7 @@ from flask_jwt_extended import jwt_required
 from package.security.decorators import mode_superuser
 from passlib.hash import pbkdf2_sha256 as sha256
 
+
 api.add_resource(resources.XyzResource, '/xyz')
 api.add_resource(resources.XyzLedResource, '/xyzled')
 api.add_resource(resources.CubeResource, '/cube')
@@ -93,6 +94,7 @@ def reset():
     """function for /reset
 
     erase the sequence queue and stop current sequence
+
 
     all information of api status
     """
