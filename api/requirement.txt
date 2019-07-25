@@ -1,9 +1,11 @@
 aniso8601==6.0.0
 Click==7.0
 Flask==1.0.3
+Flask-Cors==3.0.8
 Flask-JWT-Extended==3.19.0
 Flask-RESTful==0.3.7
 Flask-SQLAlchemy==2.4.0
+ipaddress==1.0.22
 itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
@@ -11,8 +13,10 @@ marshmallow==2.19.5
 numpy==1.16.4
 passlib==1.7.1
 ply==3.11
+psycopg2==2.8.3
 pydot==1.4.1
 PyJWT==1.7.1
+PyMySQL==0.9.3
 pyparsing==2.4.0
 pytz==2019.1
 six==1.12.0

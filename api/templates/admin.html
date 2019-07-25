@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cube</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Cube manager</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('logout') }}">Logout <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-header">
+            Cube manager
+        </div>
+        <div class="card-body">
+            <div id="card" class="row">
+                <div id="modeInfo" class="col-md-4 h4">
+                    Mode:
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-secondary active">
+                            <input type="radio" name="options" id="direct" autocomplete="off"
+                                   onchange="modeChange(this)"> Direct
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="options" id="sequence" autocomplete="off"
+                                   onchange="modeChange(this)"> Sequence
+                        </label>
+                    </div>
+                </div>
+                <div id="startInfo" class="col-md-4">
+                    <label class="h4">Cube:
+                        <span id="spanStart"></span>
+                    </label>
+                </div>
+                <div id="seqInfo" class="col-md-4">
+                    <label class="h4">Sequence:
+                        <span id="spanSeq"></span>
+                    </label>
+                </div>
+                <div id="seqInfo" class="col-md-4">
+                    <label class="h4">Fps:
+                        <input id="slide_fps" type="range" min="1" max="100" class="slider"
+                               onchange="sliderChange(this)">
+                        <input id="spin_fps" type="number" max="100" min="0" onchange="spinerChange(this)">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-header">
+            NetWork manager
+        </div>
+        <div class="card-body">
+            <div id="card" class="row">
+                <form id="networkForm" class="form-inline">
+                    <div class="form-group">
+                        <div class="card mr-5">
+                            <div class="card-header">
+                                CaseCheminée
+                            </div>
+                            <div class="card-body">
+                                <label for="ip1">Ip:</label>
+                                <input type="input" class="form-control" id="ip1" required pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$">
+                                <label for="port1">Port:</label>
+                                <input id="port1" type="number" min="0" max="65535" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="card ml-5 mr-5">
+                            <div class="card-header">
+                                ToitVitre
+                            </div>
+                            <div class="card-body">
+                                <label for="ip2">Ip:</label>
+                                <input type="input" class="form-control" id="ip2" required pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$">
+                                <label for="port2">Port:</label>
+                                <input id="port2" type="number" min="0" max="65535" required>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div id="nbSeq" class="card-header">
+        </div>
+        <div class="card-body">
+            <div id="card" class="row">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" onclick="killSeq(this)">Kill current sequence</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" onclick="reset(this)">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-dark mt-5" type="button" data-toggle="collapse" data-target="#collapsCreate"
+            aria-expanded="false" aria-controls="collapsCreate">
+        Create Token
+    </button>
+    </p>
+    <div class="collapse" id="collapsCreate">
+        <form id="createForm">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Identity</label>
+                <input id="identity" type="text" class="form-control" id="identity" aria-describedby="identityHelp"
+                       placeholder="Enter identity" maxlength="30" required>
+                <small id="identityHelp" class="form-text text-muted">Max length 30
+                </small>
+            </div>
+            <div class="form-group">
+                <select id="mode" class="custom-select" required>
+                    <option value="superuser">Superuser</option>
+                    <option value="master">Master</option>
+                    <option value="user">User</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="start">Token validity:</label>
+                <input type="text" class="form-control" id="revokedDate" placeholder="Select Date" data-input
+                       disabled>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="checkUnlimited" onchange="manageDate(this)"
+                       checked>
+                <label class="form-check-label" for="defaultCheck1">
+                    Unlimited in time
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-5">Submit</button>
+        </form>
+    </div>
+    <table class="table mt-5">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Identity</th>
+            <th scope="col">Mode</th>
+            <th scope="col">Token</th>
+            <th scope="col">remaining days</th>
+            <th scope="col">active</th>
+            <th scope="col">delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+        <footer class="navbar bg-light fixed-bottom">
+        <div class="container">
+            <span><img src="/static/arc.png" alt="" width="200px" height="40px" class="mr-3">Développé par Charles-Lewis Jaggi, Tous droits réservés</span>
+        </div>
+    </footer>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    let token = '{{ config.SUPERUSER_TOKEN }}';
+    $("#revokedDate").flatpickr({
+        altFormat: "j F, Y",
+        minDate: "today",
+        dateFormat: "Y-m-d"
+    });
+</script>
+<script src="/static/admin.js"></script>
+<script src="/static/security.js"></script>
+</body>
+</html>

@@ -4,20 +4,32 @@ import time
 
 
 class SequenceManager(Thread):
+    """Class daemon thread to manage Queue
+
+    """
     def __init__(self, global_var):
+        """Constructor of SequenceManager
+
+        :param global_var: global var of API
+        """
         Thread.__init__(self)
         self.global_var = global_var
         self.daemon = True
 
     def run(self):
+        """callback function of the thread
+
+         this function manage the queue of the API
+        :return: end of daemon thread
+        """
         while True:
-            if process_pool.empty():
-                self.global_var['state'] = 'free'
-            current_thread[0] = process_pool.get()
-            self.global_var['state'] = 'busy'
             time.sleep(2)
-            current_thread[0].start()
-            current_thread[0].join()
-            cube.blackout_cube()
-            time.sleep(5)
+            if self.global_var['sequence']:
+                if queue_manager.nb_seq_in_queue() != 0:
+                    queue_manager.set_current_thread()
+                    time.sleep(2)
+                    queue_manager.current_thread.start()
+                    queue_manager.current_thread.join()
+                    time.sleep(2)
+                    cube.blackout_cube()
         return

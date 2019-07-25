@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append(".")
 from lib.StupidArtSync import StupidArtSync
 from lib.ArtNetGroup import ArtNetGroup
@@ -15,8 +16,8 @@ class Animation():
         self.packet_size = art_net[0].PACKET_SIZE
         self.file = open(file, "a")
 
-    def anime_noartsync(self, anime_fonction, tmp=0.5, start_channel=1, end_channel=512):
-        packet_list = anime_fonction(self.packet_size, start_channel, end_channel)
+    def anime_noartsync(self, anime_fonction, tmp=0.5, start_channel=1, end_channel=512, brightness=255):
+        packet_list = anime_fonction(self.packet_size, start_channel, end_channel, brightness)
         for i in range(0, len(packet_list)):
             self.art_nets.set(packet_list[i])
             self.art_nets.write_file(self.file)
@@ -75,12 +76,12 @@ class Animation():
         return packet_list
 
     @staticmethod
-    def anime_2(packet_size, start_channel=1, end_channel=512):
+    def anime_2(packet_size, start_channel=1, end_channel=512, brightness=255):
         packet_list = []
         packet = bytearray(packet_size)
         for i in range(0, packet_size, 1):
             if start_channel <= i <= end_channel:
-                packet[i] = 255
+                packet[i] = brightness
         packet_list.append(packet)
         return packet_list
 

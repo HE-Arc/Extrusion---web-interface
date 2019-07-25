@@ -1,19 +1,34 @@
 cube 0;
-function chenillard(s,speed){
+function chenillard(f,s,speed){
 	for(i = 0; i < 4 ; i = i + 1){
-		for(j = 0; j < 26; j = j + 3){
-			led 0 s i j 15;
-			led 0 s i j+1 15;
-			led 0 s i j+2 15;
+		for(j = 0; j < 25; j = j + 3){
+			led f s i j 15;
+			led f s i j+1 15;
+			led f s i j+2 15;
 			delay speed;
-			led 0 s i j 0;
-			led 0 s i j+1 0;
-			led 0 s i j+2 0;
+			led f s i j 0;
+			led f s i j+1 0;
+			led f s i j+2 0;
 		}
 	}
-
 }
 for(i = 0; i < 2; i = i + 1){
-chenillard(10,0.1);
+	chenillard(0,10,0.1);
 }
 cube 0;
+
+
+cube(0)
+def chenillard(f,s,speed):
+	for i in range(4):
+		for j in range(25):
+			led(f,s,i,j,15)
+			led(f,s,i,j+1,15)
+			led(f,s,i,j+2,15)
+			delay(speed)
+			led(f,s,i,j,0)
+			led(f,s,i,j+1,0)
+			led(f,s,i,j+2,0)
+for i in range(2):
+	chenillard(0,10,0.1)
+cube(0)

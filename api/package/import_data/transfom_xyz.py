@@ -3,6 +3,12 @@ import numpy as np
 
 
 def transform(file_path):
+    """transform xyz csv file into data
+
+    :param file_path: xyz file path of csv file
+    :return: array of tuple data
+    """
+    # create array for data, full with None
     data_xyz = np.empty((11, 11, 13), dtype=object)
     with open(file_path) as csv_file:
         reader = csv.reader(csv_file, delimiter=';')
@@ -11,12 +17,15 @@ def transform(file_path):
                 x = int(row[0])
                 y = int(row[1])
                 z = int(row[2])
+                # check if address exist on the cube
                 if row[3] != '-':
                     way = int(row[5])
                     try:
+                        # check if ledstrip is on 1 universe
                         addresses = row[4].split('-')
                         data_xyz[x, y, z] = (way, int(row[3]), int(addresses[0]), int(addresses[1]))
                     except ValueError:
+                        # ledstrip on 2 universes
                         universes = row[3].split('/')
                         addresses = row[4].split('/')
                         addresses_1 = addresses[0].split('-')

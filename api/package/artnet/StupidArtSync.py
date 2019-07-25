@@ -13,7 +13,7 @@ import socket
 import sys
 
 
-class StupidArtSync():
+class StupidArtSync:
     """(Very) simple implementation of ArtnetSync."""
 
     def __init__(self, targetIP='127.0.0.1', port=6454):
@@ -64,20 +64,13 @@ class StupidArtSync():
 
     @staticmethod
     def get_broadcast_address(ip):
+        """Convert ip to broadcast ip only for /24 network
+
+        :param ip: ip to convert
+        :return: broadcast ip of network /24
+        """
         if ip == '127.0.0.1':
             return '127.0.0.1'
         broadcast_ip = ".".join(ip.split('.')[0:-1]) + '.'
         return broadcast_ip + '255'
 
-
-if __name__ == '__main__':
-    print("===================================")
-    print("Namespace run")
-    target_ip = sys.argv[1]  # typically in 2.x or 10.x range
-
-    a = StupidArtSync(target_ip)
-
-    print("Sending ArtSync")
-    a.send()
-
-    print(a.HEADER)
