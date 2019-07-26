@@ -19,7 +19,7 @@ app.config['JWT_SECRET_KEY'] =
 app.config['admin_user'] =
 app.config['admin_pwd'] = sha256.hash()
 
-app.config['SUPERUSER_TOKEN'] =
+app.config['SUPERUSER_TOKEN'] = "null"
 
 app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=1)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
