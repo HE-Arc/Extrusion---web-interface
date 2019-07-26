@@ -89,13 +89,13 @@
         }
 
       },
-      mousedown: function (event) {
+      mousedown: function () {
         this.mouseDown = true
       },
-      mouseover: function (event) {
+      mouseover: function () {
         this.notDraw()
       },
-      mouseup: function (event) {
+      mouseup: function () {
         this.mouseDown = false
         this.drawGrid(-1, -1)
         this.xShow = null
