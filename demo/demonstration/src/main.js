@@ -7,7 +7,7 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import "prismjs";
-import "./module/prismjs/prism-python.min";
+import "./modules/prismjs/prism-python.min";
 import "prismjs/themes/prism.css";
 import VueSweetalert2 from 'vue-sweetalert2';
 
