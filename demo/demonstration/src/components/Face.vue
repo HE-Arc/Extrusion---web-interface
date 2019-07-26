@@ -205,9 +205,6 @@
           url: `${this.link}/xyz`,
           data: form,
           headers: {"Authorization": `Bearer ${this.token}`},
-        }).then(function (response) {
-          //handle success
-          console.log(response)
         })
 
       }
@@ -221,9 +218,6 @@
           url: `${this.link}/face`,
           data: form,
           headers: {"Authorization": `Bearer ${this.token}`},
-        }).then(function (response) {
-          //handle success
-          return console.log(response.data.message)
         })
       }
       ,
