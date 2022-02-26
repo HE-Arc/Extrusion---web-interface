@@ -13,7 +13,7 @@
     "bootstrap-vue": "^2.0.0-rc.25",
     "core-js": "^2.6.5",
     "jquery": "^3.4.1",
-    "prismjs": "^1.17.1",
+    "prismjs": "^1.27.0",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.4",
     "vue-prism-editor": "^0.2.1",
